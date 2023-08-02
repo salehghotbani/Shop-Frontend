@@ -9,6 +9,7 @@ import { Route, Routes } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import './App.css';
 import theme from './theme';
+import { Footer } from './Components/Footer';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           } />
         </Routes>
       </AnimatePresence>
+      <Footer />
     </ChakraProvider>
   );
 }
