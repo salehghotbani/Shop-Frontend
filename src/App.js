@@ -1,40 +1,36 @@
 import React from 'react';
 import {
   ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
 } from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
-import { Logo } from './Logo';
+import Fonts from './Fonts';
+import { Header } from './Components/Header';
+import { HomePage } from './Components/HomePage/HomePage';
+import { Route, Routes } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import './App.css';
+import theme from './theme';
 
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
-        <Grid minH="100vh" p={3}>
-          <ColorModeSwitcher justifySelf="flex-end" />
-          <VStack spacing={8}>
-            <Logo h="40vmin" pointerEvents="none" />
-            <Text>
-              Edit <Code fontSize="xl">src/App.js</Code> and save to reload.
-            </Text>
-            <Link
-              color="teal.500"
-              href="https://chakra-ui.com"
-              fontSize="2xl"
-              target="_blank"
-              rel="noopener noreferrer"
+      <Fonts />
+      <Header />
+      <HomePage />
+      <AnimatePresence exitBeforeEnter>
+        <Routes>
+          <Route path='/' element={
+            <motion.div
+              key='searchPanel'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
             >
-              Learn Chakra
-            </Link>
-          </VStack>
-        </Grid>
-      </Box>
+              <HomePage />
+            </motion.div>
+          } />
+        </Routes>
+      </AnimatePresence>
     </ChakraProvider>
   );
 }
