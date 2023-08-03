@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="14bd8a3a-8a55-4277-89c6-1676b0760a3c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="0b8afce5-eb57-4cf9-9c32-6c197d86719f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/frontend.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/home page/HomeHero.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/home page/HomeHeroLine.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/home page/HomeHeroPhone.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/home page/Introduce.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/home page/IntroduceCard.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/home page/Login.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/home page/LoginCard.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/home page/LoginTicket.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/HomePage/Sections/Description.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/HomePage/Sections/Description.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/HomePage/Sections/Hero.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/HomePage/Sections/Hero.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,39 +37,51 @@
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 7
 }</component>
-  <component name="ProjectId" id="2TR6RjOMHbMqDgonkFYd93yE6k0" />
+  <component name="ProjectId" id="2TSr3c8LP01ykeoWDFzwNvtwIDs" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;saleh&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/assets/images/home page" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="14bd8a3a-8a55-4277-89c6-1676b0760a3c" name="Changes" comment="" />
-      <created>1690993542144</created>
+      <changelist id="0b8afce5-eb57-4cf9-9c32-6c197d86719f" name="Changes" comment="" />
+      <created>1691047126520</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1690993542144</updated>
-      <workItem from="1690993544648" duration="20000" />
-      <workItem from="1691046391067" duration="219000" />
-      <workItem from="1691046621635" duration="26000" />
-      <workItem from="1691046664096" duration="79000" />
+      <updated>1691047126520</updated>
+      <workItem from="1691047133390" duration="759000" />
+      <workItem from="1691058657698" duration="9598000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>
