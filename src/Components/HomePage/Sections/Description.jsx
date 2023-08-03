@@ -26,7 +26,7 @@ export const Description = () => {
 
   return (
     <>
-      <Box position='relative' width={'100%'} onMouseMove={handleMouseMove} mt={'-60px'}>
+      <Box position='relative' width={'100%'} onMouseMove={handleMouseMove}>
         <Image src={IntroduceBackgroundImage} alt='Background' w={'100%'} h={'100%'} objectFit={'cover'} />
 
         <motion.div
