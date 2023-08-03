@@ -16,7 +16,6 @@ function App() {
     <ChakraProvider theme={theme}>
       <Fonts />
       <Header />
-      <HomePage />
       <AnimatePresence exitBeforeEnter>
         <Routes>
           <Route path='/' element={
