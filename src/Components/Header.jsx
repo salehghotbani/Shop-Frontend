@@ -38,7 +38,7 @@ export const Header = () => {
 
   return (
     <>
-      <Box position={'sticky'} top={0} px={7} py={3} backgroundColor={'#1D3347'} className={'box_shadow'}>
+      <Box zIndex={'9999 !important'} position={'sticky'} top={0} px={7} py={3} backgroundColor={'#1D3347'} className={'box_shadow'}>
         <Grid templateColumns='repeat(5, 1fr)' gap={4}>
           <GridItem colStart={0} colEnd={2}>
             <HStack spacing={3}>
