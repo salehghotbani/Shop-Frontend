@@ -1,0 +1,40 @@
+{
+  "Products": [
+    {
+      "id": 1,
+      "Title":"تیتر مد نظر اول",
+      "Description": "توصیف دسته بندی",
+      "Image":"Data/ImageData/FastFood.jpg"
+    },
+    {
+      "id": 2,
+      "Title":"تیتر مد نظر دوم",
+      "Description": "توصیف دسته بندی",
+      "Image":"Data/ImageData/FastFood.jpg"
+    },
+    {
+      "id": 3,
+      "Title":"تیتر مد نظر سوم",
+      "Description": "توصیف دسته بندی",
+      "Image":"Data/ImageData/FastFood.jpg"
+    },{
+      "id": 4,
+      "Title":"تیتر مد نظر چهارم",
+      "Description": "توصیف دسته بندی",
+      "Image":"Data/ImageData/FastFood.jpg"
+    },
+    {
+      "id": 5,
+      "Title":"تیتر مد نظر پنجم",
+      "Description": "توصیف دسته بندی",
+      "Image":"Data/ImageData/FastFood.jpg"
+    },
+    {
+      "id": 6,
+      "Title":"تیتر مد نظر ششم",
+      "Description": "توصیف دسته بندی",
+      "Image":"Data/ImageData/FastFood.jpg"
+    }
+
+  ]
+}

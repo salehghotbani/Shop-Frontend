@@ -4,8 +4,10 @@ import * as ReactDOM from 'react-dom/client';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
-import store from './app/store'
-import { Provider } from 'react-redux'
+import store from './app/store';
+import { Provider } from 'react-redux';
+import { DevSupport } from '@react-buddy/ide-toolbox';
+import { ComponentPreviews, useInitial } from './dev';
 
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
@@ -15,7 +17,11 @@ root.render(
     <StrictMode>
       <BrowserRouter>
         <ColorModeScript />
-        <App />
+        <DevSupport ComponentPreviews={ComponentPreviews}
+                    useInitialHook={useInitial}
+        >
+          <App />
+        </DevSupport>
       </BrowserRouter>
     </StrictMode>
   </Provider>,
