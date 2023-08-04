@@ -25,6 +25,11 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -83,6 +88,7 @@
       <workItem from="1691131133120" duration="13000" />
       <workItem from="1691144076176" duration="9587000" />
     </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -90,6 +96,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="BestSellingProducts.jsx wrote by KH." />
+    <option name="LAST_COMMIT_MESSAGE" value="BestSellingProducts.jsx wrote by KH." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
