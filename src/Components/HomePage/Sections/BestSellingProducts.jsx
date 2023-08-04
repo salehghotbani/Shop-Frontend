@@ -76,7 +76,9 @@ export const BestSellingProducts = () => {
                     style={{ position: 'absolute', bottom: '5%', zIndex: 1 }}
                   >
                     <Button backgroundColor={'#1C3347'} >
+
                       <Text   color={'white'}>افزودن به سبد خرید</Text>
+
                     </Button>
                   </motion.div>
                 </Center>
