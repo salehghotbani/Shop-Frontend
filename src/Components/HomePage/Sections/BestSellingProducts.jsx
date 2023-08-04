@@ -82,6 +82,7 @@ export const BestSellingProducts = () => {
                   </motion.div>
                 </Center>
               </Box>
+
             </Center>
           ))}
         </Carousel>;
