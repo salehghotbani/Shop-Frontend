@@ -4,7 +4,6 @@ export const AmazingOffer = () => {
   return (
     <>
       <Box>
-        
       </Box>
     </>
   );

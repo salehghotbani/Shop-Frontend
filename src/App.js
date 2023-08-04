@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  ChakraProvider,
+  ChakraProvider, CSSReset,
 } from '@chakra-ui/react';
 import Fonts from './Fonts';
 import { Header } from './Components/Header';
@@ -14,6 +14,7 @@ import { Footer } from './Components/Footer';
 function App() {
   return (
     <ChakraProvider theme={theme}>
+      <CSSReset />
       <Fonts />
       <Header />
       <AnimatePresence exitBeforeEnter>
