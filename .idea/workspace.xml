@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0b8afce5-eb57-4cf9-9c32-6c197d86719f" name="Changes" comment="BestSellingProducts.jsx wrote by KH." />
+
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,16 +39,23 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "khosravi",
+    "git-widget-placeholder": "saleh",
+    "last_opened_file_path": "/home/saleh/projects/shop/frontend/src",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/src/Components/Authentication" />
+      <recent name="$PROJECT_DIR$/src/assets/images/home page" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/assets/images/home page" />
     </key>
@@ -63,14 +70,7 @@
       <updated>1691047126520</updated>
       <workItem from="1691047133390" duration="759000" />
       <workItem from="1691058657698" duration="9906000" />
-    </task>
-    <task id="LOCAL-00001" summary="BestSellingProducts.jsx wrote by KH.">
-      <option name="closed" value="true" />
-      <created>1691158991210</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1691158991210</updated>
+
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />
@@ -83,4 +83,4 @@
     <MESSAGE value="BestSellingProducts.jsx wrote by KH." />
     <option name="LAST_COMMIT_MESSAGE" value="BestSellingProducts.jsx wrote by KH." />
   </component>
-</project>
+

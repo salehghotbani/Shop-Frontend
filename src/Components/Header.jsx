@@ -13,9 +13,11 @@ import {
 import shoppingCartLinearIcon from '../assets/icons/Shop/vuesax/linear/shopping-cart.svg';
 import userIcon from '../assets/icons/Users/vuesax/linear/user.svg';
 import menuIcon from '../assets/icons/Essetional/vuesax/linear/menu.svg';
-import loginIcon from '../assets/icons/Arrow/vuesax/linear/login.svg'
+import loginIcon from '../assets/icons/Arrow/vuesax/linear/login.svg';
+import { useNavigate } from 'react-router-dom';
 
 export const Header = () => {
+  const navigate = useNavigate();
   const UserIcon = () => {
     return (
       <Popover>
@@ -26,9 +28,15 @@ export const Header = () => {
         </PopoverTrigger>
         <PopoverContent w={'200px'}>
           <PopoverBody dir={'rtl'}>
-            <HStack>
-              <Image src={loginIcon}/>
+            <HStack cursor={'pointer'}
+                    _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}>
+              <Image src={loginIcon} />
               <Text cursor={'default'}>ورود</Text>
+            </HStack>
+            <HStack cursor={'pointer'} onClick={() => navigate('/register')}
+                    _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}>
+              <Image src={loginIcon} />
+              <Text>ثبت نام</Text>
             </HStack>
           </PopoverBody>
         </PopoverContent>
@@ -38,7 +46,8 @@ export const Header = () => {
 
   return (
     <>
-      <Box zIndex={'9999 !important'} position={'sticky'} top={0} px={7} py={3} backgroundColor={'#1D3347'} className={'box_shadow'}>
+      <Box zIndex={'9999 !important'} position={'sticky'} top={0} px={7} py={3} backgroundColor={'#1D3347'}
+           className={'box_shadow'}>
         <Grid templateColumns='repeat(5, 1fr)' gap={4}>
           <GridItem colStart={0} colEnd={2}>
             <HStack spacing={3}>

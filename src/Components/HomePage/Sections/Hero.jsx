@@ -58,19 +58,22 @@ export const Hero = () => {
 
       <motion.div
         style={{ position: 'absolute', top: '33%', left: '35%', transform: 'translate(-50%, -50%)', zIndex: 1 }}
-        animate={{ y: showOverlayText ? 20 : 0, opacity: showOverlayText ? '100%' : 0 }}
+        animate={{
+          y: showOverlayText ? 20 : 0,
+          opacity: showOverlayText ? 1 : 0,
+      }}
       >
-        <Heading cursor={'default'} opacity={showOverlayText ? '100%' : 0} dir={'rtl'} fontSize={'45px'} as={'h2'}>
+        <Heading cursor={'default'} opacity={showOverlayText ? 1 : 0} dir={'rtl'} fontSize={'45px'} as={'h2'}>
           لورم ایپسوم
         </Heading>
       </motion.div>
 
       <motion.div
         style={{ position: 'absolute', top: '53%', left: '28%', transform: 'translate(-50%, -50%)', zIndex: 1 }}
-        animate={{ opacity: showOverlayText ? '100%' : 0 }}
+        animate={{ opacity: showOverlayText ? 1 : 0 }}
       >
         <Box textAlign={'justify'} dir={'rtl'} w={'700px'}>
-          <Text cursor={'default'} opacity={showOverlayText ? '100%' : 0} fontSize={'25px'} as={'b'}>
+          <Text cursor={'default'} opacity={showOverlayText ? 1 : 0} fontSize={'25px'} as={'b'}>
             متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه
             و مجله در ستون و سطر آنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود
             ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته،
@@ -82,10 +85,10 @@ export const Hero = () => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         style={{ position: 'absolute', top: '69%', left: '28%', zIndex: 1 }}
-        animate={{ opacity: showOverlayText ? '100%' : 0 }}
+        animate={{ opacity: showOverlayText ? 1 : 0 }}
       >
         <Button w={'110px'} h={'50px'} backgroundColor={'#8FA5D1'}>
-          <Text opacity={showOverlayText ? '100%' : 0}>
+          <Text opacity={showOverlayText ? 1 : 0}>
             خرید
           </Text>
         </Button>
