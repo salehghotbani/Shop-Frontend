@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  ChakraProvider,
+  ChakraProvider, CSSReset,
 } from '@chakra-ui/react';
 import Fonts from './Fonts';
 import { Header } from './Components/Header';
@@ -9,11 +9,12 @@ import { Route, Routes } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import './App.css';
 import theme from './theme';
-import { Footer } from './Components/Footer';
+import { Register } from './Components/Authentication/Register';
 
 function App() {
   return (
     <ChakraProvider theme={theme}>
+      <CSSReset />
       <Fonts />
       <Header />
       <AnimatePresence exitBeforeEnter>
@@ -29,9 +30,19 @@ function App() {
               <HomePage />
             </motion.div>
           } />
+          <Route path='/register' element={
+            <motion.div
+              key='searchPanel'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <Register />
+            </motion.div>
+          } />
         </Routes>
       </AnimatePresence>
-      <Footer />
     </ChakraProvider>
   );
 }

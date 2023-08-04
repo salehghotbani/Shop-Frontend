@@ -4,7 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0b8afce5-eb57-4cf9-9c32-6c197d86719f" name="Changes" comment="" />
+    <list default="true" id="0b8afce5-eb57-4cf9-9c32-6c197d86719f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/BaseFunctions.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Components/Authentication/Register.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/home page/company.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Footer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Footer.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/HomePage/HomePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/HomePage/HomePage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/HomePage/Sections/AmazingOffer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/HomePage/Sections/AmazingOffer.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/HomePage/Sections/Companies.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/HomePage/Sections/Companies.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,6 +49,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "saleh",
+    "last_opened_file_path": "/home/saleh/projects/shop/frontend/src",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -45,6 +60,11 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/src/Components/Authentication" />
+      <recent name="$PROJECT_DIR$/src/assets/images/home page" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/assets/images/home page" />
     </key>
@@ -59,6 +79,9 @@
       <updated>1691047126520</updated>
       <workItem from="1691047133390" duration="759000" />
       <workItem from="1691058657698" duration="9906000" />
+      <workItem from="1691075139349" duration="320000" />
+      <workItem from="1691131133120" duration="13000" />
+      <workItem from="1691144076176" duration="9587000" />
     </task>
     <servers />
   </component>
