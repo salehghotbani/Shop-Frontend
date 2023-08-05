@@ -15,7 +15,7 @@ import RegisterCardBackgroundImage from '../../assets/images/home page/LoginCard
 import RegisterTicketBackgroundImage from '../../assets/images/home page/LoginTicket.png';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { Blue7 } from '../../BaseFunctions';
+import { Blue7 } from '../../BaseAttributes';
 
 export const Register = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -143,9 +143,9 @@ export const Register = () => {
         style={{ position: 'absolute', top: '65%', left: '51.8%', zIndex: 1 }}
         animate={{ opacity: showOverlayText ? 1 : 0 }}
       >
-        <Button w={'110px'} backgroundColor={'#1C3347'} _hover={{ backgroundColor: '#1C3347' }}>
+        <Button backgroundColor={'#1C3347'} _hover={{ backgroundColor: '#1C3347' }}>
           <Text textColor={'white'} opacity={showOverlayText ? 1 : 0}>
-            خرید
+            تایید و دریافت کد
           </Text>
         </Button>
       </motion.div>
