@@ -15,6 +15,7 @@ import userIcon from '../assets/icons/Users/vuesax/linear/user.svg';
 import menuIcon from '../assets/icons/Essetional/vuesax/linear/menu.svg';
 import loginIcon from '../assets/icons/Arrow/vuesax/linear/login.svg';
 import { useNavigate } from 'react-router-dom';
+import { ColorModeSwitcher } from '../ColorModeSwitcher';
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -55,6 +56,7 @@ export const Header = () => {
                 <Image src={shoppingCartLinearIcon} />
               </Box>
               <UserIcon />
+              <ColorModeSwitcher />
             </HStack>
           </GridItem>
           <GridItem colStart={6} colEnd={6}>
