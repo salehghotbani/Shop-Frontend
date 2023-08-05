@@ -100,8 +100,4 @@
     <MESSAGE value="add axios" />
     <option name="LAST_COMMIT_MESSAGE" value="add axios" />
   </component>
-  <component name="XSLT-Support.FileAssociations.UIState">
-    <expand />
-    <select />
-  </component>
-</project>
+
