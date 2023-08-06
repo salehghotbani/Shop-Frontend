@@ -15,7 +15,6 @@ import userIcon from '../assets/icons/Users/vuesax/linear/user.svg';
 import menuIcon from '../assets/icons/Essetional/vuesax/linear/menu.svg';
 import loginIcon from '../assets/icons/Arrow/vuesax/linear/login.svg';
 import { useNavigate } from 'react-router-dom';
-import { ColorModeSwitcher } from '../ColorModeSwitcher';
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -27,7 +26,7 @@ export const Header = () => {
             <Image src={userIcon} />
           </Box>
         </PopoverTrigger>
-        <PopoverContent w={'200px'}>
+        <PopoverContent w={'220px'}>
           <PopoverBody dir={'rtl'}>
             <HStack cursor={'pointer'}
                     _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}>
@@ -38,6 +37,11 @@ export const Header = () => {
                     _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}>
               <Image src={loginIcon} />
               <Text>ثبت نام</Text>
+            </HStack>
+            <HStack cursor={'pointer'} onClick={() => navigate('/register/checkcode')}
+                    _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}>
+              <Image src={loginIcon} />
+              <Text>تایید حساب کاربری</Text>
             </HStack>
           </PopoverBody>
         </PopoverContent>
@@ -56,7 +60,6 @@ export const Header = () => {
                 <Image src={shoppingCartLinearIcon} />
               </Box>
               <UserIcon />
-              <ColorModeSwitcher />
             </HStack>
           </GridItem>
           <GridItem colStart={6} colEnd={6}>
