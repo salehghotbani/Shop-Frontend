@@ -8,13 +8,14 @@ import {
   Popover,
   PopoverBody,
   PopoverContent,
-  PopoverTrigger,
+  PopoverTrigger, Center,
 } from '@chakra-ui/react';
 import shoppingCartLinearIcon from '../assets/icons/Shop/vuesax/linear/shopping-cart.svg';
 import userIcon from '../assets/icons/Users/vuesax/linear/user.svg';
 import menuIcon from '../assets/icons/Essetional/vuesax/linear/menu.svg';
 import loginIcon from '../assets/icons/Arrow/vuesax/linear/login.svg';
 import { useNavigate } from 'react-router-dom';
+import logoPng from '../assets/images/Logo.png';
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -62,6 +63,21 @@ export const Header = () => {
               <UserIcon />
             </HStack>
           </GridItem>
+
+          <GridItem colStart={3} colEnd={4}>
+            <Center>
+              <HStack spacing={2} cursor={'pointer'}
+                      onClick={() => {
+                        navigate('/', { replace: true });
+                      }}>
+                <Text mt={1} fontSize={'17px'} as={'b'} color={'white'}>
+                  فروشگاه
+                </Text>
+                <Image src={logoPng} w={'50px'} my={'-20px'} />
+              </HStack>
+            </Center>
+          </GridItem>
+
           <GridItem colStart={6} colEnd={6}>
             <Box p={'6px'} backgroundColor={'white'} borderRadius={'100%'} cursor={'pointer'}>
               <Image src={menuIcon} />
