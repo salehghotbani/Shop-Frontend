@@ -57,20 +57,19 @@ export const Login = () => {
 
   useEffect(() => {
     if (isSentLoggedInForm) {
-      navigate('/login/checkcode', { replace: true });
+      navigate('/', { replace: true });
     }
   }, [isSentLoggedInForm]);
 
   const sendRegisterInfo = () => {
     if (usernameField === '' || passwordField === '') {
-      showToast('خطا', 'تمام مواردی که با علامت ستاره مشخص شده اند باید تکمیل شوند');
+      showToast('خطا', 'تمام مواردی که با علامت ستاره مشخص شده‌اند باید تکمیل شوند');
     } else {
       setIsLoginButtonFormLoading(true);
 
-      fetchWithAxios.post('/login/', {
+      fetchWithAxios.post('/loging/', {
         'username': usernameField,
         'password': passwordField,
-
       })
         .then(function() {
             setIsSentLoggedInForm(true);
@@ -117,7 +116,6 @@ export const Login = () => {
           zIndex: 1,
         }}
       >
-
         <Box w={'700px'}>
           <Flex dir={'rtl'}>
             <Text fontSize={'45px'} as={'b'}>وارد شوید</Text>
@@ -135,8 +133,6 @@ export const Login = () => {
             </Flex>
           </FormControl>
 
-
-
           <FormControl my={3} isRequired>
             <Flex dir={'rtl'}>
               <FormLabel w={labelWidth} my={'auto'}><Text fontSize={labelFontSize} as={'b'}>رمز عبور:</Text></FormLabel>
@@ -152,8 +148,6 @@ export const Login = () => {
               </InputGroup>
             </Flex>
           </FormControl>
-
-
         </Box>
 
         <motion.div

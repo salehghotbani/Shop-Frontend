@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f81d3dad-69aa-4ad0-867c-390b78a55a4d" name="Changes" comment="i pull from git into khosravi">
-      <change afterPath="$PROJECT_DIR$/src/Components/Authentication/Login.jsx" afterDir="false" />
+    <list default="true" id="f81d3dad-69aa-4ad0-867c-390b78a55a4d" name="Changes" comment="Add PWA Icons, create manifest.json, use avatar of site in header, create favicon">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Authentication/CheckCode.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Authentication/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Authentication/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Authentication/Register.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Authentication/Register.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Header.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -34,7 +36,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "khosravi",
+    "git-widget-placeholder": "saleh",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -71,6 +73,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="i pull from git into khosravi" />
-    <option name="LAST_COMMIT_MESSAGE" value="i pull from git into khosravi" />
+    <MESSAGE value="Add PWA Icons, create manifest.json, use avatar of site in header, create favicon" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add PWA Icons, create manifest.json, use avatar of site in header, create favicon" />
   </component>
 </project>
