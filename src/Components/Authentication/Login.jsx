@@ -18,6 +18,8 @@ import { useEffect, useState } from 'react';
 import { Blue7 } from '../../BaseAttributes';
 import { fetchWithAxios, showToast } from '../../BaseFunctions';
 import { useNavigate } from 'react-router-dom';
+import { setRegistrationStatus, setUsername } from '../../store/features/userSlice';
+import { useDispatch } from 'react-redux';
 
 export const Login = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -33,6 +35,7 @@ export const Login = () => {
   const labelFontSize = '20px';
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // Trigger the overlay animation after 500ms (you can adjust this timing as needed)
@@ -57,11 +60,17 @@ export const Login = () => {
 
   useEffect(() => {
     if (isSentLoggedInForm) {
-      navigate('/', { replace: true });
+      showToast('تبریک!', 'ثبت نام شدید', 0);
+      dispatch(setRegistrationStatus(true));
+      dispatch(setUsername(usernameField));
+
+      setTimeout(() => {
+        navigate('/', { replace: true });
+      }, 2000);
     }
   }, [isSentLoggedInForm]);
 
-  const sendRegisterInfo = () => {
+  const sendLoginInfo = () => {
     if (usernameField === '' || passwordField === '') {
       showToast('خطا', 'تمام مواردی که با علامت ستاره مشخص شده‌اند باید تکمیل شوند');
     } else {
@@ -159,7 +168,7 @@ export const Login = () => {
                   loadingText='اندکی صبر کنید'
                   backgroundColor={'#1C3347'}
                   _hover={{ backgroundColor: '#1C3347' }}
-                  onClick={sendRegisterInfo}>
+                  onClick={sendLoginInfo}>
             <Text textColor={'white'} opacity={showOverlayText ? 1 : 0}>
               ورود
             </Text>

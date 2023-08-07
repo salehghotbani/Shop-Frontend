@@ -5,7 +5,7 @@ import Cookies from 'universal-cookie';
 export const cookies = new Cookies();
 
 export const fetchWithAxios = axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: 'http://192.27.5.10:8000',
 });
 
 export const showToast = (title, description, statusIndex = 1, positionIndex = 3, duration = 3000, isClosable = true) => {
@@ -29,5 +29,3 @@ export const showToast = (title, description, statusIndex = 1, positionIndex = 3
     isClosable: isClosable,
   });
 };
-
-

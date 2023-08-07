@@ -28,31 +28,49 @@ export const Header = () => {
     return (
       <Popover>
         <PopoverTrigger>
-          {user.isRegistered ?
-            <Box py={'6px'} px={3} backgroundColor={'white'} borderRadius={'50px'} cursor={'pointer'}>
-              <HStack spacing={1}>
-                <Image src={userIcon} />
-                <Text mb={'-4px'}>{user.username}</Text>
-              </HStack>
-            </Box>
-            :
-            <Box p={'6px'} backgroundColor={'white'} borderRadius={'100%'} cursor={'pointer'}>
-              <Image src={userIcon} />
-            </Box>
-          }
+          <Box p={'6px'} backgroundColor={'white'} borderRadius={'100%'} cursor={'pointer'}>
+            <Image src={userIcon} />
+          </Box>
         </PopoverTrigger>
         <PopoverContent w={'220px'}>
           <PopoverBody dir={'rtl'}>
-            <HStack cursor={'pointer'} onClick={() => navigate('/login')}
-                    _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}>
-              <Image src={loginIcon} />
-              <Text>ورود</Text>
-            </HStack>
-            <HStack cursor={'pointer'} onClick={() => navigate('/register')}
-                    _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}>
-              <Image src={loginIcon} />
-              <Text>ثبت نام</Text>
-            </HStack>
+            {user.isRegistered ?
+              <>
+                <HStack dir={'ltr'} cursor={'default'} _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2}
+                        px={3}>
+                  <Text mb={'-4px'}>
+                    {user.username.length > 12 ?
+                      user.username.substring(0, 12) + '...'
+                      :
+                      user.username
+                    }
+                  </Text>
+                </HStack>
+                <HStack cursor={'pointer'} onClick={() => navigate('/login')}
+                        _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}>
+                  <Image src={loginIcon} />
+                  <Text>پنل کاربری</Text>
+                </HStack>
+                <HStack cursor={'pointer'} onClick={() => navigate('/login')}
+                        _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}>
+                  <Image src={loginIcon} />
+                  <Text>خروج</Text>
+                </HStack>
+              </>
+              :
+              <>
+                <HStack cursor={'pointer'} onClick={() => navigate('/login')}
+                        _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}>
+                  <Image src={loginIcon} />
+                  <Text>ورود</Text>
+                </HStack>
+                <HStack cursor={'pointer'} onClick={() => navigate('/register')}
+                        _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}>
+                  <Image src={loginIcon} />
+                  <Text>ثبت نام</Text>
+                </HStack>
+              </>
+            }
           </PopoverBody>
         </PopoverContent>
       </Popover>
@@ -74,7 +92,7 @@ export const Header = () => {
           </GridItem>
 
           <GridItem colStart={3} colEnd={4}>
-            <Center>
+            <Center mt={1}>
               <HStack spacing={2} cursor={'pointer'}
                       onClick={() => {
                         navigate('/', { replace: true });

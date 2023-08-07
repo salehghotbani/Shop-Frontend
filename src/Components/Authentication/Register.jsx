@@ -19,9 +19,9 @@ import RegisterTicketBackgroundImage from '../../assets/images/home page/LoginTi
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Blue7 } from '../../BaseAttributes';
-import { cookies, fetchWithAxios, showToast } from '../../BaseFunctions';
+import { fetchWithAxios, showToast } from '../../BaseFunctions';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setRegistrationStatus, setUsername } from '../../store/features/userSlice';
 
 export const Register = () => {
@@ -44,16 +44,7 @@ export const Register = () => {
   const labelWidth = '160px';
   const labelFontSize = '20px';
   const navigate = useNavigate();
-
-  // User Redux
-  const userRedux = useSelector(state => state.user);
   const dispatch = useDispatch();
-  const handleSetUsername = (usernameText) => {
-    dispatch(setUsername(usernameText));
-  };
-  const handleSetRegistrationStatus = () => {
-    dispatch(setRegistrationStatus(true));
-  };
 
   useEffect(() => {
     // Trigger the overlay animation after 500ms (you can adjust this timing as needed)
@@ -79,8 +70,8 @@ export const Register = () => {
   useEffect(() => {
     if (isSentCodeForm) {
       showToast('تبریک!', 'ثبت نام شدید', 0);
-      handleSetRegistrationStatus();
-      handleSetUsername(usernameField);
+      dispatch(setRegistrationStatus(true));
+      dispatch(setUsername(usernameField));
 
       setTimeout(() => {
         navigate('/', { replace: true });
