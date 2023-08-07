@@ -29,10 +29,10 @@ export const Header = () => {
         </PopoverTrigger>
         <PopoverContent w={'220px'}>
           <PopoverBody dir={'rtl'}>
-            <HStack cursor={'pointer'}
+            <HStack cursor={'pointer'} onClick={() => navigate('/login')}
                     _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}>
               <Image src={loginIcon} />
-              <Text cursor={'default'}>ورود</Text>
+              <Text>ورود</Text>
             </HStack>
             <HStack cursor={'pointer'} onClick={() => navigate('/register')}
                     _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}>
@@ -44,6 +44,7 @@ export const Header = () => {
               <Image src={loginIcon} />
               <Text>تایید حساب کاربری</Text>
             </HStack>
+
           </PopoverBody>
         </PopoverContent>
       </Popover>

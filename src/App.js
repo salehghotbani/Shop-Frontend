@@ -11,6 +11,7 @@ import './App.css';
 import theme from './theme';
 import { Register } from './Components/Authentication/Register';
 import { CheckCode } from './Components/Authentication/CheckCode';
+import { Login } from './Components/Authentication/Login';
 
 function App() {
   return (
@@ -53,6 +54,19 @@ function App() {
               <CheckCode />
             </motion.div>
           } />
+          {/*Login route*/}
+          <Route path='/login' element={
+            <motion.div
+              key='searchPanel'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <Login />
+            </motion.div>
+          } />
+
         </Routes>
       </AnimatePresence>
     </ChakraProvider>
