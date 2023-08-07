@@ -1,6 +1,7 @@
 import React from 'react';
 import {
-  ChakraProvider, CSSReset,
+  ChakraProvider,
+  CSSReset,
 } from '@chakra-ui/react';
 import Fonts from './Fonts';
 import { Header } from './Components/Header';
@@ -10,7 +11,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import './App.css';
 import theme from './theme';
 import { Register } from './Components/Authentication/Register';
-import { CheckCode } from './Components/Authentication/CheckCode';
 import { Login } from './Components/Authentication/Login';
 
 function App() {
@@ -43,18 +43,6 @@ function App() {
               <Register />
             </motion.div>
           } />
-          <Route path='/register/checkcode' element={
-            <motion.div
-              key='searchPanel'
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-            >
-              <CheckCode />
-            </motion.div>
-          } />
-          {/*Login route*/}
           <Route path='/login' element={
             <motion.div
               key='searchPanel'

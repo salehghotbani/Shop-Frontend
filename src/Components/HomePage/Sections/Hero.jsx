@@ -4,14 +4,15 @@ import heroPhoneBackgroundImage from '../../../assets/images/home page/HomeHeroP
 import heroLineBackgroundImage from '../../../assets/images/home page/HomeHeroLine.png';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import {useSelector } from 'react-redux';
 
 export const Hero = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [showOverlay, setShowOverlay] = useState(false);
   const [showOverlayText, setShowOverlayText] = useState(false);
+  const home = useSelector(state => state.home);
 
   useEffect(() => {
-    // Trigger the overlay animation after 500ms (you can adjust this timing as needed)
     const timer1 = setTimeout(() => {
       setShowOverlay(true);
     }, 200);
@@ -23,7 +24,7 @@ export const Hero = () => {
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
-    }; // Clear the timer to avoid memory leaks
+    };
   }, []);
 
   const handleMouseMove = (event) => {
@@ -61,10 +62,10 @@ export const Hero = () => {
         animate={{
           y: showOverlayText ? 20 : 0,
           opacity: showOverlayText ? 1 : 0,
-      }}
+        }}
       >
         <Heading cursor={'default'} opacity={showOverlayText ? 1 : 0} dir={'rtl'} fontSize={'45px'} as={'h2'}>
-          لورم ایپسوم
+          {home.heroTitle}
         </Heading>
       </motion.div>
 
@@ -74,9 +75,7 @@ export const Hero = () => {
       >
         <Box textAlign={'justify'} dir={'rtl'} w={'700px'}>
           <Text cursor={'default'} opacity={showOverlayText ? 1 : 0} fontSize={'25px'} as={'b'}>
-            متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه
-            و مجله در ستون و سطر آنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود
-            ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته،
+            {home.heroDescription}
           </Text>
         </Box>
       </motion.div>
