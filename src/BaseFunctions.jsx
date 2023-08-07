@@ -1,13 +1,28 @@
-export const Blue1 = '#3E2E5F';
-export const Blue2 = '#54417A';
-export const Blue3 = '#9482BC';
-export const Blue4 = '#BDAFDC';
-export const Blue5 = '#725F9B';
-export const Blue6 = '#DED6EF';
-export const Blue7 = '#C9DDF6';
+import axios from 'axios';
+import { createStandaloneToast } from '@chakra-ui/react';
 
-export const Gray1 = '#1D1D1D';
-export const Gray2 = '#4C4B4B';
-export const Gray3 = '#7A7878';
-export const Gray4 = '#B0B0B0';
-export const Gray5 = '#DEDEDE';
+export const fetchWithAxios = axios.create({
+  baseURL: 'http://localhost:8000',
+});
+
+export const showToast = (title, description, statusIndex = 1, positionIndex = 3, duration = 3000, isClosable = true) => {
+  const {ToastContainer, toast} = createStandaloneToast();
+  const status = ['success', 'error', 'warning', 'info'][statusIndex];
+  const position = [
+    'top-right',
+    'top',
+    'top-left',
+    'bottom-right',
+    'bottom',
+    'bottom-left',
+  ][positionIndex];
+
+  toast({
+    title: title,
+    description: description,
+    position: position,
+    status: status,
+    duration: duration,
+    isClosable: isClosable,
+  });
+}
