@@ -13,6 +13,7 @@ const userSlice = createSlice({
     setRegistrationStatus: (state, action) => {
       state.isRegistered = action.payload;
     },
+
   },
 });
 

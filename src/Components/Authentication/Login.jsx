@@ -18,8 +18,9 @@ import { useEffect, useState } from 'react';
 import { Blue7 } from '../../BaseAttributes';
 import { fetchWithAxios, showToast } from '../../BaseFunctions';
 import { useNavigate } from 'react-router-dom';
-import { setRegistrationStatus, setUsername } from '../../store/features/userSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUsername } from '../../store/features/loginSlice';
+import { setPassword } from '../../store/features/loginSlice';
 
 export const Login = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -29,13 +30,14 @@ export const Login = () => {
   const [isLoginButtonFormLoading, setIsLoginButtonFormLoading] = useState(false);
   const [isSentLoggedInForm, setIsSentLoggedInForm] = useState(false);
 
-  const [usernameField, setUsernameField] = useState('');
-  const [passwordField, setPasswordField] = useState('');
+
+
   const labelWidth = '160px';
   const labelFontSize = '20px';
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const login = useSelector(state => state.login);
 
   useEffect(() => {
     // Trigger the overlay animation after 500ms (you can adjust this timing as needed)
@@ -60,9 +62,9 @@ export const Login = () => {
 
   useEffect(() => {
     if (isSentLoggedInForm) {
-      showToast('تبریک!', 'ثبت نام شدید', 0);
-      dispatch(setRegistrationStatus(true));
-      dispatch(setUsername(usernameField));
+      showToast('تبریک!', 'وارد شدید', 0);
+      dispatch(setUsername);
+      dispatch(setPassword);
 
       setTimeout(() => {
         navigate('/', { replace: true });
@@ -71,14 +73,14 @@ export const Login = () => {
   }, [isSentLoggedInForm]);
 
   const sendLoginInfo = () => {
-    if (usernameField === '' || passwordField === '') {
+    if (login.username === '' || login.password === '') {
       showToast('خطا', 'تمام مواردی که با علامت ستاره مشخص شده‌اند باید تکمیل شوند');
     } else {
       setIsLoginButtonFormLoading(true);
 
       fetchWithAxios.post('/loging/', {
-        'username': usernameField,
-        'password': passwordField,
+        'username': login.username,
+        'password': login.password,
       })
         .then(function() {
             setIsSentLoggedInForm(true);
@@ -138,7 +140,7 @@ export const Login = () => {
               </FormLabel>
               <Input h={'57px'} backgroundColor={Blue7} dir={'ltr'} type='text' placeholder={'نام کاربری'}
                      disabled={isLoginButtonFormLoading}
-                     onChange={(event) => setUsernameField(event.target.value)} />
+                     onChange={(event) => dispatch(setUsername(event.target.value))} />
             </Flex>
           </FormControl>
 
@@ -148,7 +150,7 @@ export const Login = () => {
               <InputGroup>
                 <Input h={'57px'} backgroundColor={Blue7} dir={'ltr'} type={showPassword ? 'text' : 'password'}
                        disabled={isLoginButtonFormLoading}
-                       placeholder='رمز عبور' onChange={(event) => setPasswordField(event.target.value)} />
+                       placeholder='رمز عبور' onChange={(event) => dispatch(setPassword(event.target.value))} />
                 <InputRightElement width='4.5rem' mx={2}>
                   <Button mt={4} h='1.75rem' size='sm' onClick={() => setShowPassword(!showPassword)}>
                     {showPassword ? 'پنهان کن' : 'نمایش بده'}
