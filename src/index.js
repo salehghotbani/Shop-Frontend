@@ -5,6 +5,7 @@ import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
 import store from './store/store';
 import { Provider } from 'react-redux';
+import axios from 'axios';
 
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
