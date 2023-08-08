@@ -21,8 +21,16 @@ import { useEffect, useState } from 'react';
 import { Blue7 } from '../../BaseAttributes';
 import { fetchWithAxios, showToast } from '../../BaseFunctions';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setRegistrationStatus, setUsername } from '../../store/features/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setRegistrationStatus } from '../../store/features/userSlice';
+import {
+  setCode,
+  setConfirmPassword,
+  setEmail,
+  setPassword,
+  setPhoneNumber,
+  setUsername,
+} from '../../store/features/registerSlice';
 
 export const Register = () => {
   const codeLength = 5;
@@ -35,16 +43,35 @@ export const Register = () => {
   const [isSentRegisteredForm, setIsSentRegisteredForm] = useState(false);
   const [isCheckCodeFormLoading, setIsCheckCodeFormLoading] = useState(false);
   const [isSentCodeForm, setIsSentCodeForm] = useState(false);
-  const [usernameField, setUsernameField] = useState('');
-  const [phoneNumberField, setPhoneNumberField] = useState('');
-  const [emailField, setEmailField] = useState('');
-  const [passwordField, setPasswordField] = useState('');
-  const [confirmPasswordField, setConfirmPasswordField] = useState('');
-  const [code, setCode] = useState([Array.from({ length: codeLength }).map(() => ('0'))]);
+  const [minutes, setMinutes] = useState(2);
+  const [seconds, setSeconds] = useState(0);
   const labelWidth = '160px';
   const labelFontSize = '20px';
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const register = useSelector(state => state.register);
+
+  useEffect(() => {
+    let timer = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+      } else {
+        if (minutes === 0) {
+          clearInterval(timer);
+          // Timer has reached 0:00
+        } else {
+          setMinutes(minutes - 1);
+          setSeconds(59);
+        }
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [minutes, seconds]);
+
+  useEffect(() => {
+    dispatch(setCode([Array.from({ length: codeLength }).map(() => ('0'))]));
+  }, []);
 
   useEffect(() => {
     // Trigger the overlay animation after 500ms (you can adjust this timing as needed)
@@ -71,7 +98,6 @@ export const Register = () => {
     if (isSentCodeForm) {
       showToast('تبریک!', 'ثبت نام شدید', 0);
       dispatch(setRegistrationStatus(true));
-      dispatch(setUsername(usernameField));
 
       setTimeout(() => {
         navigate('/', { replace: true });
@@ -80,18 +106,18 @@ export const Register = () => {
   }, [isSentCodeForm]);
 
   const setCodeMethod = (event, indexToSet) => {
-    let tempArr = code;
+    let tempArr = [...register.code];
     for (let i = 0; i < codeLength; i++) {
+      console.log(event.nativeEvent.target.value);
       tempArr[indexToSet] = event.nativeEvent.target.value;
     }
-    setCode(tempArr);
+    dispatch(setCode(tempArr));
   };
 
   const getCode = () => {
     let codeTemp = '';
-    console.log(code);
-    for (let i = 0; i < code.length; i++) {
-      codeTemp += code[i];
+    for (let i = 0; i < register.code.length; i++) {
+      codeTemp += register.code[i];
     }
     return codeTemp;
   };
@@ -100,7 +126,7 @@ export const Register = () => {
     setIsCheckCodeFormLoading(true);
 
     fetchWithAxios.post('/verify_code/', {
-      'username': usernameField,
+      'username': register.username,
       'code': getCode(),
     })
       .then(function() {
@@ -114,17 +140,17 @@ export const Register = () => {
   };
 
   const sendRegisterInfo = () => {
-    if (usernameField === '' || phoneNumberField === '' || emailField === '' || passwordField === '' || confirmPasswordField === '') {
+    if (register.username === '' || register.phoneNumber === '' || register.email === '' || register.password === '' || register.confirmPassword === '') {
       showToast('خطا', 'تمام مواردی که با علامت ستاره مشخص شده اند باید تکمیل شوند');
     } else {
       setIsRegisterButtonFormLoading(true);
 
       fetchWithAxios.post('/register/', {
-        'username': usernameField,
-        'password': passwordField,
-        'confirm_password': confirmPasswordField,
-        'email': emailField,
-        'phone_number': phoneNumberField,
+        'username': register.username,
+        'password': register.password,
+        'confirm_password': register.confirmPassword,
+        'email': register.email,
+        'phone_number': register.phoneNumber,
       })
         .then(function() {
             setIsSentRegisteredForm(true);
@@ -184,8 +210,8 @@ export const Register = () => {
                 </Text>
               </FormLabel>
               <Input h={'57px'} backgroundColor={Blue7} dir={'ltr'} type='text' placeholder={'نام کاربری'}
-                     disabled={isRegisterButtonFormLoading}
-                     onChange={(event) => setUsernameField(event.target.value)} />
+                     disabled={isRegisterButtonFormLoading} autoFocus={!isSentRegisteredForm}
+                     onChange={(event) => dispatch(setUsername(event.target.value))} />
             </Flex>
           </FormControl>
 
@@ -198,7 +224,7 @@ export const Register = () => {
               </FormLabel>
               <Input h={'57px'} backgroundColor={Blue7} dir={'ltr'} type='text' placeholder={'شماره تماس'}
                      disabled={isRegisterButtonFormLoading}
-                     onChange={(event) => setPhoneNumberField(event.target.value)} />
+                     onChange={(event) => dispatch(setPhoneNumber(event.target.value))} />
             </Flex>
           </FormControl>
 
@@ -207,7 +233,7 @@ export const Register = () => {
               <FormLabel w={labelWidth} my={'auto'}><Text fontSize={labelFontSize} as={'b'}>ایمیل:</Text></FormLabel>
               <Input h={'57px'} backgroundColor={Blue7} dir={'ltr'} type='email' placeholder={'ایمیل'}
                      disabled={isRegisterButtonFormLoading}
-                     onChange={(event) => setEmailField(event.target.value)} />
+                     onChange={(event) => dispatch(setEmail(event.target.value))} />
             </Flex>
           </FormControl>
 
@@ -217,7 +243,7 @@ export const Register = () => {
               <InputGroup>
                 <Input h={'57px'} backgroundColor={Blue7} dir={'ltr'} type={showPassword ? 'text' : 'password'}
                        disabled={isRegisterButtonFormLoading}
-                       placeholder='رمز عبور' onChange={(event) => setPasswordField(event.target.value)} />
+                       placeholder='رمز عبور' onChange={(event) => dispatch(setPassword(event.target.value))} />
                 <InputRightElement width='4.5rem' mx={2}>
                   <Button mt={4} h='1.75rem' size='sm' onClick={() => setShowPassword(!showPassword)}>
                     {showPassword ? 'پنهان کن' : 'نمایش بده'}
@@ -237,7 +263,7 @@ export const Register = () => {
               <InputGroup>
                 <Input h={'57px'} backgroundColor={Blue7} dir={'ltr'} disabled={isRegisterButtonFormLoading}
                        type={showPasswordConfirmation ? 'text' : 'password'} placeholder='تایید رمز عبور'
-                       onChange={(event) => setConfirmPasswordField(event.target.value)} />
+                       onChange={(event) => dispatch(setConfirmPassword(event.target.value))} />
                 <InputRightElement width='4.5rem' mx={2}>
                   <Button mt={4} h='1.75rem' size='sm'
                           onClick={() => setShowPasswordConfirmation(!showPasswordConfirmation)}>
@@ -299,16 +325,17 @@ export const Register = () => {
               <HStack dir={'ltr'}>
                 <PinInput>
                   {Array.from({ length: codeLength }).map((value, indexOfArray) => (
-                      <PinInputField key={indexOfArray} value={code[indexOfArray]} className={'box_shadow'}
-                                     onChange={(event) => {
-                                       setCodeMethod(event, indexOfArray);
-                                     }} />
+                      <PinInputField key={indexOfArray} value={register.code[indexOfArray]} className={'box_shadow'}
+                                     onChange={(event) => setCodeMethod(event, indexOfArray)} />
                     ),
                   )}
                 </PinInput>
               </HStack>
             </Flex>
           </FormControl>
+          <Text>
+            {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
+          </Text>
         </Box>
 
         <motion.div

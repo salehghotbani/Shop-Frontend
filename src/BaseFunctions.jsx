@@ -2,10 +2,12 @@ import axios from 'axios';
 import { createStandaloneToast } from '@chakra-ui/react';
 import Cookies from 'universal-cookie';
 
-export const cookies = new Cookies();
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+axios.defaults.withCredentials = true;
 
 export const fetchWithAxios = axios.create({
-  baseURL: 'http://192.27.5.10:8000',
+  baseURL: 'http://localhost:8000',
 });
 
 export const showToast = (title, description, statusIndex = 1, positionIndex = 3, duration = 3000, isClosable = true) => {
@@ -29,3 +31,5 @@ export const showToast = (title, description, statusIndex = 1, positionIndex = 3
     isClosable: isClosable,
   });
 };
+
+export const cookies = new Cookies();
