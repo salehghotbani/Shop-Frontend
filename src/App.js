@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   ChakraProvider,
   CSSReset,
@@ -12,8 +12,29 @@ import './App.css';
 import theme from './theme';
 import { Register } from './Components/Authentication/Register';
 import { Login } from './Components/Authentication/Login';
+import { fetchWithAxios } from './BaseFunctions';
+import { useDispatch } from 'react-redux';
+import { setRegistrationStatus, setUsername } from './store/features/userSlice';
 
 function App() {
+  const dispatch = useDispatch();
+
+  const checkLogin = () => {
+    fetchWithAxios.get('/shop/checkauth/', {})
+      .then(function(response) {
+          const responseText = response[Object.keys(response)[0]];
+          dispatch(setRegistrationStatus(responseText));
+        },
+      ).catch(() => {
+      dispatch(setUsername(''));
+      dispatch(setRegistrationStatus(false));
+    });
+  };
+
+  useEffect(() => {
+    checkLogin();
+  }, []);
+
   return (
     <ChakraProvider theme={theme}>
       <CSSReset />

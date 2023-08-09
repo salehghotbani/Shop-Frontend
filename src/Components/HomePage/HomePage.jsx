@@ -21,20 +21,50 @@ import { useDispatch } from 'react-redux';
 export const HomePage = () => {
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   fetchWithAxios.get('/verify_code/', {})
-  //     .then(function(response) {
-  //         dispatch(setHeroTitle());
-  //         dispatch(setHeroDescription());
-  //         dispatch(setMiddleTitle());
-  //         dispatch(setMiddleDescription());
-  //         dispatch(setProductsCategorization());
-  //         dispatch(setCompaniesIcons());
-  //       },
-  //     ).catch((e) => {
-  //     showToast('خطا', e.message);
-  //   });
-  // }, []);
+  const getHero = () => {
+    fetchWithAxios.get('/shop/gethero/', {})
+      .then(function(response) {
+          dispatch(setHeroTitle(response.data.title));
+          dispatch(setHeroDescription(response.data.long_text));
+        },
+      ).catch((e) => {
+      showToast('خطا', e.message);
+    });
+  };
+
+  const getMiddle = () => {
+    fetchWithAxios.get('/shop/gethero/', {})
+      .then(function(response) {
+          dispatch(setMiddleTitle(response.data.title));
+          dispatch(setMiddleDescription(response.data.long_text));
+          // dispatch(setProductsCategorization());
+          // dispatch(setCompaniesIcons());
+        },
+      ).catch((e) => {
+      showToast('خطا', e.message);
+    });
+  };
+
+  const getCompanies = () => {
+    fetchWithAxios.get('/shop/getimgfoot/', {})
+      .then(function(response) {
+          let tempArray = [];
+          response.data.imagefoot.map((value) => {
+            tempArray.push(value.image)
+          });
+          // dispatch(setProductsCategorization());
+          dispatch(setCompaniesIcons(tempArray));
+        },
+      ).catch((e) => {
+      showToast('خطا', e.message);
+    });
+  };
+
+  useEffect(() => {
+    getHero();
+    getMiddle();
+    getCompanies();
+  }, []);
 
   return (
     <>

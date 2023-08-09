@@ -30,8 +30,6 @@ export const Login = () => {
   const [isLoginButtonFormLoading, setIsLoginButtonFormLoading] = useState(false);
   const [isSentLoggedInForm, setIsSentLoggedInForm] = useState(false);
 
-
-
   const labelWidth = '160px';
   const labelFontSize = '20px';
 
