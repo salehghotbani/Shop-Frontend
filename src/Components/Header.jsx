@@ -10,6 +10,8 @@ import {
   PopoverContent,
   PopoverTrigger,
   Center,
+  Button,
+  Stack,
 } from '@chakra-ui/react';
 import shoppingCartLinearIcon from '../assets/icons/Shop/vuesax/linear/shopping-cart.svg';
 import userIcon from '../assets/icons/Users/vuesax/linear/user.svg';
@@ -17,12 +19,44 @@ import menuIcon from '../assets/icons/Essetional/vuesax/linear/menu.svg';
 import loginIcon from '../assets/icons/Arrow/vuesax/linear/login.svg';
 import { useNavigate } from 'react-router-dom';
 import logoPng from '../assets/images/Logo.png';
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchWithAxios, showToast } from '../BaseFunctions';
+import { setCategory } from '../store/features/productsSlice';
 
 export const Header = () => {
   const navigate = useNavigate();
   const user = useSelector(state => state.user);
+  const product = useSelector(state => state.product);
+  const dispatch = useDispatch();
+
+  const getCategory = () => {
+    fetchWithAxios.get('/shop/category/', {})
+      .then(function(response) {
+          let tempArray = [];
+          response.data.categories.map((value) => {
+            tempArray.push({ id: value.id, title: value.title, image: value.image });
+          });
+          dispatch(setCategory(tempArray));
+        },
+      ).catch((e) => {
+      showToast('خطا', e.message);
+    });
+  };
+
+  useEffect(() => {
+    getCategory();
+  }, []);
+
+  const logout = () => {
+    fetchWithAxios.get('/logout/', {})
+      .then(function() {
+        navigate('/', { replace: true });
+      })
+      .catch((e) => {
+        showToast('خطا', e.message);
+      });
+  };
 
   const UserIcon = () => {
     return (
@@ -51,7 +85,7 @@ export const Header = () => {
                   <Image src={loginIcon} />
                   <Text>پنل کاربری</Text>
                 </HStack>
-                <HStack cursor={'pointer'} onClick={() => navigate('/login')}
+                <HStack cursor={'pointer'} onClick={logout}
                         _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}>
                   <Image src={loginIcon} />
                   <Text>خروج</Text>
@@ -106,9 +140,26 @@ export const Header = () => {
           </GridItem>
 
           <GridItem colStart={6} colEnd={6}>
-            <Box p={'6px'} backgroundColor={'white'} borderRadius={'100%'} cursor={'pointer'}>
-              <Image src={menuIcon} />
-            </Box>
+            <Popover>
+              <PopoverTrigger>
+                <Button p={'6px'} backgroundColor={'white'} borderRadius={'100%'} cursor={'pointer'}>
+                  <Image src={menuIcon} />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent w={'200px'}>
+                <PopoverBody>
+                  <Stack spacing={2} dir={'rtl'}>
+                    {product.category.map((value) => (
+                      <HStack cursor={'pointer'} onClick={() => navigate('/register')}
+                              _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}>
+                        <Image src={loginIcon} />
+                        <Text>{value.title}</Text>
+                      </HStack>
+                    ))}
+                  </Stack>
+                </PopoverBody>
+              </PopoverContent>
+            </Popover>
           </GridItem>
         </Grid>
       </Box>

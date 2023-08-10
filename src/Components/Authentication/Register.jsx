@@ -97,7 +97,6 @@ export const Register = () => {
   useEffect(() => {
     if (isSentCodeForm) {
       showToast('تبریک!', 'ثبت نام شدید', 0);
-      dispatch(setRegistrationStatus(true));
 
       setTimeout(() => {
         navigate('/', { replace: true });

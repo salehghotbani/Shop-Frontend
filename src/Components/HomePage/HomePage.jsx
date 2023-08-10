@@ -14,9 +14,9 @@ import {
   setHeroTitle,
   setMiddleDescription,
   setMiddleTitle,
-  setProductsCategorization,
 } from '../../store/features/homeSlice';
 import { useDispatch } from 'react-redux';
+import { setAmazingProducts, setBestSellingProducts } from '../../store/features/productsSlice';
 
 export const HomePage = () => {
   const dispatch = useDispatch();
@@ -37,8 +37,6 @@ export const HomePage = () => {
       .then(function(response) {
           dispatch(setMiddleTitle(response.data.title));
           dispatch(setMiddleDescription(response.data.long_text));
-          // dispatch(setProductsCategorization());
-          // dispatch(setCompaniesIcons());
         },
       ).catch((e) => {
       showToast('خطا', e.message);
@@ -50,10 +48,49 @@ export const HomePage = () => {
       .then(function(response) {
           let tempArray = [];
           response.data.imagefoot.map((value) => {
-            tempArray.push(value.image)
+            tempArray.push(value.image);
           });
-          // dispatch(setProductsCategorization());
           dispatch(setCompaniesIcons(tempArray));
+        },
+      ).catch((e) => {
+      showToast('خطا', e.message);
+    });
+  };
+
+  const getAmazingOffers = () => {
+    fetchWithAxios.get('/shop/getwonderprod/', {})
+      .then(function(response) {
+          let tempArray = [];
+          response.data.products.map((value) => {
+            value.map((valueInJson) => {
+              tempArray.push({
+                id: valueInJson.id,
+                name: valueInJson.name,
+                avatar: valueInJson.avatar,
+                category: valueInJson.category,
+              });
+            });
+          });
+          dispatch(setAmazingProducts(tempArray));
+        },
+      ).catch((e) => {
+      showToast('خطا', e.message);
+    });
+  };
+
+  const getMostSellProduct = () => {
+    fetchWithAxios.get('/shop/getmostsellprod/', {})
+      .then(function(response) {
+          let tempArray = [];
+          response.data.products.map((value) => {
+            tempArray.push({
+              id: value.id,
+              name: value.name,
+              avatar: value.avatar,
+              category: value.category,
+            });
+          });
+          dispatch(setBestSellingProducts(tempArray));
         },
       ).catch((e) => {
       showToast('خطا', e.message);
@@ -64,6 +101,8 @@ export const HomePage = () => {
     getHero();
     getMiddle();
     getCompanies();
+    getAmazingOffers();
+    getMostSellProduct();
   }, []);
 
   return (

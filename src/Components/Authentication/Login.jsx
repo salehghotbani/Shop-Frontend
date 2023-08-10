@@ -21,6 +21,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUsername } from '../../store/features/loginSlice';
 import { setPassword } from '../../store/features/loginSlice';
+import { setRegistrationStatus } from '../../store/features/userSlice';
 
 export const Login = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -28,7 +29,6 @@ export const Login = () => {
   const [showOverlayText, setShowOverlayText] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoginButtonFormLoading, setIsLoginButtonFormLoading] = useState(false);
-  const [isSentLoggedInForm, setIsSentLoggedInForm] = useState(false);
 
   const labelWidth = '160px';
   const labelFontSize = '20px';
@@ -58,18 +58,6 @@ export const Login = () => {
     setMousePosition({ x: clientX, y: clientY });
   };
 
-  useEffect(() => {
-    if (isSentLoggedInForm) {
-      showToast('تبریک!', 'وارد شدید', 0);
-      dispatch(setUsername);
-      dispatch(setPassword);
-
-      setTimeout(() => {
-        navigate('/', { replace: true });
-      }, 2000);
-    }
-  }, [isSentLoggedInForm]);
-
   const sendLoginInfo = () => {
     if (login.username === '' || login.password === '') {
       showToast('خطا', 'تمام مواردی که با علامت ستاره مشخص شده‌اند باید تکمیل شوند');
@@ -81,8 +69,13 @@ export const Login = () => {
         'password': login.password,
       })
         .then(function() {
-            setIsSentLoggedInForm(true);
             setIsLoginButtonFormLoading(false);
+            showToast('تبریک!', 'وارد شدید', 0);
+            dispatch(setRegistrationStatus(true));
+
+            setTimeout(() => {
+              navigate('/', { replace: true });
+            }, 2000);
           },
         ).catch((e) => {
         showToast('خطا', e.message);

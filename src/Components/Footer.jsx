@@ -1,6 +1,5 @@
 import { Box, Image, Link, SimpleGrid } from '@chakra-ui/react';
-import { backendURL, fetchWithAxios, showToast } from '../BaseFunctions';
-import { setCompaniesIcons } from '../store/features/homeSlice';
+import { backendURL, fetchWithAxios } from '../BaseFunctions';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setENamads } from '../store/features/footerSlice';
