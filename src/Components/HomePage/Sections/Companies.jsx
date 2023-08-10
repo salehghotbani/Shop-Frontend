@@ -1,34 +1,13 @@
-import { Box, Center, Image } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
-import { useState } from 'react';
-import companyImage from '../../../assets/images/home page/company.jpg';
+import { useSelector } from 'react-redux';
+import { backendURL } from '../../../BaseFunctions';
 
 export const Companies = () => {
-  const [elements, setElements] = useState([
-    {
-      'image': companyImage,
-    },
-    {
-      'image': companyImage,
-    },
-    {
-      'image': companyImage,
-    },
-    {
-      'image': companyImage,
-    },
-    {
-      'image': companyImage,
-    },
-    {
-      'image': companyImage,
-    },
-  ]);
+  const home = useSelector(state => state.home);
 
   const responsive = {
     superLargeDesktop: {
-      // the naming can be any, depends on you.
       breakpoint: { max: 4000, min: 3000 },
       items: 7,
     },
@@ -48,15 +27,12 @@ export const Companies = () => {
 
   return (
     <>
-      <Box>
-        <Carousel responsive={responsive}>
-          {elements.map((value) => (
-            <Center>
-              <Image src={value.image} h={'208px'} />
-            </Center>
-          ))}
-        </Carousel>
-      </Box>
+      <Carousel responsive={responsive}>
+        {home.companiesIcons.map((value) => (
+          <Box my={9} mx={'40px'} py={5} backgroundImage={backendURL + '/' + value} backgroundSize={'cover'}
+               backgroundRepeat={'no-repeat'} backgroundPosition={'center'} h={'208px'} />
+        ))}
+      </Carousel>
     </>
   );
 };

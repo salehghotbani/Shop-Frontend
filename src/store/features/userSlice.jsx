@@ -13,9 +13,12 @@ const userSlice = createSlice({
     setRegistrationStatus: (state, action) => {
       state.isRegistered = action.payload;
     },
-
   },
 });
 
-export const { setUsername, setRegistrationStatus } = userSlice.actions;
+export const {
+  setUsername,
+  setRegistrationStatus,
+} = userSlice.actions;
+
 export default userSlice.reducer;

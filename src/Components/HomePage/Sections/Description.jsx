@@ -3,10 +3,14 @@ import IntroduceBackgroundImage from '../../../assets/images/home page/Introduce
 import IntroduceCardImage from '../../../assets/images/home page/IntroduceCard.png';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 export const Description = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [showOverlay, setShowOverlay] = useState(false);
+  const home = useSelector(state => state.home);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Trigger the overlay animation after 500ms (you can adjust this timing as needed)
@@ -46,7 +50,7 @@ export const Description = () => {
           animate={{ y: showOverlay ? 20 : 0, opacity: showOverlay ? 1 : 0 }}
         >
           <Heading cursor={'default'} opacity={showOverlay ? 1 : 0} dir={'rtl'} fontSize={'40px'} as={'h2'}>
-            لورم ایپسوم
+            {home.middleTitle}
           </Heading>
         </motion.div>
 
@@ -56,12 +60,7 @@ export const Description = () => {
         >
           <Box textAlign={'justify'} dir={'rtl'} w={'900px'}>
             <Text cursor={'default'} opacity={showOverlay ? 1 : 0} fontSize={'20px'} as={'b'}>
-              متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه
-              روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با
-              هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه
-              و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و
-              فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه
-              راهکارها و شرایط سخت تایپ به پایان رسد
+              {home.middleDescription}
             </Text>
           </Box>
         </motion.div>
@@ -72,7 +71,8 @@ export const Description = () => {
           style={{ position: 'absolute', top: '66%', left: '76%', zIndex: 1 }}
           animate={{ opacity: showOverlay ? 1 : 0 }}
         >
-          <Button w={'110px'} h={'50px'} backgroundColor={'#8FA5D1'}>
+          <Button w={'110px'} h={'50px'} backgroundColor={'#8FA5D1'}
+                  onClick={() => navigate('/login')}>
             <Text opacity={showOverlay ? 1 : 0}>
               ورود
             </Text>
@@ -85,7 +85,8 @@ export const Description = () => {
           style={{ position: 'absolute', top: '66%', left: '83%', zIndex: 1 }}
           animate={{ opacity: showOverlay ? 1 : 0 }}
         >
-          <Button w={'110px'} h={'50px'} backgroundColor={'#1C3347'}>
+          <Button w={'110px'} h={'50px'} backgroundColor={'#1C3347'}
+                  onClick={() => navigate('/register')}>
             <Text color={'white'} opacity={showOverlay ? 1 : 0}>
               ثبت نام
             </Text>

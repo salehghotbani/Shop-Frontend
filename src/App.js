@@ -15,6 +15,7 @@ import { Login } from './Components/Authentication/Login';
 import { fetchWithAxios } from './BaseFunctions';
 import { useDispatch } from 'react-redux';
 import { setRegistrationStatus, setUsername } from './store/features/userSlice';
+import { Products } from './Components/Products/Products';
 
 function App() {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ function App() {
     fetchWithAxios.get('/shop/checkauth/', {})
       .then(function(response) {
           const responseText = response[Object.keys(response)[0]];
+        console.log(response);
           dispatch(setRegistrationStatus(responseText));
         },
       ).catch(() => {
@@ -75,7 +77,17 @@ function App() {
               <Login />
             </motion.div>
           } />
-
+          <Route path='/products' element={
+            <motion.div
+              key='searchPanel'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <Products />
+            </motion.div>
+          } />
         </Routes>
       </AnimatePresence>
     </ChakraProvider>
