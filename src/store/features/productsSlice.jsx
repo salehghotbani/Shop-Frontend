@@ -6,7 +6,12 @@ const productsSlice = createSlice({
     category: [{}],
     amazingProducts: [{}],
     bestSellingProducts: [{}],
-    productListFilter: { priceRange: [1000000, 2000000], brand: '' },
+    productListFilter: { priceRange: [0, 2000000], brand: '' },
+    brandNames: [],
+    selectedCategory: 0,
+    page: 1,
+    numberElementShownPerPage: 10,
+    products: [{}],
   },
   reducers: {
     setCategory: (state, action) => {
@@ -21,6 +26,21 @@ const productsSlice = createSlice({
     setProductListFilter: (state, action) => {
       state.productListFilter = action.payload;
     },
+    setBrandNames: (state, action) => {
+      state.brandNames = action.payload;
+    },
+    setSelectedCategory: (state, action) => {
+      state.selectedCategory = action.payload;
+    },
+    setPage: (state, action) => {
+      state.page = action.payload;
+    },
+    setNumberElementShownPerPage: (state, action) => {
+      state.numberElementShownPerPage = action.payload;
+    },
+    setProducts: (state, action) => {
+      state.products = action.payload;
+    },
   },
 });
 
@@ -29,6 +49,11 @@ export const {
   setAmazingProducts,
   setBestSellingProducts,
   setProductListFilter,
+  setBrandNames,
+  setSelectedCategory,
+  setPage,
+  setNumberElementShownPerPage,
+  setProducts,
 } = productsSlice.actions;
 
 export default productsSlice.reducer;
