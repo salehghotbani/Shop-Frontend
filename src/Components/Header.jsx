@@ -22,7 +22,7 @@ import logoPng from '../assets/images/Logo.png';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchWithAxios, showToast } from '../BaseFunctions';
-import { setCategory } from '../store/features/productsSlice';
+import { setCategory, setSelectedCategory } from '../store/features/productsSlice';
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -150,8 +150,11 @@ export const Header = () => {
                 <PopoverBody>
                   <Stack spacing={2} dir={'rtl'}>
                     {product.category.map((value) => (
-                      <HStack cursor={'pointer'} onClick={() => navigate('/register')}
-                              _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}>
+                      <HStack cursor={'pointer'} _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}
+                              onClick={() => {
+                                dispatch(setSelectedCategory(value.id));
+                                navigate(`/products?category=${value.id}&page=${product.page}`);
+                              }}>
                         <Image src={loginIcon} />
                         <Text>{value.title}</Text>
                       </HStack>

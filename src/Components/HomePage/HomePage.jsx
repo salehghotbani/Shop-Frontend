@@ -61,6 +61,7 @@ export const HomePage = () => {
     fetchWithAxios.get('/shop/getwonderprod/', {})
       .then(function(response) {
           let tempArray = [];
+        console.log(response);
           response.data.products.map((value) => {
             value.map((valueInJson) => {
               tempArray.push({
@@ -90,6 +91,7 @@ export const HomePage = () => {
               category: value.category,
             });
           });
+        console.log(tempArray);
           dispatch(setBestSellingProducts(tempArray));
         },
       ).catch((e) => {
