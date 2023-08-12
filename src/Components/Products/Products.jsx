@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Accordion,
@@ -38,7 +38,7 @@ import {
   setPage,
   setProductListFilter,
   setProducts,
-  setSelectedCategory,
+  setSelectedCategory, setTimeToSendRequest,
 } from '../../store/features/productsSlice';
 import Select from 'react-select';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -51,8 +51,9 @@ export const Products = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
+  const [timeToShowProducts, setTimeToShowProducts] = useState(false);
 
-  const getProductsByCategory = async () => {
+  const getProductsByCategory = () => {
     let jsonToAPI = {
       'min_price': product.productListFilter.priceRange[0],
       'max_price': product.productListFilter.priceRange[1],
@@ -60,17 +61,19 @@ export const Products = () => {
     if (product.productListFilter.brand !== '') {
       jsonToAPI['brand'] = product.productListFilter.brand;
     }
-    await fetchWithAxios.post(`/shop/getprodbyfilter/?id=${Number(product.selectedCategory)}&page=${Number(product.page)}&count=${Number(product.numberElementShownPerPage)}`, jsonToAPI)
+    fetchWithAxios.post(`/shop/getprodbyfilter/?id=${Number(product.selectedCategory)}&page=${Number(product.page)}&count=${Number(product.numberElementShownPerPage)}`, jsonToAPI)
       .then(function(response) {
           let tempArray = [];
-          response.data.prdoucts.map((value) => {
+          console.log(response.data);
+          response.data.products.map((value) => {
             tempArray.push(value);
           });
           dispatch(setProducts(tempArray));
+          setTimeToShowProducts(true);
         },
       ).catch((e) => {
-        showToast('خطا', e.message);
-      });
+      showToast('خطا', e.message);
+    });
   };
 
   const getBrands = () => {
@@ -90,12 +93,12 @@ export const Products = () => {
 
   useEffect(() => {
     if (Number(product.selectedCategory) !== 0) {
-      getProductsByCategory().then(null);
+      getProductsByCategory();
       getBrands();
     }
-  }, [product.selectedCategory]);
+  }, [product.timeToSendRequest, product.selectedCategory]);
 
-  useEffect(() => {
+  const getQueryParameter = () => {
     dispatch(setProductListFilter({
       priceRange: [
         queryParams.get('min') === null ? product.productListFilter.priceRange[0] : Number(queryParams.get('min')),
@@ -105,7 +108,13 @@ export const Products = () => {
     }));
     dispatch(setPage(queryParams.get('page') === null ? product.page : queryParams.get('page')));
     dispatch(setSelectedCategory(queryParams.get('category') === null ? Number(product.selectedCategory) : queryParams.get('category')));
-  }, [product.numberElementShownPerPage]);
+    dispatch(setTimeToSendRequest(product.timeToSendRequest + 1));
+    console.log(product.timeToSendRequest);
+  };
+
+  useEffect(() => {
+    getQueryParameter();
+  }, []);
 
   const handleUpdateQueryParam = () => {
     queryParams.set('min', product.productListFilter.priceRange[0].toString());
@@ -351,7 +360,7 @@ export const Products = () => {
 
         <GridItem colStart={3} colEnd={9}>
           <SimpleGrid columns={5} spacing={4} mb={5}>
-            {product.products.map((value, index) => (
+            {timeToShowProducts && product.products.map((value, index) => (
               <Box id={'id' + index} key={index} w={'270px'} h={'470px'} borderRadius={8}
                    cursor={'pointer'} borderWidth={1}
                    onMouseEnter={() => {

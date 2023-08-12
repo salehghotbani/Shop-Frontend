@@ -28,7 +28,6 @@ export const ProductsCategorization = () => {
                   <Box position={'relative'} display='flex' justifyContent='center' alignItems='center' w={'300px'}
                        h={'250px'} cursor={'pointer'}
                        onClick={() => {
-                         dispatch(setSelectedCategory(value.id));
                          navigate(`/products?category=${value.id}&page=${product.page}`);
                        }}>
                     <Box position={'absolute'} backgroundImage={backendURL + '/' + value.image}
