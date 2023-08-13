@@ -11,3 +11,6 @@ export const Gray2 = '#4C4B4B';
 export const Gray3 = '#7A7878';
 export const Gray4 = '#B0B0B0';
 export const Gray5 = '#DEDEDE';
+
+export const minPrice = 0;
+export const maxPrice = 2000000;

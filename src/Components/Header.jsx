@@ -22,7 +22,7 @@ import logoPng from '../assets/images/Logo.png';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchWithAxios, showToast } from '../BaseFunctions';
-import { setCategory, setSelectedCategory } from '../store/features/productsSlice';
+import { setCategory, setProductListFilter, setSelectedCategory } from '../store/features/productsSlice';
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -153,6 +153,10 @@ export const Header = () => {
                       <HStack cursor={'pointer'} _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}
                               onClick={() => {
                                 dispatch(setSelectedCategory(value.id));
+                                dispatch(setProductListFilter({
+                                  priceRange: [product.productListFilter.priceRange[0], product.productListFilter.priceRange[1]],
+                                  brand: '',
+                                }));
                                 navigate(`/products?category=${value.id}&page=${product.page}`);
                               }}>
                         <Image src={loginIcon} />
