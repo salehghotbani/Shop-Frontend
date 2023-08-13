@@ -16,6 +16,7 @@ import { fetchWithAxios } from './BaseFunctions';
 import { useDispatch } from 'react-redux';
 import { setRegistrationStatus, setUsername } from './store/features/userSlice';
 import { Products } from './Components/Products/Products';
+import { Info } from './Components/Authentication/Info';
 
 function App() {
   const dispatch = useDispatch();
@@ -75,6 +76,17 @@ function App() {
               transition={{ duration: 0.4 }}
             >
               <Login />
+            </motion.div>
+          } />
+          <Route path='/info' element={
+            <motion.div
+              key='searchPanesl'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <Info />
             </motion.div>
           } />
           <Route path='/products' element={
