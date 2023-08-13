@@ -9,9 +9,17 @@ const infoSlice = createSlice({
     password: '',
     confirmPassword: '',
     code: [],
+    firstName:'',
+    lastName:'',
 
   },
   reducers: {
+    setFirstName: (state, action) => {
+      state.username = action.payload;
+    },
+    setLastName: (state, action) => {
+      state.username = action.payload;
+    },
     setUsername: (state, action) => {
       state.username = action.payload;
     },
@@ -40,6 +48,8 @@ export const {
   setPassword,
   setConfirmPassword,
   setCode,
+  setFirstName,
+  setLastName,
 } = infoSlice.actions;
 
 export default infoSlice.reducer;

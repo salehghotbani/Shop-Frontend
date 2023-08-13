@@ -27,6 +27,8 @@ import {
   setCode,
   setConfirmPassword,
   setEmail,
+  setFirstName,
+  setLastName,
   setPassword,
   setPhoneNumber,
   setUsername,
@@ -50,7 +52,7 @@ export const Info = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const info = useSelector(state => state.info());
+  const info = useSelector(state => state.info);
 
   useEffect(() => {
     let timer = setInterval(() => {
@@ -70,9 +72,9 @@ export const Info = () => {
     return () => clearInterval(timer);
   }, [minutes, seconds]);
 
-  // useEffect(() => {
-  //   dispatch(setCode([Array.from({ length: codeLength }).map(() => ('0'))]));
-  // }, []);
+  useEffect(() => {
+    dispatch(setCode([Array.from({ length: codeLength }).map(() => ('0'))]));
+  }, []);
 
   useEffect(() => {
     // Trigger the overlay animation after 500ms (you can adjust this timing as needed)
@@ -202,6 +204,30 @@ export const Info = () => {
           <Flex dir={'rtl'}>
             <Text fontSize={'45px'} as={'b'}>اطلاعات خود را ویرایش کنید:</Text>
           </Flex>
+
+          <FormControl my={3} isRequired>
+            <Flex dir={'rtl'}>
+              <FormLabel w={labelWidth} my={'auto'}>
+                <Text fontSize={labelFontSize} as={'b'}>
+                  نام:
+                </Text>
+              </FormLabel>
+              <Input h={'57px'} backgroundColor={Blue7} dir={'ltr'} type='text' placeholder={'نام'}
+                     disabled={isRegisterButtonFormLoading} autoFocus={!isSentRegisteredForm}
+                     onChange={(event) => dispatch(setFirstName(event.target.value))} />
+
+
+              <FormLabel w={labelWidth} my={'auto'} marginX={'2'}>
+                <Text fontSize={labelFontSize} as={'b'}>
+                  نام خانوادگی:
+                </Text>
+              </FormLabel>
+              <Input h={'57px'} backgroundColor={Blue7} dir={'ltr'} type='text' placeholder={'نام خانوادگی'}
+                     disabled={isRegisterButtonFormLoading} autoFocus={!isSentRegisteredForm}
+                     onChange={(event) => dispatch(setLastName(event.target.value))} />
+            </Flex>
+          </FormControl>
+
           <FormControl my={3} isRequired>
             <Flex dir={'rtl'}>
               <FormLabel w={labelWidth} my={'auto'}>
