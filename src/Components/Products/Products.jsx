@@ -38,12 +38,13 @@ import {
   setPage,
   setProductListFilter,
   setProducts,
-  setSelectedCategory, setTimeToSendRequest,
+  setSelectedCategory,
 } from '../../store/features/productsSlice';
 import Select from 'react-select';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { backendURL, fetchWithAxios, showToast } from '../../BaseFunctions';
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { maxPrice, minPrice } from '../../BaseAttributes';
 
 export const Products = () => {
   const dispatch = useDispatch();
@@ -61,6 +62,7 @@ export const Products = () => {
     if (product.productListFilter.brand !== '') {
       jsonToAPI['brand'] = product.productListFilter.brand;
     }
+
     fetchWithAxios.post(`/shop/getprodbyfilter/?id=${Number(product.selectedCategory)}&page=${Number(product.page)}&count=${Number(product.numberElementShownPerPage)}`, jsonToAPI)
       .then(function(response) {
           let tempArray = [];
@@ -92,29 +94,25 @@ export const Products = () => {
   };
 
   useEffect(() => {
+    getQueryParameter();
+
     if (Number(product.selectedCategory) !== 0) {
       getProductsByCategory();
       getBrands();
     }
-  }, [product.timeToSendRequest, product.selectedCategory]);
+  }, [product.selectedCategory]);
 
   const getQueryParameter = () => {
     dispatch(setProductListFilter({
       priceRange: [
-        queryParams.get('min') === null ? product.productListFilter.priceRange[0] : Number(queryParams.get('min')),
-        queryParams.get('max') === null ? product.productListFilter.priceRange[1] : Number(queryParams.get('max')),
+        queryParams.get('min') === null ? minPrice.toString() : Number(queryParams.get('min')),
+        queryParams.get('max') === null ? maxPrice.toString() : Number(queryParams.get('max')),
       ],
-      brand: queryParams.get('brandName') === null ? product.productListFilter.brand : queryParams.get('brandName'),
+      brand: queryParams.get('brandName') === null ? '' : queryParams.get('brandName'),
     }));
-    dispatch(setPage(queryParams.get('page') === null ? product.page : queryParams.get('page')));
+    dispatch(setPage(queryParams.get('page') === null ? 1 : queryParams.get('page')));
     dispatch(setSelectedCategory(queryParams.get('category') === null ? Number(product.selectedCategory) : queryParams.get('category')));
-    dispatch(setTimeToSendRequest(product.timeToSendRequest + 1));
-    console.log(product.timeToSendRequest);
   };
-
-  useEffect(() => {
-    getQueryParameter();
-  }, []);
 
   const handleUpdateQueryParam = () => {
     queryParams.set('min', product.productListFilter.priceRange[0].toString());
@@ -126,7 +124,7 @@ export const Products = () => {
     const updatedSearch = queryParams.toString();
 
     navigate({ search: updatedSearch });
-    getProductsByCategory().then(null);
+    getProductsByCategory();
   };
 
   const Pagination = () => {
@@ -135,6 +133,10 @@ export const Products = () => {
 
     let startPage = Math.max(1, Number(product.page) - Math.floor(pageRange / 2));
     let endPage = Math.min(totalPages, startPage + pageRange - 1);
+
+    if (totalPages <= 5){
+      endPage = totalPages;
+    }
 
     if (endPage - startPage + 1 < pageRange) {
       startPage = Math.max(1, endPage - pageRange + 1);

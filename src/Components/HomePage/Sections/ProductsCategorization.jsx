@@ -2,7 +2,7 @@ import { SimpleGrid, Text, Box, Center } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import React from 'react';
 import { backendURL } from '../../../BaseFunctions';
-import { setSelectedCategory } from '../../../store/features/productsSlice';
+import { setProductListFilter, setSelectedCategory } from '../../../store/features/productsSlice';
 import { useNavigate } from 'react-router-dom';
 
 export const ProductsCategorization = () => {
@@ -28,6 +28,11 @@ export const ProductsCategorization = () => {
                   <Box position={'relative'} display='flex' justifyContent='center' alignItems='center' w={'300px'}
                        h={'250px'} cursor={'pointer'}
                        onClick={() => {
+                         dispatch(setSelectedCategory(value.id));
+                         dispatch(setProductListFilter({
+                           priceRange: [product.productListFilter.priceRange[0], product.productListFilter.priceRange[1]],
+                           brand: '',
+                         }));
                          navigate(`/products?category=${value.id}&page=${product.page}`);
                        }}>
                     <Box position={'absolute'} backgroundImage={backendURL + '/' + value.image}

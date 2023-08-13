@@ -22,7 +22,6 @@ import { Blue7 } from '../../BaseAttributes';
 import { fetchWithAxios, showToast } from '../../BaseFunctions';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
 import {
   setCode,
   setConfirmPassword,
