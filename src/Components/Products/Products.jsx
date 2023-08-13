@@ -134,6 +134,10 @@ export const Products = () => {
     let startPage = Math.max(1, Number(product.page) - Math.floor(pageRange / 2));
     let endPage = Math.min(totalPages, startPage + pageRange - 1);
 
+    if (totalPages <= 5){
+      endPage = totalPages;
+    }
+
     if (endPage - startPage + 1 < pageRange) {
       startPage = Math.max(1, endPage - pageRange + 1);
     }
