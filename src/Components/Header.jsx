@@ -157,7 +157,7 @@ export const Header = () => {
                                   priceRange: [product.productListFilter.priceRange[0], product.productListFilter.priceRange[1]],
                                   brand: '',
                                 }));
-                                navigate(`/products?category=${value.id}&page=${product.page}`);
+                                navigate(`/productList?category=${value.id}&page=${product.page}`);
                               }}>
                         <Image src={loginIcon} />
                         <Text>{value.title}</Text>

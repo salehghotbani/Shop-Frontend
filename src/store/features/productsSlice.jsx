@@ -12,6 +12,8 @@ const productsSlice = createSlice({
     page: 1,
     numberElementShownPerPage: 10,
     products: [{}],
+    productValues: {},
+    productDetails: {},
   },
   reducers: {
     setCategory: (state, action) => {
@@ -41,6 +43,12 @@ const productsSlice = createSlice({
     setProducts: (state, action) => {
       state.products = action.payload;
     },
+    setProductValues: (state, action) => {
+      state.productValues = action.payload;
+    },
+    setProductDetails: (state, action) => {
+      state.productDetails = action.payload;
+    },
   },
 });
 
@@ -54,6 +62,8 @@ export const {
   setPage,
   setNumberElementShownPerPage,
   setProducts,
+  setProductValues,
+  setProductDetails,
 } = productsSlice.actions;
 
 export default productsSlice.reducer;

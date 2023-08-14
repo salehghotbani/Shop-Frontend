@@ -15,8 +15,9 @@ import { Login } from './Components/Authentication/Login';
 import { fetchWithAxios } from './BaseFunctions';
 import { useDispatch } from 'react-redux';
 import { setRegistrationStatus, setUsername } from './store/features/userSlice';
-import { Products } from './Components/Products/Products';
+import { ListProducts } from './Components/Products/ListProducts';
 import { Info } from './Components/Authentication/Info';
+import { Product } from './Components/Products/Product';
 
 function App() {
   const dispatch = useDispatch();
@@ -89,7 +90,7 @@ function App() {
               <Info />
             </motion.div>
           } />
-          <Route path='/products' element={
+          <Route path='/productList' element={
             <motion.div
               key='searchPanel'
               initial={{ opacity: 0 }}
@@ -97,7 +98,18 @@ function App() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
             >
-              <Products />
+              <ListProducts />
+            </motion.div>
+          } />
+          <Route path='/productInfo' element={
+            <motion.div
+              key='searchPanel'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <Product />
             </motion.div>
           } />
         </Routes>
