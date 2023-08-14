@@ -47,7 +47,7 @@ export const Info = () => {
   const [minutes, setMinutes] = useState(2);
   const [seconds, setSeconds] = useState(0);
   const labelWidth = '160px';
-  const labelFontSize = '20px';
+  const labelFontSize = '17px';
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -214,9 +214,12 @@ export const Info = () => {
               <Input h={'57px'} backgroundColor={Blue7} dir={'ltr'} type='text' placeholder={'نام'}
                      disabled={isRegisterButtonFormLoading} autoFocus={!isSentRegisteredForm}
                      onChange={(event) => dispatch(setFirstName(event.target.value))} />
+            </Flex>
+          </FormControl>
 
-
-              <FormLabel w={labelWidth} my={'auto'} marginX={'2'}>
+          <FormControl my={3} isRequired>
+            <Flex dir={'rtl'}>
+              <FormLabel w={labelWidth} my={'auto'} >
                 <Text fontSize={labelFontSize} as={'b'}>
                   نام خانوادگی:
                 </Text>
