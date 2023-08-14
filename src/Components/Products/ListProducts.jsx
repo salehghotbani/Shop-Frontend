@@ -42,11 +42,11 @@ import {
 } from '../../store/features/productsSlice';
 import Select from 'react-select';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { backendURL, fetchWithAxios, showToast } from '../../BaseFunctions';
+import { backendURL, cookies, fetchWithAxios, showToast } from '../../BaseFunctions';
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { maxPrice, minPrice } from '../../BaseAttributes';
 
-export const Products = () => {
+export const ListProducts = () => {
   const dispatch = useDispatch();
   const product = useSelector(state => state.product);
   const location = useLocation();
@@ -59,6 +59,7 @@ export const Products = () => {
       'min_price': product.productListFilter.priceRange[0],
       'max_price': product.productListFilter.priceRange[1],
     };
+
     if (product.productListFilter.brand !== '') {
       jsonToAPI['brand'] = product.productListFilter.brand;
     }
@@ -66,7 +67,6 @@ export const Products = () => {
     fetchWithAxios.post(`/shop/getprodbyfilter/?id=${Number(product.selectedCategory)}&page=${Number(product.page)}&count=${Number(product.numberElementShownPerPage)}`, jsonToAPI)
       .then(function(response) {
           let tempArray = [];
-          console.log(response.data);
           response.data.products.map((value) => {
             tempArray.push(value);
           });
@@ -81,7 +81,6 @@ export const Products = () => {
   const getBrands = () => {
     fetchWithAxios.get(`/shop/getbrandcategory/?id=${Number(product.selectedCategory)}`, {})
       .then(function(response) {
-          console.log('brands', response);
           let tempArray = [];
           response.data.brands.map((value) => {
             tempArray.push({ value: value, label: value });
@@ -134,7 +133,7 @@ export const Products = () => {
     let startPage = Math.max(1, Number(product.page) - Math.floor(pageRange / 2));
     let endPage = Math.min(totalPages, startPage + pageRange - 1);
 
-    if (totalPages <= 5){
+    if (totalPages <= 5) {
       endPage = totalPages;
     }
 
@@ -365,6 +364,10 @@ export const Products = () => {
             {timeToShowProducts && product.products.map((value, index) => (
               <Box id={'id' + index} key={index} w={'270px'} h={'470px'} borderRadius={8}
                    cursor={'pointer'} borderWidth={1}
+                   onClick={() => {
+                     cookies.set('productId', value.id, { path: '/' });
+                     navigate(`/productInfo?id=${value.id}`);
+                   }}
                    onMouseEnter={() => {
                      document.getElementById('id' + index).classList.add('box_shadow');
                    }}

@@ -33,7 +33,7 @@ export const ProductsCategorization = () => {
                            priceRange: [product.productListFilter.priceRange[0], product.productListFilter.priceRange[1]],
                            brand: '',
                          }));
-                         navigate(`/products?category=${value.id}&page=${product.page}`);
+                         navigate(`/productList?category=${value.id}&page=${product.page}`);
                        }}>
                     <Box position={'absolute'} backgroundImage={backendURL + '/' + value.image}
                          backgroundPosition={'center'} backgroundRepeat={'no-repeat'} backgroundSize={'cover'}
