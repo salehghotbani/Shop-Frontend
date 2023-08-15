@@ -7,7 +7,7 @@ import { Companies } from './Sections/Companies';
 import { Box } from '@chakra-ui/react';
 import { Footer } from '../Footer';
 import React, { useEffect } from 'react';
-import { fetchWithAxios, showToast } from '../../BaseFunctions';
+import { fetchWithAxios, showToast } from '../../Base/BaseFunctions';
 import {
   setCompaniesIcons,
   setHeroDescription,
@@ -61,7 +61,6 @@ export const HomePage = () => {
     fetchWithAxios.get('/shop/getwonderprod/', {})
       .then(function(response) {
           let tempArray = [];
-        console.log(response);
           response.data.products.map((value) => {
             value.map((valueInJson) => {
               tempArray.push({
@@ -91,7 +90,6 @@ export const HomePage = () => {
               category: value.category,
             });
           });
-        console.log(tempArray);
           dispatch(setBestSellingProducts(tempArray));
         },
       ).catch((e) => {

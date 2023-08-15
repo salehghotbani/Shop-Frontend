@@ -1,7 +1,7 @@
 import { SimpleGrid, Text, Box, Center } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import React from 'react';
-import { backendURL } from '../../../BaseFunctions';
+import { backendURL } from '../../../Base/BaseFunctions';
 import { setProductListFilter, setSelectedCategory } from '../../../store/features/productsSlice';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,7 +21,6 @@ export const ProductsCategorization = () => {
 
         <SimpleGrid align={'center'} spacing={9} columns={[2, 2, 4, 4]}>
           {product.category.map((value, index) => {
-            console.log('id', value);
             if (index <= 8) {
               return (
                 <Center key={index}>

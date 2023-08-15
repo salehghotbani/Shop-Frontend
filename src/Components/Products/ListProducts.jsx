@@ -42,9 +42,9 @@ import {
 } from '../../store/features/productsSlice';
 import Select from 'react-select';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { backendURL, cookies, fetchWithAxios, showToast } from '../../BaseFunctions';
+import { backendURL, cookies, fetchWithAxios, showToast } from '../../Base/BaseFunctions';
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import { maxPrice, minPrice } from '../../BaseAttributes';
+import { maxPrice, minPrice } from '../../Base/BaseAttributes';
 
 export const ListProducts = () => {
   const dispatch = useDispatch();
@@ -397,8 +397,8 @@ export const ListProducts = () => {
 
       <Box position='fixed' bottom='0' right='0' px={9} py={7}>
         <Menu maxW={'100px'}>
-          <MenuButton as={Button} rightIcon={<ChevronDownIcon />} className={'box_shadow'}
-                      _hover={{ backgroundColor: '#f3f7fd' }} backgroundColor={'white'}
+          <MenuButton as={Button} rightIcon={<ChevronDownIcon />} className={'box_shadow'} backgroundColor={'white'}
+                      _hover={{ backgroundColor: '#f3f7fd' }}
                       _active={{ backgroundColor: '#f3f7fd' }}>
             {product.numberElementShownPerPage}
           </MenuButton>

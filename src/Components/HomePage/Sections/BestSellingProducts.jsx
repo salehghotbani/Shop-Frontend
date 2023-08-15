@@ -2,7 +2,7 @@ import { Box, Button, Center, Flex, Image, Tag, Text } from '@chakra-ui/react';
 import Carousel from 'react-multi-carousel';
 import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
-import { backendURL } from '../../../BaseFunctions';
+import { backendURL } from '../../../Base/BaseFunctions';
 
 export const BestSellingProducts = () => {
   const product = useSelector(state => state.product);

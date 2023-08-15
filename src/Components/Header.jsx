@@ -15,13 +15,14 @@ import {
 } from '@chakra-ui/react';
 import shoppingCartLinearIcon from '../assets/icons/Shop/vuesax/linear/shopping-cart.svg';
 import userIcon from '../assets/icons/Users/vuesax/linear/user.svg';
+import userIconBold from '../assets/icons/Users/vuesax/bold/user.svg';
 import menuIcon from '../assets/icons/Essetional/vuesax/linear/menu.svg';
 import loginIcon from '../assets/icons/Arrow/vuesax/linear/login.svg';
 import { useNavigate } from 'react-router-dom';
 import logoPng from '../assets/images/Logo.png';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchWithAxios, showToast } from '../BaseFunctions';
+import { fetchWithAxios, showToast } from '../Base/BaseFunctions';
 import { setCategory, setProductListFilter, setSelectedCategory } from '../store/features/productsSlice';
 
 export const Header = () => {
@@ -52,6 +53,7 @@ export const Header = () => {
     fetchWithAxios.get('/logout/', {})
       .then(function() {
         navigate('/', { replace: true });
+        document.location.reload();
       })
       .catch((e) => {
         showToast('خطا', e.message);
@@ -70,8 +72,9 @@ export const Header = () => {
           <PopoverBody dir={'rtl'}>
             {user.isRegistered ?
               <>
-                <HStack dir={'ltr'} cursor={'default'} _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2}
-                        px={3}>
+                <HStack dir={'ltr'} cursor={'pointer'} _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2}
+                        px={3} onClick={() => navigate('/info')}>
+                  <Image src={userIconBold} />
                   <Text mb={'-4px'}>
                     {user.username.length > 12 ?
                       user.username.substring(0, 12) + '...'
@@ -79,11 +82,6 @@ export const Header = () => {
                       user.username
                     }
                   </Text>
-                </HStack>
-                <HStack cursor={'pointer'} onClick={() => navigate('/login')}
-                        _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}>
-                  <Image src={loginIcon} />
-                  <Text>پنل کاربری</Text>
                 </HStack>
                 <HStack cursor={'pointer'} onClick={logout}
                         _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}>
