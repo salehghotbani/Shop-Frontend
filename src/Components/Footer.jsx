@@ -1,5 +1,5 @@
 import { Box, Image, Link, SimpleGrid } from '@chakra-ui/react';
-import { backendURL, fetchWithAxios } from '../BaseFunctions';
+import { backendURL, fetchWithAxios } from '../Base/BaseFunctions';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setENamads } from '../store/features/footerSlice';
@@ -15,7 +15,6 @@ export const Footer = () => {
       .then(function(response) {
           let tempArray = [];
           response.data.enamad.map((value) => {
-            console.log(value?.image);
             tempArray.push({ images: value?.image, url: value?.long_text });
           });
           dispatch(setENamads(tempArray));

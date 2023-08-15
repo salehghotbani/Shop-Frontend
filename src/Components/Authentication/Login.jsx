@@ -15,8 +15,8 @@ import RegisterCardBackgroundImage from '../../assets/images/home page/LoginCard
 import RegisterTicketBackgroundImage from '../../assets/images/home page/LoginTicket.png';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { Blue7 } from '../../BaseAttributes';
-import { fetchWithAxios, showToast } from '../../BaseFunctions';
+import { Blue7 } from '../../Base/BaseAttributes';
+import { fetchWithAxios, showToast } from '../../Base/BaseFunctions';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUsername } from '../../store/features/loginSlice';
@@ -69,13 +69,15 @@ export const Login = () => {
         'username': login.username,
         'password': login.password,
       })
-        .then(function() {
+        .then((response) => {
             setIsLoginButtonFormLoading(false);
             showToast('تبریک!', 'وارد شدید', 0);
+            dispatch(setUsername(response.data.username));
             dispatch(setRegistrationStatus(true));
 
             setTimeout(() => {
               navigate('/', { replace: true });
+              document.location.reload();
             }, 2000);
           },
         ).catch((e) => {

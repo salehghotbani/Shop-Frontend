@@ -12,7 +12,7 @@ import './App.css';
 import theme from './theme';
 import { Register } from './Components/Authentication/Register';
 import { Login } from './Components/Authentication/Login';
-import { fetchWithAxios } from './BaseFunctions';
+import { fetchWithAxios } from './Base/BaseFunctions';
 import { useDispatch } from 'react-redux';
 import { setRegistrationStatus, setUsername } from './store/features/userSlice';
 import { ListProducts } from './Components/Products/ListProducts';
@@ -25,9 +25,8 @@ function App() {
   const checkLogin = () => {
     fetchWithAxios.get('/shop/checkauth/', {})
       .then(function(response) {
-          const responseText = response[Object.keys(response)[0]];
-        console.log(response);
-          dispatch(setRegistrationStatus(responseText));
+          dispatch(setRegistrationStatus(true));
+          dispatch(setUsername(response.data.username));
         },
       ).catch(() => {
       dispatch(setUsername(''));

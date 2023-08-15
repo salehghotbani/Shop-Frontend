@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import Carousel from 'react-multi-carousel';
 import { useSelector } from 'react-redux';
-import { backendURL } from '../../../BaseFunctions';
+import { backendURL } from '../../../Base/BaseFunctions';
 
 export const Companies = () => {
   const home = useSelector(state => state.home);
