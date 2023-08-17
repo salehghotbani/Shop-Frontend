@@ -3,17 +3,18 @@ import { createSlice } from '@reduxjs/toolkit';
 const productsSlice = createSlice({
   name: 'products',
   initialState: {
-    category: [{}],
-    amazingProducts: [{}],
-    bestSellingProducts: [{}],
+    category: [],
+    amazingProducts: [],
+    bestSellingProducts: [],
     productListFilter: { priceRange: [0, 2000000], brand: '' },
     brandNames: [],
     selectedCategory: 0,
     page: 1,
     numberElementShownPerPage: 10,
-    products: [{}],
+    products: [],
     productValues: {},
     productDetails: {},
+    sameProducts: [],
   },
   reducers: {
     setCategory: (state, action) => {
@@ -49,6 +50,9 @@ const productsSlice = createSlice({
     setProductDetails: (state, action) => {
       state.productDetails = action.payload;
     },
+    setSameProducts: (state, action) => {
+      state.sameProducts = action.payload;
+    },
   },
 });
 
@@ -64,6 +68,7 @@ export const {
   setProducts,
   setProductValues,
   setProductDetails,
+  setSameProducts,
 } = productsSlice.actions;
 
 export default productsSlice.reducer;

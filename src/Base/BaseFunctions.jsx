@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createStandaloneToast } from '@chakra-ui/react';
 import Cookies from 'universal-cookie';
 
-export const backendURL = 'http://localhost:8000';
+export const backendURL = 'http://backend.ghotbani.ir';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';

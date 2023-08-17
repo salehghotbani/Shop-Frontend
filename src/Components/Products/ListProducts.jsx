@@ -360,38 +360,40 @@ export const ListProducts = () => {
         </GridItem>
 
         <GridItem colStart={3} colEnd={9}>
-          <SimpleGrid columns={5} spacing={4} mb={5}>
-            {timeToShowProducts && product.products.map((value, index) => (
-              <Box id={'id' + index} key={index} w={'270px'} h={'470px'} borderRadius={8}
-                   cursor={'pointer'} borderWidth={1}
-                   onClick={() => {
-                     cookies.set('productId', value.id, { path: '/' });
-                     navigate(`/productInfo?id=${value.id}`);
-                   }}
-                   onMouseEnter={() => {
-                     document.getElementById('id' + index).classList.add('box_shadow');
-                   }}
-                   onMouseLeave={() => {
-                     document.getElementById('id' + index).classList.remove('box_shadow');
-                   }}>
-                <Center>
-                  <Box backgroundImage={backendURL + '/' + value.avatar} w={'240px'} h={'240px'} mt={'30px'}
-                       backgroundPosition={'center'} backgroundRepeat={'no-repeat'} backgroundSize={'cover'} />
-                </Center>
-                <Stack mx={5} mt={6}>
-                  <Text fontSize={'18px'} as={'b'}>{value.name}</Text>
-                  <Text fontSize={'16px'} textAlign={'left'}>
-                    قیمت: {value.price !== undefined && parseInt((value.price.toString()).replace(/,/g, '')).toLocaleString()} تومان
-                  </Text>
+          <Box w={'100%'} overflowY={'auto'} className={'box_shadow'} p={5} pl={6} borderRadius={8} h={'89vh'} dir={'ltr'}>
+            <SimpleGrid columns={5} spacing={4} mb={5} dir={'rtl'}>
+              {timeToShowProducts && product.products.map((value, index) => (
+                <Box id={'id' + index} key={index} w={'260px'} h={'470px'} borderRadius={8}
+                     cursor={'pointer'} borderWidth={1}
+                     onClick={() => {
+                       cookies.set('productId', value.id, { path: '/' });
+                       navigate(`/productInfo?id=${value.id}&category=${product.selectedCategory}`);
+                     }}
+                     onMouseEnter={() => {
+                       document.getElementById('id' + index).classList.add('box_shadow');
+                     }}
+                     onMouseLeave={() => {
+                       document.getElementById('id' + index).classList.remove('box_shadow');
+                     }}>
+                  <Center>
+                    <Box backgroundImage={backendURL + '/' + value.avatar} w={'240px'} h={'240px'} mt={'30px'}
+                         backgroundPosition={'center'} backgroundRepeat={'no-repeat'} backgroundSize={'cover'} />
+                  </Center>
+                  <Stack mx={5} mt={6}>
+                    <Text fontSize={'18px'} as={'b'}>{value.name}</Text>
+                    <Text fontSize={'16px'} textAlign={'left'}>
+                      قیمت: {value.price !== undefined && parseInt((value.price.toString()).replace(/,/g, '')).toLocaleString()} تومان
+                    </Text>
 
-                  <Text color={'red'} fontSize={'12px'}>
-                    تعداد
-                    فروش: {value.number_sell !== undefined && parseInt((value.number_sell.toString()).replace(/,/g, '')).toLocaleString()}
-                  </Text>
-                </Stack>
-              </Box>
-            ))}
-          </SimpleGrid>
+                    <Text color={'red'} fontSize={'12px'}>
+                      تعداد
+                      فروش: {value.number_sell !== undefined && parseInt((value.number_sell.toString()).replace(/,/g, '')).toLocaleString()}
+                    </Text>
+                  </Stack>
+                </Box>
+              ))}
+            </SimpleGrid>
+          </Box>
         </GridItem>
       </Grid>
 

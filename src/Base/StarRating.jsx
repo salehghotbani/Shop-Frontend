@@ -1,59 +1,46 @@
 import { useState } from 'react';
-import { HStack, Icon, IconButton } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
+import { setRate } from '../store/features/commentProduct';
+import { useDispatch, useSelector } from 'react-redux';
 
-export const StarRating = ({ value, onChange, isEditable = false }) => {
-  const [hoverValue, setHoverValue] = useState(null);
+export const StarRating = () => {
+  const [hoveredRating, setHoveredRating] = useState(0);
+  const [selectedRating, setSelectedRating] = useState(0);
+  const dispatch = useDispatch();
 
-  const handleHover = (hoveredValue) => {
-    if (isEditable) {
-      setHoverValue(hoveredValue);
-    }
+  const handleRatingHover = (hoveredIndex) => {
+    setHoveredRating(hoveredIndex);
   };
 
-  const handleMouseLeave = () => {
-    if (isEditable) {
-      setHoverValue(null);
-    }
+  const handleRatingClick = (selectedIndex) => {
+    setSelectedRating(selectedIndex);
+    dispatch(setRate(selectedIndex));
   };
 
-  const handleClick = (clickedValue) => {
-    if (isEditable) {
-      onChange(clickedValue);
-    }
+  const handleRatingLeave = () => {
+    setHoveredRating(0);
   };
 
   return (
-    <HStack spacing={0}>
-      {[1, 2, 3, 4, 5].map((index) => {
-        const filled = index <= (hoverValue || value);
-        const isHalf = hoverValue === index - 0.5;
-
-        return (
-          <IconButton
-            backgroundColor={'transparent'}
-            key={index}
-            m={'-30px'}
-            icon={
-              <Icon
-                as={StarIcon}
-                boxSize={3}
-                color={filled ? 'yellow.400' : 'gray.300'}
-              />
+    <Flex dir={'ltr'} align='center'>
+      {[1, 2, 3, 4, 5].map((index) => (
+        <Box
+          key={index}
+          as='button'
+          mx={1}
+          onMouseEnter={() => handleRatingHover(index)}
+          onMouseLeave={handleRatingLeave}
+          onClick={() => handleRatingClick(index)}
+        >
+          <StarIcon
+            color={
+              index <= (hoveredRating || selectedRating) ? 'yellow.300' : 'gray.300'
             }
-            aria-label={`${index} star`}
-            onMouseEnter={() => handleHover(index)}
-            onMouseLeave={handleMouseLeave}
-            onClick={() => handleClick(isHalf ? index : index - 0.5)}
-            _hover={isEditable ? { color: 'yellow.400' } : {}}
-            pointerEvents={isEditable ? 'auto' : 'none'}
-          >
-            {isHalf && (
-              <Icon as={StarIcon} boxSize={5} color='yellow.400' />
-            )}
-          </IconButton>
-        );
-      })}
-    </HStack>
+            boxSize={6}
+          />
+        </Box>
+      ))}
+    </Flex>
   );
 };

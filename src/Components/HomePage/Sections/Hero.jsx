@@ -1,10 +1,10 @@
-import { Box, Button, Heading, Image, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Heading, Image, Text } from '@chakra-ui/react';
 import heroBackgroundImage from '../../../assets/images/home page/HomeHero.png';
 import heroPhoneBackgroundImage from '../../../assets/images/home page/HomeHeroPhone.png';
 import heroLineBackgroundImage from '../../../assets/images/home page/HomeHeroLine.png';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import {useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 export const Hero = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -58,39 +58,29 @@ export const Hero = () => {
       </motion.div>
 
       <motion.div
-        style={{ position: 'absolute', top: '33%', left: '35%', transform: 'translate(-50%, -50%)', zIndex: 1 }}
-        animate={{
-          y: showOverlayText ? 20 : 0,
-          opacity: showOverlayText ? 1 : 0,
-        }}
-      >
-        <Heading cursor={'default'} opacity={showOverlayText ? 1 : 0} dir={'rtl'} fontSize={'45px'} as={'h2'}>
-          {home.heroTitle}
-        </Heading>
-      </motion.div>
-
-      <motion.div
-        style={{ position: 'absolute', top: '53%', left: '28%', transform: 'translate(-50%, -50%)', zIndex: 1 }}
+        style={{ position: 'absolute', top: '30%', left: '10%', zIndex: 1 }}
         animate={{ opacity: showOverlayText ? 1 : 0 }}
       >
-        <Box textAlign={'justify'} dir={'rtl'} w={'700px'}>
-          <Text cursor={'default'} opacity={showOverlayText ? 1 : 0} fontSize={'25px'} as={'b'}>
-            {home.heroDescription}
-          </Text>
+        <Box dir={'rtl'} w={'700px'}>
+          <Box textAlign={'justify'} mb={5}>
+            <Heading mb={3} cursor={'default'} opacity={showOverlayText ? 1 : 0} dir={'rtl'} fontSize={'45px'}
+                     as={'h2'}>
+              {home.heroTitle}
+            </Heading>
+
+            <Text cursor={'default'} opacity={showOverlayText ? 1 : 0} fontSize={'25px'} as={'b'}>
+              {home.heroDescription}
+            </Text>
+          </Box>
+
+          <Center>
+            <Button w={'110px'} h={'50px'} backgroundColor={'#8FA5D1'}>
+              <Text opacity={showOverlayText ? 1 : 0}>
+                خرید
+              </Text>
+            </Button>
+          </Center>
         </Box>
-      </motion.div>
-
-      <motion.div
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        style={{ position: 'absolute', top: '69%', left: '28%', zIndex: 1 }}
-        animate={{ opacity: showOverlayText ? 1 : 0 }}
-      >
-        <Button w={'110px'} h={'50px'} backgroundColor={'#8FA5D1'}>
-          <Text opacity={showOverlayText ? 1 : 0}>
-            خرید
-          </Text>
-        </Button>
       </motion.div>
     </Box>
   );
