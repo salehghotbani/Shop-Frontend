@@ -138,33 +138,36 @@ export const Header = () => {
           </GridItem>
 
           <GridItem colStart={6} colEnd={6}>
-            <Popover>
-              <PopoverTrigger>
-                <Button p={'6px'} backgroundColor={'white'} borderRadius={'100%'} cursor={'pointer'}>
-                  <Image src={menuIcon} />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent w={'200px'}>
-                <PopoverBody>
-                  <Stack spacing={2} dir={'rtl'}>
-                    {product.category.map((value) => (
-                      <HStack cursor={'pointer'} _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}
-                              onClick={() => {
-                                dispatch(setSelectedCategory(value.id));
-                                dispatch(setProductListFilter({
-                                  priceRange: [product.productListFilter.priceRange[0], product.productListFilter.priceRange[1]],
-                                  brand: '',
-                                }));
-                                navigate(`/productList?category=${value.id}&page=${product.page}`);
-                              }}>
-                        <Image src={loginIcon} />
-                        <Text>{value.title}</Text>
-                      </HStack>
-                    ))}
-                  </Stack>
-                </PopoverBody>
-              </PopoverContent>
-            </Popover>
+            {product.category.length &&
+              <Popover>
+                <PopoverTrigger>
+                  <Button p={'6px'} backgroundColor={'white'} borderRadius={'100%'} cursor={'pointer'}>
+                    <Image src={menuIcon} />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent w={'200px'}>
+                  <PopoverBody>
+                    <Stack spacing={2} dir={'rtl'}>
+                      {product.category.map((value) => (
+                        <HStack cursor={'pointer'} _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2}
+                                px={3}
+                                onClick={() => {
+                                  dispatch(setSelectedCategory(value.id));
+                                  dispatch(setProductListFilter({
+                                    priceRange: [product.productListFilter.priceRange[0], product.productListFilter.priceRange[1]],
+                                    brand: '',
+                                  }));
+                                  navigate(`/productList?category=${value.id}&page=${product.page}`);
+                                }}>
+                          <Image src={loginIcon} />
+                          <Text>{value.title}</Text>
+                        </HStack>
+                      ))}
+                    </Stack>
+                  </PopoverBody>
+                </PopoverContent>
+              </Popover>
+            }
           </GridItem>
         </Grid>
       </Box>

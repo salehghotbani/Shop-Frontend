@@ -33,7 +33,7 @@ export const HomePage = () => {
   };
 
   const getMiddle = () => {
-    fetchWithAxios.get('/shop/gethero/', {})
+    fetchWithAxios.get('/shop/getmiddle/', {})
       .then(function(response) {
           dispatch(setMiddleTitle(response.data.title));
           dispatch(setMiddleDescription(response.data.long_text));

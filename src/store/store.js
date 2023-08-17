@@ -6,6 +6,7 @@ import registerSlice from './features/registerSlice';
 import footerSlice from './features/footerSlice';
 import productsSlice from './features/productsSlice';
 import infoSlice from './features/infoSlice';
+import commentProduct from './features/commentProduct';
 
 const store = configureStore({
   reducer: {
@@ -15,7 +16,8 @@ const store = configureStore({
     register: registerSlice,
     footer: footerSlice,
     product: productsSlice,
-    info:infoSlice,
+    info: infoSlice,
+    commentProduct: commentProduct,
   },
 });
 

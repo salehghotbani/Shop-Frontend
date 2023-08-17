@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Image, Text } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Heading, Image, Text } from '@chakra-ui/react';
 import IntroduceBackgroundImage from '../../../assets/images/home page/Introduce.png';
 import IntroduceCardImage from '../../../assets/images/home page/IntroduceCard.png';
 import { useEffect, useState } from 'react';
@@ -36,61 +36,42 @@ export const Description = () => {
         <motion.div
           style={{ position: 'absolute', top: '15%', left: '7%', transform: 'translate(-50%, -50%)', zIndex: 1 }}
           animate={{
-            x: showOverlay ? (mousePosition.x - window.innerWidth / 2) / 50 : 0, // Adjust the divisor for the desired movement speed
-            y: (mousePosition.y - window.innerHeight / 2) / 50, // Adjust the divisor for the desired movement speed
+            x: showOverlay ? (mousePosition.x - window.innerWidth / 2) / 50 : 0,
+            y: (mousePosition.y - window.innerHeight / 2) / 50,
             opacity: showOverlay ? 1 : 0,
           }}
         >
           <Image opacity={showOverlay ? 1 : 0} src={IntroduceCardImage} alt='Overlay' objectFit={'cover'} />
         </motion.div>
 
-
         <motion.div
-          style={{ position: 'absolute', top: '7%', left: '80%', transform: 'translate(-50%, -50%)', zIndex: 1 }}
-          animate={{ y: showOverlay ? 20 : 0, opacity: showOverlay ? 1 : 0 }}
-        >
-          <Heading cursor={'default'} opacity={showOverlay ? 1 : 0} dir={'rtl'} fontSize={'40px'} as={'h2'}>
-            {home.middleTitle}
-          </Heading>
-        </motion.div>
-
-        <motion.div
-          style={{ position: 'absolute', top: '40%', left: '66.6%', transform: 'translate(-50%, -50%)', zIndex: 1 }}
+          style={{ position: 'absolute', top: '40%', left: '67%', transform: 'translate(-50%, -50%)', zIndex: 1 }}
           animate={{ opacity: showOverlay ? 1 : 0 }}
         >
           <Box textAlign={'justify'} dir={'rtl'} w={'900px'}>
+            <Heading mb={5} cursor={'default'} opacity={showOverlay ? 1 : 0} dir={'rtl'} fontSize={'40px'} as={'h2'}>
+              {home.middleTitle}
+            </Heading>
             <Text cursor={'default'} opacity={showOverlay ? 1 : 0} fontSize={'20px'} as={'b'}>
               {home.middleDescription}
             </Text>
           </Box>
-        </motion.div>
 
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          style={{ position: 'absolute', top: '66%', left: '76%', zIndex: 1 }}
-          animate={{ opacity: showOverlay ? 1 : 0 }}
-        >
-          <Button w={'110px'} h={'50px'} backgroundColor={'#8FA5D1'}
-                  onClick={() => navigate('/login')}>
-            <Text opacity={showOverlay ? 1 : 0}>
-              ورود
-            </Text>
-          </Button>
-        </motion.div>
+          <ButtonGroup mt={5}>
+            <Button w={'110px'} h={'50px'} backgroundColor={'#8FA5D1'}
+                    onClick={() => navigate('/login')}>
+              <Text opacity={showOverlay ? 1 : 0}>
+                ورود
+              </Text>
+            </Button>
 
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          style={{ position: 'absolute', top: '66%', left: '83%', zIndex: 1 }}
-          animate={{ opacity: showOverlay ? 1 : 0 }}
-        >
-          <Button w={'110px'} h={'50px'} backgroundColor={'#1C3347'}
-                  onClick={() => navigate('/register')}>
-            <Text color={'white'} opacity={showOverlay ? 1 : 0}>
-              ثبت نام
-            </Text>
-          </Button>
+            <Button w={'110px'} h={'50px'} backgroundColor={'#1C3347'}
+                    onClick={() => navigate('/register')}>
+              <Text color={'white'} opacity={showOverlay ? 1 : 0}>
+                ثبت نام
+              </Text>
+            </Button>
+          </ButtonGroup>
         </motion.div>
       </Box>
     </>
