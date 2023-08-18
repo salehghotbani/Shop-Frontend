@@ -29,7 +29,7 @@ export const Question = () => {
               سوال:
             </Text>
           </FormLabel>
-          <Textarea minH={'200px'} placeholder='توضیحات' value={questionProduct.question}
+          <Textarea minH={'200px'} placeholder='سوال' value={questionProduct.question}
                     onChange={(event) => {
                       dispatch(setQuestion(event.target.value));
                     }} />

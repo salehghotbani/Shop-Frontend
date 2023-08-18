@@ -49,7 +49,7 @@ export const BestSellingProducts = () => {
             <Carousel responsive={responsive}>
               {product.bestSellingProducts.map((value, index) => (
                 <Center key={index}>
-                  <Box id={listId + index} w={'260px'} h={'470px'} borderRadius={8}
+                  <Box id={listId + index} w={'260px'} h={'400px'} borderRadius={8} backgroundColor={'white'}
                        cursor={'pointer'} borderWidth={1} my={8}
                        onClick={() => {
                          cookies.set('productId', value.id, { path: '/' });
