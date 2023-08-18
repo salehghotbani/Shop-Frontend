@@ -1,24 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const infoSlice = createSlice({
-  name: 'info',
+const profileSlice = createSlice({
+  name: 'profile',
   initialState: {
     username: '',
+    firstName: '',
+    lastName: '',
+    gender: true,
     phoneNumber: '',
     email: '',
-    password: '',
-    confirmPassword: '',
-    code: [],
-    firstName:'',
-    lastName:'',
-
+    address: '',
   },
   reducers: {
     setFirstName: (state, action) => {
-      state.username = action.payload;
+      state.firstName = action.payload;
     },
     setLastName: (state, action) => {
-      state.username = action.payload;
+      state.lastName = action.payload;
+    },
+    setGender: (state, action) => {
+      state.gender = action.payload;
     },
     setUsername: (state, action) => {
       state.username = action.payload;
@@ -29,14 +30,8 @@ const infoSlice = createSlice({
     setEmail: (state, action) => {
       state.email = action.payload;
     },
-    setPassword: (state, action) => {
-      state.password = action.payload;
-    },
-    setConfirmPassword: (state, action) => {
-      state.confirmPassword = action.payload;
-    },
-    setCode: (state, action) => {
-      state.code = action.payload;
+    setAddress: (state, action) => {
+      state.address = action.payload;
     },
   },
 });
@@ -45,11 +40,10 @@ export const {
   setUsername,
   setPhoneNumber,
   setEmail,
-  setPassword,
-  setConfirmPassword,
-  setCode,
+  setGender,
   setFirstName,
   setLastName,
-} = infoSlice.actions;
+  setAddress,
+} = profileSlice.actions;
 
-export default infoSlice.reducer;
+export default profileSlice.reducer;

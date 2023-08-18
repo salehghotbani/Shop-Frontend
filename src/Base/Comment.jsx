@@ -27,7 +27,7 @@ export const Comment = () => {
   const queryParams = new URLSearchParams(location.search);
 
   const getComments = () => {
-    fetchWithAxios.get(`/shop/getcommentsprod/id=${queryParams.get('id')}`, {})
+    fetchWithAxios.get(`/shop/getcommentsprod/?id=${queryParams.get('id')}&page=1&count=10`, {})
       .then(function(response) {
           dispatch(setHeroTitle(response.data.title));
           dispatch(setHeroDescription(response.data.long_text));

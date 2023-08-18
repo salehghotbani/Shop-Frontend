@@ -14,3 +14,5 @@ export const Gray5 = '#DEDEDE';
 
 export const minPrice = 0;
 export const maxPrice = 2000000;
+
+export const backgroundBlue = '#1D3347';

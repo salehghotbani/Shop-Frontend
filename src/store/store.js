@@ -5,9 +5,10 @@ import loginSlice from './features/loginSlice';
 import registerSlice from './features/registerSlice';
 import footerSlice from './features/footerSlice';
 import productsSlice from './features/productsSlice';
-import infoSlice from './features/infoSlice';
 import commentProduct from './features/commentProduct';
 import questionProduct from './features/questionProduct';
+import profileSlice from './features/profileSlice';
+import dashboardSlice from './features/dashboardSlice';
 
 const store = configureStore({
   reducer: {
@@ -17,9 +18,10 @@ const store = configureStore({
     register: registerSlice,
     footer: footerSlice,
     product: productsSlice,
-    info: infoSlice,
+    profile: profileSlice,
     commentProduct: commentProduct,
     questionProduct: questionProduct,
+    dashboard: dashboardSlice,
   },
 });
 
