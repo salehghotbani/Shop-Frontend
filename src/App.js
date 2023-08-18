@@ -16,7 +16,7 @@ import { fetchWithAxios } from './Base/BaseFunctions';
 import { useDispatch } from 'react-redux';
 import { setRegistrationStatus, setUsername } from './store/features/userSlice';
 import { ListProducts } from './Components/Products/ListProducts';
-import { Info } from './Components/Authentication/Info';
+import { Dashboard } from './Components/Dashboard/Dashboard';
 import { Product } from './Components/Products/Product';
 
 function App() {
@@ -86,7 +86,7 @@ function App() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
             >
-              <Info />
+              <Dashboard />
             </motion.div>
           } />
           <Route path='/productList' element={

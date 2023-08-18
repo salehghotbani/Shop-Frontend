@@ -4,7 +4,8 @@ import Cookies from 'universal-cookie';
 import CreatableSelect from 'react-select/creatable';
 import React from 'react';
 
-export const backendURL = 'http://backend.ghotbani.ir';
+//http://51.68.171.248:8000
+export const backendURL = 'http://localhost:8000';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -12,6 +13,7 @@ axios.defaults.withCredentials = true;
 
 export const fetchWithAxios = axios.create({
   baseURL: backendURL,
+  withCredentials: true,
 });
 
 export const showToast = (title, description, statusIndex = 1, positionIndex = 3, duration = 3000, isClosable = true) => {
