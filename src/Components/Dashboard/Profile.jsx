@@ -24,6 +24,7 @@ import {
   setEmail,
   setFirstName,
   setGender,
+  setIsSubmitted,
   setLastName,
   setPhoneNumber,
   setUsername,
@@ -34,6 +35,21 @@ import woman_avatar from '../../assets/images/woman_avatar.jpg';
 export const Profile = () => {
   const dispatch = useDispatch();
   const profile = useSelector(state => state.profile);
+
+  const sendCustomerInfo = () => {
+    fetchWithAxios.post(`/updatecustomer/`, {
+      'username': profile.username,
+      'address': profile.address,
+      'first_name': profile.firstName,
+      'last_name': profile.lastLame,
+      'gender': profile.gender ? 'True' : 'False',
+    }).then(() => {
+      dispatch(setIsSubmitted(false));
+    }).catch((e) => {
+      showToast('خطا', e.message);
+      dispatch(setIsSubmitted(false));
+    });
+  };
 
   const getCustomerInfo = () => {
     fetchWithAxios.get(`/getcustomerinfo`, {})
@@ -85,8 +101,12 @@ export const Profile = () => {
                     <Center>
                       <HStack spacing={2}>
                         <Text>زن</Text>
-                        <Switch defaultChecked={profile.gender} size={'md'} dir={'rtl'} colorScheme='red'
-                                onClick={() => dispatch(setGender(!profile.gender))} />
+                        <Switch isChecked={profile.gender} size={'md'} dir={'rtl'} colorScheme='red'
+                                readOnly={profile.isSubmitted}
+                                onChange={(event) => {
+                                  console.log(event.target.checked);
+                                  dispatch(setGender(event.target.checked));
+                                }} />
                         <Text>مرد</Text>
                       </HStack>
                     </Center>
@@ -128,7 +148,8 @@ export const Profile = () => {
                   </GridItem>
                   <GridItem colStart={2} colEnd={6}>
                     <Input h={'57px'} dir={'ltr'} type='text' placeholder={'نام کاربری'} value={profile.username}
-                           onChange={(event) => dispatch(setUsername(event.target.value))} />
+                           onChange={(event) => dispatch(setUsername(event.target.value))}
+                           readOnly={profile.isSubmitted} />
                   </GridItem>
                 </Grid>
               </FormControl>
@@ -140,7 +161,8 @@ export const Profile = () => {
                   </GridItem>
                   <GridItem colStart={2} colEnd={6}>
                     <Input h={'57px'} dir={'rtl'} type='text' placeholder={'نام'} value={profile.firstName}
-                           onChange={(event) => dispatch(setFirstName(event.target.value))} />
+                           onChange={(event) => dispatch(setFirstName(event.target.value))}
+                           readOnly={profile.isSubmitted} />
                   </GridItem>
                 </Grid>
               </FormControl>
@@ -152,13 +174,18 @@ export const Profile = () => {
                   </GridItem>
                   <GridItem colStart={2} colEnd={6}>
                     <Input h={'57px'} dir={'rtl'} type='text' placeholder={'نام خانوادگی'} value={profile.lastName}
-                           onChange={(event) => dispatch(setLastName(event.target.value))} />
+                           onChange={(event) => dispatch(setLastName(event.target.value))}
+                           readOnly={profile.isSubmitted} />
                   </GridItem>
                 </Grid>
               </FormControl>
 
               <Button mt={4} backgroundColor={'green.500'} _hover={{ backgroundColor: 'green.600' }} color={'white'}
-                      w={'100%'}>
+                      w={'100%'} isLoading={profile.isSubmitted}
+                      onClick={() => {
+                        dispatch(setIsSubmitted(true));
+                        sendCustomerInfo();
+                      }}>
                 ثبت تغییرات
               </Button>
             </VStack>
@@ -168,10 +195,9 @@ export const Profile = () => {
         <GridItem borderRadius={'30px'} rowSpan={1} colSpan={1} className={'box_shadow'} px={9} dir={'rtl'}>
           <FormControl my={3} isRequired>
             <FormLabel mt={6} mb={3}><Text as={'b'}>آدرس:</Text></FormLabel>
-            <Textarea minH={'30vh'} maxH={'30vh'} placeholder='آدرس' value={profile.address}
-                      onChange={(event) => {
-                        dispatch(setAddress(event.target.value));
-                      }} />
+            <Textarea minH={'290px'} maxH={'290px'} placeholder='آدرس' value={profile.address}
+                      readOnly={profile.isSubmitted}
+                      onChange={(event) => dispatch(setAddress(event.target.value))} />
           </FormControl>
         </GridItem>
       </Grid>

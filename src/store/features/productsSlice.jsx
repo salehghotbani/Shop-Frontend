@@ -15,6 +15,7 @@ const productsSlice = createSlice({
     productValues: {},
     productDetails: {},
     sameProducts: [],
+    totalProductsByFiltersAndCategory: 0,
   },
   reducers: {
     setCategory: (state, action) => {
@@ -53,6 +54,9 @@ const productsSlice = createSlice({
     setSameProducts: (state, action) => {
       state.sameProducts = action.payload;
     },
+    setTotalProductsByFiltersAndCategory: (state, action) => {
+      state.totalProductsByFiltersAndCategory = action.payload;
+    },
   },
 });
 
@@ -69,6 +73,7 @@ export const {
   setProductValues,
   setProductDetails,
   setSameProducts,
+  setTotalProductsByFiltersAndCategory,
 } = productsSlice.actions;
 
 export default productsSlice.reducer;

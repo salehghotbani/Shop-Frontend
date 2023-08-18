@@ -3,6 +3,7 @@ import { createStandaloneToast } from '@chakra-ui/react';
 import Cookies from 'universal-cookie';
 import CreatableSelect from 'react-select/creatable';
 import React from 'react';
+import { setProducts, setTotalProductsByFiltersAndCategory } from '../store/features/productsSlice';
 
 //http://51.68.171.248:8000
 export const backendURL = 'http://localhost:8000';

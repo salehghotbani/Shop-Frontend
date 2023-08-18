@@ -36,8 +36,7 @@ import {
   setBrandNames,
   setNumberElementShownPerPage,
   setPage,
-  setProductListFilter,
-  setProducts,
+  setProductListFilter, setProducts,
   setSelectedCategory,
 } from '../../store/features/productsSlice';
 import Select from 'react-select';
@@ -360,7 +359,8 @@ export const ListProducts = () => {
         </GridItem>
 
         <GridItem colStart={3} colEnd={9}>
-          <Box w={'100%'} overflowY={'auto'} className={'box_shadow'} p={5} pl={6} borderRadius={8} h={'89vh'} dir={'ltr'}>
+          <Box w={'100%'} overflowY={'auto'} className={'box_shadow'} p={5} pl={6} borderRadius={8} h={'89vh'}
+               dir={'ltr'}>
             <SimpleGrid columns={5} spacing={4} mb={5} dir={'rtl'}>
               {timeToShowProducts && product.products.map((value, index) => (
                 <Box id={'id' + index} key={index} w={'260px'} h={'470px'} borderRadius={8}

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const commentProduct = createSlice({
+const commentProductSlice = createSlice({
   name: 'commentProduct',
   initialState: {
     title: '',
@@ -34,6 +34,6 @@ export const {
   setRate,
   setPositivePoint,
   setNegativePoint,
-} = commentProduct.actions;
+} = commentProductSlice.actions;
 
-export default commentProduct.reducer;
+export default commentProductSlice.reducer;
