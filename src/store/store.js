@@ -7,6 +7,7 @@ import footerSlice from './features/footerSlice';
 import productsSlice from './features/productsSlice';
 import infoSlice from './features/infoSlice';
 import commentProduct from './features/commentProduct';
+import questionProduct from './features/questionProduct';
 
 const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
     product: productsSlice,
     info: infoSlice,
     commentProduct: commentProduct,
+    questionProduct: questionProduct,
   },
 });
 
