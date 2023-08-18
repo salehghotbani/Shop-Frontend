@@ -1,10 +1,14 @@
-import { Box, Button, Center, Flex, Tag, Text } from '@chakra-ui/react';
+import { Box, Center, Flex, Stack, Tag, Text } from '@chakra-ui/react';
 import Carousel from 'react-multi-carousel';
-import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
+import { backendURL, cookies } from '../../../Base/BaseFunctions';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const AmazingOffer = () => {
   const product = useSelector(state => state.product);
+  const navigate = useNavigate();
+  const listId = 'id_amazing_offers_';
 
   const responsive = {
     superLargeDesktop: {
@@ -42,22 +46,30 @@ export const AmazingOffer = () => {
             </Flex>
 
             <Carousel responsive={responsive}>
-              {product.amazingProducts.map((value) => (
-                <Center>
-                  <Box position={'relative'} h={'400px'} w={'200px'} borderTopLeftRadius={'30px'}
-                       borderTopRightRadius={'30px'} backgroundColor={'#1C3347'}>
-
+              {product.amazingProducts.map((value, index) => (
+                <Center key={index}>
+                  <Box id={listId + index} w={'260px'} h={'470px'} borderRadius={8}
+                       cursor={'pointer'} borderWidth={1} my={8}
+                       onClick={() => {
+                         cookies.set('productId', value.id, { path: '/' });
+                         navigate(`/productInfo?id=${value.id}&category=${product.selectedCategory}`);
+                       }}
+                       onMouseEnter={() => {
+                         document.getElementById(listId + index).classList.add('box_shadow');
+                       }}
+                       onMouseLeave={() => {
+                         document.getElementById(listId + index).classList.remove('box_shadow');
+                       }}>
                     <Center>
-                      <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        style={{ position: 'absolute', bottom: '5%', zIndex: 1 }}
-                      >
-                        <Button>
-                          <Text>{value.name}</Text>
-                        </Button>
-                      </motion.div>
+                      <Box backgroundImage={backendURL + '/' + value.avatar} w={'240px'} h={'240px'} mt={'30px'}
+                           backgroundPosition={'center'} backgroundRepeat={'no-repeat'} backgroundSize={'cover'} />
                     </Center>
+                    <Stack mx={5} mt={6}>
+                      <Text fontSize={'18px'} as={'b'}>{value.name}</Text>
+                      <Text fontSize={'16px'} textAlign={'left'}>
+                        قیمت: {value.price !== undefined && parseInt((value.price.toString()).replace(/,/g, '')).toLocaleString()} تومان
+                      </Text>
+                    </Stack>
                   </Box>
                 </Center>
               ))}

@@ -170,7 +170,7 @@ export const Comment = () => {
               توضیحات:
             </Text>
           </FormLabel>
-          <Textarea minH={'200px'} placeholder='توضیحات'
+          <Textarea minH={'200px'} placeholder='توضیحات' value={commentProduct.description}
                     onChange={(event) => {
                       dispatch(setDescription(event.target.value));
                     }}/>
