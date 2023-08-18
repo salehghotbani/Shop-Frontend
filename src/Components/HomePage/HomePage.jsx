@@ -17,6 +17,7 @@ import {
 } from '../../store/features/homeSlice';
 import { useDispatch } from 'react-redux';
 import { setAmazingProducts, setBestSellingProducts } from '../../store/features/productsSlice';
+import backImage from '../../assets/images/home page/back.png';
 
 export const HomePage = () => {
   const dispatch = useDispatch();
@@ -110,7 +111,8 @@ export const HomePage = () => {
       <Hero />
       <ProductsCategorization />
       <Description />
-      <Box>
+      <Box backgroundImage={backImage} backgroundPosition={'center'} backgroundRepeat={'no-repeat'}
+           backgroundSize={'cover'} w={'100%'}>
         <AmazingOffer />
         <BestSellingProducts />
       </Box>

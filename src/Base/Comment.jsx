@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Button,
@@ -13,14 +13,33 @@ import {
   Text,
   Textarea,
 } from '@chakra-ui/react';
-import CreatableSelect from 'react-select/creatable';
 import { StarRating } from './StarRating';
 import { useDispatch, useSelector } from 'react-redux';
 import { setDescription, setNegativePoint, setPositivePoint, setTitle } from '../store/features/commentProduct';
+import { fetchWithAxios, MultiSelect, showToast } from './BaseFunctions';
+import { setHeroDescription, setHeroTitle } from '../store/features/homeSlice';
+import { useLocation } from 'react-router-dom';
 
 export const Comment = () => {
   const commentProduct = useSelector(state => state.commentProduct);
   const dispatch = useDispatch();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  const getComments = () => {
+    fetchWithAxios.get(`/shop/getcommentsprod/id=${queryParams.get('id')}`, {})
+      .then(function(response) {
+          dispatch(setHeroTitle(response.data.title));
+          dispatch(setHeroDescription(response.data.long_text));
+        },
+      ).catch((e) => {
+      showToast('خطا', e.message);
+    });
+  };
+
+  useEffect(() => {
+    getComments();
+  }, []);
 
   return (
     <Box className={'box_shadow'} p={5} borderRadius={9}>
@@ -44,7 +63,7 @@ export const Comment = () => {
             </Flex>
           </FormControl>
 
-          <FormControl my={'auto'} my={3} isRequired mr={5}>
+          <FormControl my={'auto'} isRequired mr={5}>
             <Grid templateColumns='repeat(5, 1fr)' gap={4}>
               <GridItem colSpan={2}>
                 <FormLabel width={'100px'} my={'auto'}>
@@ -69,42 +88,8 @@ export const Comment = () => {
                 </Text>
               </FormLabel>
               <Box w={'100%'}>
-                <CreatableSelect isMulti
-                                 noOptionsMessage={() => null}
-                                 components={{
-                                   Menu: () => null,
-                                   MenuList: () => null,
-                                   DropdownIndicator: () => null,
-                                   IndicatorSeparator: () => null,
-                                 }}
-                                 placeholder={'نکات مثبت'}
-                                 styles={{
-                                   container: (provided) => ({
-                                     ...provided,
-                                     borderWidth: '0.5px',
-                                     borderColor: 'gray.100',
-                                     borderRadius: 5,
-                                   }),
-                                   control: (provided) => ({
-                                     ...provided,
-                                     backgroundColor: 'white',
-                                     cursor: 'text',
-                                   }),
-                                   multiValue: (provided) => ({
-                                     ...provided,
-                                     backgroundColor: 'green', // Change this color to your desired tag background color
-                                     color: 'white', // Change this color to the text color you prefer for tags
-                                     borderRadius: '4px',
-                                   }),
-                                   multiValueLabel: (provided) => ({
-                                     ...provided,
-                                     color: 'white',
-                                   }),
-                                 }}
-                                 onChange={(event) => {
-                                   dispatch(setPositivePoint(event));
-                                 }}
-                />
+                <MultiSelect dispatch={dispatch} multiValueBackColor={'green'} multiValueRemoveBackColor={'red.500'}
+                             setReduxMethod={setPositivePoint} />
               </Box>
             </Flex>
           </FormControl>
@@ -117,48 +102,8 @@ export const Comment = () => {
                 </Text>
               </FormLabel>
               <Box w={'100%'}>
-                <CreatableSelect isMulti
-                                 noOptionsMessage={() => null}
-                                 components={{
-                                   Menu: () => null,
-                                   MenuList: () => null,
-                                   DropdownIndicator: () => null,
-                                   IndicatorSeparator: () => null,
-                                 }}
-                                 placeholder={'نکات منفی'}
-                                 styles={{
-                                   container: (provided) => ({
-                                     ...provided,
-                                     borderWidth: '0.5px',
-                                     borderColor: 'gray.100',
-                                     borderRadius: 5,
-                                   }),
-                                   control: (provided) => ({
-                                     ...provided,
-                                     backgroundColor: 'white',
-                                     cursor: 'text',
-                                   }),
-                                   multiValue: (provided) => ({
-                                     ...provided,
-                                     backgroundColor: 'red', // Change this color to your desired tag background color
-                                     color: 'white', // Change this color to the text color you prefer for tags
-                                     borderRadius: '4px',
-                                   }),
-                                   multiValueLabel: (provided) => ({
-                                     ...provided,
-                                     color: 'white',
-                                   }),
-                                   multiValueRemove: (provided) => ({
-                                     ...provided,
-                                     '&:hover': {
-                                       backgroundColor: 'orange', // Change this color to the desired hover background color
-                                     },
-                                   }),
-                                 }}
-                                 onChange={(event) => {
-                                   dispatch(setNegativePoint(event));
-                                 }}
-                />
+                <MultiSelect dispatch={dispatch} multiValueBackColor={'red'} multiValueRemoveBackColor={'orange'}
+                             setReduxMethod={setNegativePoint} />
               </Box>
             </Flex>
           </FormControl>
@@ -173,7 +118,7 @@ export const Comment = () => {
           <Textarea minH={'200px'} placeholder='توضیحات' value={commentProduct.description}
                     onChange={(event) => {
                       dispatch(setDescription(event.target.value));
-                    }}/>
+                    }} />
         </FormControl>
 
         <Button backgroundColor={'green.500'} _hover={{ backgroundColor: 'green.600' }} color={'white'}>
