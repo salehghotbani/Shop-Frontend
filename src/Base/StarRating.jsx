@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
-import { setRate } from '../store/features/commentProduct';
+import { setRate } from '../store/features/commentProductSlice';
 import { useDispatch } from 'react-redux';
 
 export const StarRating = () => {

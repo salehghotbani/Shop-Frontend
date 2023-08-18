@@ -10,6 +10,7 @@ const profileSlice = createSlice({
     phoneNumber: '',
     email: '',
     address: '',
+    isSubmitted: false,
   },
   reducers: {
     setFirstName: (state, action) => {
@@ -33,6 +34,9 @@ const profileSlice = createSlice({
     setAddress: (state, action) => {
       state.address = action.payload;
     },
+    setIsSubmitted: (state, action) => {
+      state.isSubmitted = action.payload;
+    },
   },
 });
 
@@ -44,6 +48,7 @@ export const {
   setFirstName,
   setLastName,
   setAddress,
+  setIsSubmitted,
 } = profileSlice.actions;
 
 export default profileSlice.reducer;

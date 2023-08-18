@@ -10,11 +10,22 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setQuestion } from '../store/features/questionProduct';
+import { fetchWithAxios, showToast } from '../../Base/BaseFunctions';
+import { setQuestionForSend } from '../../store/features/questionProductSlice';
 
 export const Question = () => {
-  const questionProduct = useSelector(state => state.questionProduct);
+  const question = useSelector(state => state.questionProduct);
+  const product = useSelector(state => state.product);
   const dispatch = useDispatch();
+
+  const sendQuestion = () => {
+    fetchWithAxios.post(`/shop/createquestion/`, {
+      'product_id': product.productDetails.id,
+      'text': question.questionForSend,
+    }).catch((e) => {
+      showToast('خطا', e.message);
+    });
+  };
 
   return (
     <Box className={'box_shadow'} p={5} borderRadius={9}>
@@ -29,13 +40,14 @@ export const Question = () => {
               سوال:
             </Text>
           </FormLabel>
-          <Textarea minH={'200px'} placeholder='سوال' value={questionProduct.question}
+          <Textarea minH={'200px'} placeholder='سوال' value={question.question}
                     onChange={(event) => {
-                      dispatch(setQuestion(event.target.value));
+                      dispatch(setQuestionForSend(event.target.value));
                     }} />
         </FormControl>
 
-        <Button backgroundColor={'green.500'} _hover={{ backgroundColor: 'green.600' }} color={'white'}>
+        <Button backgroundColor={'green.500'} _hover={{ backgroundColor: 'green.600' }} color={'white'}
+                onClick={() => sendQuestion()}>
           ارسال
         </Button>
       </Stack>

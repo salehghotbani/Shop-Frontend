@@ -13,11 +13,11 @@ import {
   Text,
   Textarea,
 } from '@chakra-ui/react';
-import { StarRating } from './StarRating';
+import { StarRating } from '../../Base/StarRating';
 import { useDispatch, useSelector } from 'react-redux';
-import { setDescription, setNegativePoint, setPositivePoint, setTitle } from '../store/features/commentProduct';
-import { fetchWithAxios, MultiSelect, showToast } from './BaseFunctions';
-import { setHeroDescription, setHeroTitle } from '../store/features/homeSlice';
+import { setDescription, setNegativePoint, setPositivePoint, setTitle } from '../../store/features/commentProductSlice';
+import { fetchWithAxios, MultiSelect, showToast } from '../../Base/BaseFunctions';
+import { setHeroDescription, setHeroTitle } from '../../store/features/homeSlice';
 import { useLocation } from 'react-router-dom';
 
 export const Comment = () => {

@@ -14,7 +14,10 @@ import {
 import React, { useEffect, useState } from 'react';
 import { backendURL, cookies, fetchWithAxios, showToast } from '../../Base/BaseFunctions';
 import { useDispatch, useSelector } from 'react-redux';
-import { setProductDetails, setProductValues, setSameProducts } from '../../store/features/productsSlice';
+import {
+  setProductDetails,
+  setProductValues, setSameProducts,
+} from '../../store/features/productsSlice';
 import { ContactShadows, Environment, OrbitControls } from '@react-three/drei';
 import { Show3DGLB } from './Show3DGLB';
 import { Canvas } from '@react-three/fiber';
@@ -24,8 +27,10 @@ import componentIcon from '../../assets/icons/Design-Tools/vuesax/bold/component
 import descriptionImage from '../../assets/images/product/Description.png';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Carousel from 'react-multi-carousel';
-import { Comment } from '../../Base/Comment';
-import { Question } from '../../Base/Question';
+import { Comment } from './Comment';
+import { Question } from './Question';
+import standardLogo from '../../assets/images/standard.png';
+import availabilityLogo from '../../assets/images/availability.png';
 
 export const Product = () => {
   const dispatch = useDispatch();
@@ -103,10 +108,50 @@ export const Product = () => {
     <>
       <Box mt={8} px={'250px'}>
         <Grid templateColumns='repeat(8, 1fr)' gap={8}>
-          <GridItem colSpan={2} w='100%' my={'70px'} borderRadius={7}>
-            <Button>
-              افزودن به سبد خرید
-            </Button>
+          <GridItem colSpan={2} w='100%' my={'70px'}>
+            <Box borderRadius={7} dir={'rtl'} backgroundColor={'white'} py={3} px={4} className={'box_shadow'}>
+              <Center>
+                <Box backgroundImage={backendURL + '/' + imageOfProduct} w={'200px'} h={'200px'} mx={2}
+                     backgroundPosition={'center'} backgroundRepeat={'no-repeat'}
+                     backgroundSize={'cover'} />
+              </Center>
+              <Box px={1} mt={1}>
+                <Divider borderColor={'gray.400'} />
+              </Box>
+
+              <Flex py={2}>
+                <Image src={standardLogo} w={'auto'} h={'25px'} my={'auto'} />
+                <Text fontSize={'14px'} my={'auto'}>
+                  تضمین استاندارد و سلامت کالا
+                </Text>
+              </Flex>
+
+              <Box px={1}>
+                <Divider borderColor={'gray.400'} />
+              </Box>
+
+              <Flex py={2}>
+                <Image src={availabilityLogo} w={'auto'} h={'30px'} my={'auto'} mr={1.5} ml={2.5} />
+                <Text fontSize={'14px'} my={'auto'}>
+                  موجود در انبار
+                </Text>
+              </Flex>
+
+              <Box px={1} mb={1}>
+                <Divider borderColor={'gray.400'} />
+              </Box>
+
+              <Text fontSize={'16px'} textAlign={'left'} mt={3}>
+                قیمت: {product.productDetails.price !== undefined && parseInt((product.productDetails.price.toString()).replace(/,/g, '')).toLocaleString()} تومان
+              </Text>
+
+              <Center mt={5}>
+                <Button width={'100%'} backgroundColor={'green.500'} _hover={{ backgroundColor: 'green.600' }}
+                        color={'white'}>
+                  افزودن به سبد خرید
+                </Button>
+              </Center>
+            </Box>
           </GridItem>
 
           <GridItem colSpan={3} w='100%' h={'700px'} dir={'rtl'} mt={5}>
@@ -131,15 +176,21 @@ export const Product = () => {
               <Text as={'b'} fontSize={'17px'} cursor={'default'}>ویژگی‌ها</Text>
 
               <Stack spacing={'0.5px'} mt={2}>
-                {Object.keys(product.productValues).map((key) => (
-                  <Flex>
-                    <Image src={componentIcon} w={'15px'} />
-                    <Flex>
-                      <Text mx={1} cursor={'default'} as={'b'}>{key}:</Text>
-                      <Text cursor={'default'}>{product.productValues[key]}</Text>
-                    </Flex>
-                  </Flex>
-                ))}
+                {Object.keys(product.productValues).map((key, index) => {
+                  if (index < 8) {
+                    return (
+                      <Flex key={index}>
+                        <Image src={componentIcon} w={'15px'} />
+                        <Flex>
+                          <Text mx={1} cursor={'default'} as={'b'}>{key}:</Text>
+                          <Text cursor={'default'}>{product.productValues[key]}</Text>
+                        </Flex>
+                      </Flex>
+                    );
+                  } else {
+                    return <></>;
+                  }
+                })}
               </Stack>
             </Box>
           </GridItem>
@@ -235,14 +286,13 @@ export const Product = () => {
                 </Text>
               </Stack>
 
-              <Box mx={2} my={4} backgroundColor={'green.400'} _hover={{ backgroundColor: 'green.500' }}
-                   borderRadius={8} cursor={'pointer'}>
-                <Center>
-                  <Text as={'b'} fontSize={'14px'} color={'white'}>
-                    افزودن به سبد خرید
-                  </Text>
-                </Center>
-              </Box>
+              <Center mx={2} my={4}>
+                <Button size={'sm'} width={'100%'} backgroundColor={'green.500'}
+                        _hover={{ backgroundColor: 'green.600' }}
+                        color={'white'}>
+                  افزودن به سبد خرید
+                </Button>
+              </Center>
             </Box>
           </GridItem>
 
