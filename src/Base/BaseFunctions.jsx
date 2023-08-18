@@ -4,7 +4,7 @@ import Cookies from 'universal-cookie';
 import CreatableSelect from 'react-select/creatable';
 import React from 'react';
 
-export const backendURL = 'http://localhost:8000';
+export const backendURL = 'http://backend.ghotbani.ir';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
