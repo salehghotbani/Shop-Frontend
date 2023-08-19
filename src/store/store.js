@@ -9,6 +9,7 @@ import profileSlice from './features/profileSlice';
 import dashboardSlice from './features/dashboardSlice';
 import questionProductSlice from './features/questionProductSlice';
 import commentProductSlice from './features/commentProductSlice';
+import cartSlice from './features/cartSlice';
 
 const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ const store = configureStore({
     commentProduct: commentProductSlice,
     questionProduct: questionProductSlice,
     dashboard: dashboardSlice,
+    cart: cartSlice,
   },
 });
 

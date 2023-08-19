@@ -12,11 +12,12 @@ import {
   Text,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { backendURL, cookies, fetchWithAxios, showToast } from '../../Base/BaseFunctions';
+import { addToCart, backendURL, cookies, fetchWithAxios, showToast } from '../../Base/BaseFunctions';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setProductDetails,
-  setProductValues, setSameProducts,
+  setProductValues,
+  setSameProducts,
 } from '../../store/features/productsSlice';
 import { ContactShadows, Environment, OrbitControls } from '@react-three/drei';
 import { Show3DGLB } from './Show3DGLB';
@@ -147,7 +148,7 @@ export const Product = () => {
 
               <Center mt={5}>
                 <Button width={'100%'} backgroundColor={'green.500'} _hover={{ backgroundColor: 'green.600' }}
-                        color={'white'}>
+                        color={'white'} onClick={() => addToCart(dispatch, product.productDetails.id)}>
                   افزودن به سبد خرید
                 </Button>
               </Center>
@@ -287,9 +288,9 @@ export const Product = () => {
               </Stack>
 
               <Center mx={2} my={4}>
-                <Button size={'sm'} width={'100%'} backgroundColor={'green.500'}
+                <Button size={'sm'} width={'100%'} backgroundColor={'green.500'} color={'white'}
                         _hover={{ backgroundColor: 'green.600' }}
-                        color={'white'}>
+                        onClick={() => addToCart(dispatch, product.productDetails.id)}>
                   افزودن به سبد خرید
                 </Button>
               </Center>

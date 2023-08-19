@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Button,
@@ -11,21 +11,41 @@ import {
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchWithAxios, showToast } from '../../Base/BaseFunctions';
-import { setQuestionForSend } from '../../store/features/questionProductSlice';
+import { setQuestionForSend, setQuestions } from '../../store/features/questionProductSlice';
+import { useLocation } from 'react-router-dom';
 
 export const Question = () => {
   const question = useSelector(state => state.questionProduct);
   const product = useSelector(state => state.product);
   const dispatch = useDispatch();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  const getQuestion = () => {
+    fetchWithAxios.get(`/shop/getquestionsprod?id=${queryParams.get('id')}`, {})
+      .then((response) => {
+        console.log(response);
+        dispatch(setQuestions(response.data.questions));
+      })
+      .catch((e) => {
+        showToast('خطا', e.message);
+      });
+  };
 
   const sendQuestion = () => {
-    fetchWithAxios.post(`/shop/createquestion/`, {
+    fetchWithAxios.post(`/createquestion/`, {
       'product_id': product.productDetails.id,
       'text': question.questionForSend,
+    }).then(() => {
+      getQuestion();
     }).catch((e) => {
       showToast('خطا', e.message);
     });
   };
+
+  useEffect(() => {
+    getQuestion();
+  }, []);
 
   return (
     <Box className={'box_shadow'} p={5} borderRadius={9}>
@@ -51,6 +71,12 @@ export const Question = () => {
           ارسال
         </Button>
       </Stack>
+
+      {question.questions !== undefined && question.questions.length !== 0 ?
+        <Divider mt={1} borderColor={'gray.400'} />
+        :
+        null
+      }
     </Box>
   );
 };

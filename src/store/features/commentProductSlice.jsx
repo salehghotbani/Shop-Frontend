@@ -8,6 +8,7 @@ const commentProductSlice = createSlice({
     rate: 0,
     positivePoint: [],
     negativePoint: [],
+    comments: [],
   },
   reducers: {
     setTitle: (state, action) => {
@@ -25,6 +26,9 @@ const commentProductSlice = createSlice({
     setNegativePoint: (state, action) => {
       state.negativePoint = action.payload;
     },
+    setComments: (state, action) => {
+      state.comments = action.payload;
+    },
   },
 });
 
@@ -34,6 +38,7 @@ export const {
   setRate,
   setPositivePoint,
   setNegativePoint,
+  setComments,
 } = commentProductSlice.actions;
 
 export default commentProductSlice.reducer;

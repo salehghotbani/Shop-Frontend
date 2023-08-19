@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { PROFILE_DASHBOARD } from '../../Base/DashboardSections';
+import { PROFILE_DASHBOARD } from '../../Components/Dashboard/DashboardSections';
 
 const dashboardSlice = createSlice({
   name: 'footer',
