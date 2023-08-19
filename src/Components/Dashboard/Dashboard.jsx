@@ -1,6 +1,6 @@
 import { Box, Button, Divider, Grid, GridItem, Stack } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { PROFILE_DASHBOARD } from '../../Base/DashboardSections';
+import { PROFILE_DASHBOARD } from './DashboardSections';
 import { Profile } from './Profile';
 import { backgroundBlue } from '../../Base/BaseAttributes';
 import { setDashboardSection } from '../../store/features/dashboardSlice';

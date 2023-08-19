@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
-import { setRate } from '../store/features/commentProductSlice';
-import { useDispatch } from 'react-redux';
+import { setRate } from '../../store/features/commentProductSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const StarRating = () => {
+  const commentProduct = useSelector(state => state.commentProduct);
   const [hoveredRating, setHoveredRating] = useState(0);
-  const [selectedRating, setSelectedRating] = useState(0);
   const dispatch = useDispatch();
 
   const handleRatingHover = (hoveredIndex) => {
@@ -14,7 +14,6 @@ export const StarRating = () => {
   };
 
   const handleRatingClick = (selectedIndex) => {
-    setSelectedRating(selectedIndex);
     dispatch(setRate(selectedIndex));
   };
 
@@ -35,7 +34,7 @@ export const StarRating = () => {
         >
           <StarIcon
             color={
-              index <= (hoveredRating || selectedRating) ? 'yellow.300' : 'gray.300'
+              index <= (hoveredRating || commentProduct.rate) ? 'yellow.300' : 'gray.300'
             }
             boxSize={6}
           />

@@ -36,18 +36,21 @@ import {
   setBrandNames,
   setNumberElementShownPerPage,
   setPage,
-  setProductListFilter, setProducts,
+  setProductListFilter,
+  setProducts,
   setSelectedCategory,
+  setTotalProductsByFiltersAndCategory,
 } from '../../store/features/productsSlice';
 import Select from 'react-select';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { backendURL, cookies, fetchWithAxios, showToast } from '../../Base/BaseFunctions';
+import { addToCart, backendURL, cookies, fetchWithAxios, showToast } from '../../Base/BaseFunctions';
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { maxPrice, minPrice } from '../../Base/BaseAttributes';
 
 export const ListProducts = () => {
   const dispatch = useDispatch();
   const product = useSelector(state => state.product);
+  const commentProduct = useSelector(state => state.commentProduct);
   const location = useLocation();
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
@@ -70,6 +73,7 @@ export const ListProducts = () => {
             tempArray.push(value);
           });
           dispatch(setProducts(tempArray));
+          dispatch(setTotalProductsByFiltersAndCategory(response.data.lenght));
           setTimeToShowProducts(true);
         },
       ).catch((e) => {
@@ -127,66 +131,70 @@ export const ListProducts = () => {
 
   const Pagination = () => {
     const pageRange = 5;
-    const totalPages = 100;
+    const totalPages = product.totalProductsByFiltersAndCategory;
 
     let startPage = Math.max(1, Number(product.page) - Math.floor(pageRange / 2));
     let endPage = Math.min(totalPages, startPage + pageRange - 1);
 
-    if (totalPages <= 5) {
-      endPage = totalPages;
-    }
+    if (totalPages / product.numberElementShownPerPage > 1) {
+      if (totalPages / product.numberElementShownPerPage <= 5) {
+        endPage = totalPages;
+      }
 
-    if (endPage - startPage + 1 < pageRange) {
-      startPage = Math.max(1, endPage - pageRange + 1);
-    }
+      if (endPage - startPage + 1 < pageRange) {
+        startPage = Math.max(1, endPage - pageRange + 1);
+      }
 
-    return (
-      <ButtonGroup spacing='2'>
-        <Button backgroundColor={'white'}
-                borderColor={'gray.300'}
-                textColor={'gray.700'}
-                borderRadius={4} size={'sm'} borderWidth={1}
-                onClick={() => {
-                  if (Number(product.page) > 1) {
-                    dispatch(setPage(Number(product.page) - 1));
-                  } else {
-                    dispatch(setPage(1));
-                  }
-                }}>
-          <ChevronRightIcon />
-        </Button>
-
-        {Array.from({ length: endPage - startPage + 1 }, (_, i) => i + startPage).map((ItteratePage, index) => (
-          <Button key={index}
-                  size={'sm'}
-                  borderWidth={1}
-                  disabled={Number(product.page) === ItteratePage}
-                  borderRadius={4}
-                  onClick={() => {
-                    dispatch(setPage(ItteratePage));
-                  }}
-                  backgroundColor={Number(product.page) === ItteratePage ? 'white' : 'gray.200'}
+      return (
+        <ButtonGroup spacing='2'>
+          <Button backgroundColor={'white'}
                   borderColor={'gray.300'}
-                  _hover={{ backgroundColor: Number(product.page) === ItteratePage ? 'gray.200' : 'gray.600' }}>
-            {ItteratePage}
+                  textColor={'gray.700'}
+                  borderRadius={4} size={'sm'} borderWidth={1}
+                  onClick={() => {
+                    if (Number(product.page) > 1) {
+                      dispatch(setPage(Number(product.page) - 1));
+                    } else {
+                      dispatch(setPage(1));
+                    }
+                  }}>
+            <ChevronRightIcon />
           </Button>
-        ))}
 
-        <Button backgroundColor={'white'}
-                borderColor={'gray.300'}
-                textColor={'gray.700'}
-                borderRadius={4} size={'sm'} borderWidth={1}
-                onClick={() => {
-                  if (Number(product.page) < endPage) {
-                    dispatch(setPage(Number(product.page) + 1));
-                  } else {
-                    dispatch(setPage(endPage));
-                  }
-                }}>
-          <ChevronLeftIcon />
-        </Button>
-      </ButtonGroup>
-    );
+          {Array.from({ length: endPage - startPage + 1 }, (_, i) => i + startPage).map((ItteratePage, index) => (
+            <Button key={index}
+                    size={'sm'}
+                    borderWidth={1}
+                    disabled={Number(product.page) === ItteratePage}
+                    borderRadius={4}
+                    onClick={() => {
+                      dispatch(setPage(ItteratePage));
+                    }}
+                    backgroundColor={Number(product.page) === ItteratePage ? 'white' : 'gray.200'}
+                    borderColor={'gray.300'}
+                    _hover={{ backgroundColor: Number(product.page) === ItteratePage ? 'gray.200' : 'gray.600' }}>
+              {ItteratePage}
+            </Button>
+          ))}
+
+          <Button backgroundColor={'white'}
+                  borderColor={'gray.300'}
+                  textColor={'gray.700'}
+                  borderRadius={4} size={'sm'} borderWidth={1}
+                  onClick={() => {
+                    if (Number(product.page) < endPage) {
+                      dispatch(setPage(Number(product.page) + 1));
+                    } else {
+                      dispatch(setPage(endPage));
+                    }
+                  }}>
+            <ChevronLeftIcon />
+          </Button>
+        </ButtonGroup>
+      );
+    } else {
+      return <></>;
+    }
   };
 
   return (
@@ -365,30 +373,39 @@ export const ListProducts = () => {
               {timeToShowProducts && product.products.map((value, index) => (
                 <Box id={'id' + index} key={index} w={'260px'} h={'470px'} borderRadius={8}
                      cursor={'pointer'} borderWidth={1}
-                     onClick={() => {
-                       cookies.set('productId', value.id, { path: '/' });
-                       navigate(`/productInfo?id=${value.id}&category=${product.selectedCategory}`);
-                     }}
                      onMouseEnter={() => {
                        document.getElementById('id' + index).classList.add('box_shadow');
                      }}
                      onMouseLeave={() => {
                        document.getElementById('id' + index).classList.remove('box_shadow');
                      }}>
-                  <Center>
+                  <Center onClick={() => {
+                    cookies.set('productId', value.id, { path: '/' });
+                    navigate(`/productInfo?id=${value.id}&category=${product.selectedCategory}`);
+                  }}>
                     <Box backgroundImage={backendURL + '/' + value.avatar} w={'240px'} h={'240px'} mt={'30px'}
                          backgroundPosition={'center'} backgroundRepeat={'no-repeat'} backgroundSize={'cover'} />
                   </Center>
                   <Stack mx={5} mt={6}>
-                    <Text fontSize={'18px'} as={'b'}>{value.name}</Text>
-                    <Text fontSize={'16px'} textAlign={'left'}>
-                      قیمت: {value.price !== undefined && parseInt((value.price.toString()).replace(/,/g, '')).toLocaleString()} تومان
-                    </Text>
+                    <Stack mb={3} onClick={() => {
+                      cookies.set('productId', value.id, { path: '/' });
+                      navigate(`/productInfo?id=${value.id}&category=${product.selectedCategory}`);
+                    }}>
+                      <Text fontSize={'18px'} as={'b'}>{value.name}</Text>
+                      <Text fontSize={'16px'} textAlign={'left'}>
+                        قیمت: {value.price !== undefined && parseInt((value.price.toString()).replace(/,/g, '')).toLocaleString()} تومان
+                      </Text>
 
-                    <Text color={'red'} fontSize={'12px'}>
-                      تعداد
-                      فروش: {value.number_sell !== undefined && parseInt((value.number_sell.toString()).replace(/,/g, '')).toLocaleString()}
-                    </Text>
+                      <Text color={'red'} fontSize={'12px'}>
+                        تعداد
+                        فروش: {value.number_sell !== undefined && parseInt((value.number_sell.toString()).replace(/,/g, '')).toLocaleString()}
+                      </Text>
+                    </Stack>
+
+                    <Button width={'100%'} backgroundColor={'green.500'} _hover={{ backgroundColor: 'green.600' }}
+                            color={'white'} onClick={() => addToCart(dispatch, value.id)}>
+                      افزودن به سبد خرید
+                    </Button>
                   </Stack>
                 </Box>
               ))}

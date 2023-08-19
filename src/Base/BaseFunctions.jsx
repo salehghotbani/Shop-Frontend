@@ -1,9 +1,11 @@
 import axios from 'axios';
-import { createStandaloneToast } from '@chakra-ui/react';
+import { Text, createStandaloneToast } from '@chakra-ui/react';
 import Cookies from 'universal-cookie';
 import CreatableSelect from 'react-select/creatable';
 import React from 'react';
-import { setProducts, setTotalProductsByFiltersAndCategory } from '../store/features/productsSlice';
+import { setProducts, setTotalPrice } from '../store/features/cartSlice';
+import moment from 'jalali-moment';
+import jalaliMoment from 'jalali-moment';
 
 //http://51.68.171.248:8000
 export const backendURL = 'http://localhost:8000';
@@ -41,9 +43,16 @@ export const showToast = (title, description, statusIndex = 1, positionIndex = 3
 
 export const cookies = new Cookies();
 
-export const MultiSelect = ({ dispatch, multiValueBackColor, multiValueRemoveBackColor, setReduxMethod }) => {
+export const MultiSelect = ({
+                              dispatch,
+                              multiValueBackColor,
+                              multiValueRemoveBackColor,
+                              setReduxMethod,
+                              defaultValue,
+                            }) => {
   return (
     <CreatableSelect isMulti
+                     defaultValue={defaultValue}
                      noOptionsMessage={() => null}
                      components={{
                        Menu: () => null,
@@ -82,8 +91,44 @@ export const MultiSelect = ({ dispatch, multiValueBackColor, multiValueRemoveBac
                        }),
                      }}
                      onChange={(event) => {
-                       dispatch(setReduxMethod(event));
+                       let array = [];
+                       for (let i = 0; i < event.length; i++) {
+                         array.push(event[i]['value']);
+                       }
+                       dispatch(setReduxMethod(array));
                      }}
     />
   );
+};
+
+export const getProductsCart = (dispatch) => {
+  fetchWithAxios.get(`/getprodscart`, {})
+    .then((response) => {
+      dispatch(setTotalPrice(response['total_price'][0]));
+      dispatch(setProducts(response['products']));
+    })
+    .catch((e) => {
+      showToast('خطا', e.message);
+    });
+};
+
+export const addToCart = (dispatch, product_id) => {
+  fetchWithAxios.post(`/addtocart/`, {
+    'product_id': product_id.toString(),
+  }).then(() => {
+      getProductsCart();
+    },
+  ).catch((e) => {
+    showToast('خطا', e.message);
+  });
+};
+
+export const GregorianToJalaliConverter = ({ gregorianDate }) => {
+  // Parse the original Gregorian date
+  const parsedGregorianDate = moment(gregorianDate);
+
+  // Convert the Gregorian date to Jalali (Persian) using jalali-moment
+  const jalaliDate = jalaliMoment(parsedGregorianDate).format('jYYYY/jM/jD HH:mm');
+
+  return <Text fontSize={'14px'}>{jalaliDate}</Text>;
 };
