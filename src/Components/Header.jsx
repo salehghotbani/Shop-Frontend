@@ -22,13 +22,15 @@ import { useNavigate } from 'react-router-dom';
 import logoPng from '../assets/images/Logo.png';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchWithAxios, showToast } from '../Base/BaseFunctions';
+import { fetchWithAxios, logout, showToast } from '../Base/BaseFunctions';
 import { setCategory, setProductListFilter, setSelectedCategory } from '../store/features/productsSlice';
+import { CART_DASHBOARD, PROFILE_DASHBOARD } from './Dashboard/DashboardSections';
 
 export const Header = () => {
   const navigate = useNavigate();
   const user = useSelector(state => state.user);
   const product = useSelector(state => state.product);
+  const cart = useSelector(state => state.cart);
   const dispatch = useDispatch();
 
   const getCategory = () => {
@@ -49,17 +51,6 @@ export const Header = () => {
     getCategory();
   }, []);
 
-  const logout = () => {
-    fetchWithAxios.get('/logout/', {})
-      .then(function() {
-        navigate('/', { replace: true });
-        document.location.reload();
-      })
-      .catch((e) => {
-        showToast('خطا', e.message);
-      });
-  };
-
   const UserIcon = () => {
     return (
       <Popover>
@@ -73,7 +64,13 @@ export const Header = () => {
             {user.isRegistered ?
               <>
                 <HStack dir={'ltr'} cursor={'pointer'} _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2}
-                        px={3} onClick={() => navigate('/info')}>
+                        px={3}
+                        onClick={() => {
+                          if (user.isRegistered) {
+                            navigate(`/info?dashboard_section=${PROFILE_DASHBOARD}`);
+                            window.location.reload();
+                          }
+                        }}>
                   <Image src={userIconBold} />
                   <Text mb={'-4px'}>
                     {user.username.length > 12 ?
@@ -83,7 +80,7 @@ export const Header = () => {
                     }
                   </Text>
                 </HStack>
-                <HStack cursor={'pointer'} onClick={logout}
+                <HStack cursor={'pointer'} onClick={() => logout(navigate)}
                         _hover={{ backgroundColor: 'gray.200', borderRadius: 5 }} py={2} px={3}>
                   <Image src={loginIcon} />
                   <Text>خروج</Text>
@@ -116,7 +113,22 @@ export const Header = () => {
         <Grid templateColumns='repeat(5, 1fr)' gap={4}>
           <GridItem colStart={0} colEnd={2}>
             <HStack spacing={3}>
-              <Box p={'6px'} backgroundColor={'white'} borderRadius={'100%'} cursor={'pointer'}>
+              <Box p={'6px'} backgroundColor={'white'} borderRadius={'100%'}
+                   cursor={user.isRegistered ? 'pointer' : 'default'} position={'relative'}
+                   onClick={() => {
+                     if (user.isRegistered) {
+                       navigate(`/info?dashboard_section=${CART_DASHBOARD}`, { replace: true });
+                       window.location.reload();
+                     }
+                   }}>
+                {cart.products.length !== 0 &&
+                  <Box position={'absolute'} backgroundColor={'green.600'} w={'22px'} h={'22px'} borderRadius={'100%'}
+                       bottom={-2} left={-1.5}>
+                    <Center>
+                      <Text color={'white'}>{Number(cart.products.length) > 9 ? <>+9</> : cart.products.length}</Text>
+                    </Center>
+                  </Box>
+                }
                 <Image src={shoppingCartLinearIcon} />
               </Box>
               <UserIcon />

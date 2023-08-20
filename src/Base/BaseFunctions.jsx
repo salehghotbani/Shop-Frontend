@@ -101,11 +101,23 @@ export const MultiSelect = ({
   );
 };
 
+export const logout = (navigate) => {
+  fetchWithAxios.get('/logout/', {})
+    .then(function() {
+      navigate('/', { replace: true });
+      document.location.reload();
+    })
+    .catch((e) => {
+      showToast('خطا', e.message);
+    });
+};
+
 export const getProductsCart = (dispatch) => {
   fetchWithAxios.get(`/getprodscart`, {})
     .then((response) => {
-      dispatch(setTotalPrice(response['total_price'][0]));
-      dispatch(setProducts(response['products']));
+      console.log(response);
+      dispatch(setTotalPrice(response.data['total_price'][0]));
+      dispatch(setProducts(response.data.products));
     })
     .catch((e) => {
       showToast('خطا', e.message);
@@ -116,7 +128,18 @@ export const addToCart = (dispatch, product_id) => {
   fetchWithAxios.post(`/addtocart/`, {
     'product_id': product_id.toString(),
   }).then(() => {
-      getProductsCart();
+      getProductsCart(dispatch);
+    },
+  ).catch((e) => {
+    showToast('خطا', e.message);
+  });
+};
+
+export const removeFromCart = (dispatch, product_id) => {
+  fetchWithAxios.post(`/removefromcart/`, {
+    'product_id': product_id.toString(),
+  }).then(() => {
+      getProductsCart(dispatch);
     },
   ).catch((e) => {
     showToast('خطا', e.message);
