@@ -22,7 +22,7 @@ export const Question = () => {
   const queryParams = new URLSearchParams(location.search);
 
   const getQuestion = () => {
-    fetchWithAxios.get(`/shop/getquestionsprod?id=${queryParams.get('id')}`, {})
+    fetchWithAxios.get(`/shop/getquestionsprod/?id=${queryParams.get('id')}&page=1&count=10`, {})
       .then((response) => {
         console.log(response);
         dispatch(setQuestions(response.data.questions));
