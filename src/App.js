@@ -12,7 +12,7 @@ import './App.css';
 import theme from './theme';
 import { Register } from './Components/Authentication/Register';
 import { Login } from './Components/Authentication/Login';
-import { fetchWithAxios } from './Base/BaseFunctions';
+import { fetchWithAxios, getProductsCart } from './Base/BaseFunctions';
 import { useDispatch } from 'react-redux';
 import { setRegistrationStatus, setUsername } from './store/features/userSlice';
 import { ListProducts } from './Components/Products/ListProducts';
@@ -36,6 +36,7 @@ function App() {
 
   useEffect(() => {
     checkLogin();
+    getProductsCart(dispatch);
   }, []);
 
   return (

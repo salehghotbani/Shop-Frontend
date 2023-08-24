@@ -21,7 +21,7 @@ export const ProductsCategorization = () => {
               </Box>
             </Center>
 
-            <SimpleGrid align={'center'} spacing={9} columns={[2, 2, 4, 4]}>
+            <SimpleGrid align={'center'} spacing={9} columns={[1, 1, 2, 3, 4, 4]}>
               {product.category.map((value, index) => {
                 if (index <= 8) {
                   return (

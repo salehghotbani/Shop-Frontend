@@ -12,20 +12,27 @@ export const AmazingOffer = () => {
 
   const responsive = {
     superLargeDesktop: {
-      // the naming can be any, depends on you.
       breakpoint: { max: 4000, min: 3000 },
       items: 7,
     },
     desktop: {
-      breakpoint: { max: 3000, min: 1024 },
+      breakpoint: { max: 3000, min: 1300 },
       items: 5,
     },
+    desktop2: {
+      breakpoint: { max: 1300, min: 1060 },
+      items: 4,
+    },
     tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 2,
+      breakpoint: { max: 1060, min: 800 },
+      items: 3,
     },
     mobile: {
-      breakpoint: { max: 464, min: 0 },
+      breakpoint: { max: 800, min: 570 },
+      items: 2,
+    },
+    small_mobile: {
+      breakpoint: { max: 570, min: 0 },
       items: 1,
     },
   };

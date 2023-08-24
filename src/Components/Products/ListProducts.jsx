@@ -11,10 +11,16 @@ import {
   ButtonGroup,
   Center,
   Divider,
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
   FormControl,
   FormLabel,
   Grid,
   GridItem,
+  Image,
   Menu,
   MenuButton,
   MenuItem,
@@ -31,6 +37,8 @@ import {
   SimpleGrid,
   Stack,
   Text,
+  useDisclosure,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import {
   setBrandNames,
@@ -46,6 +54,196 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { addToCart, backendURL, cookies, fetchWithAxios, showToast } from '../../Base/BaseFunctions';
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { maxPrice, minPrice } from '../../Base/BaseAttributes';
+import filterSVG from '../../assets/icons/filter.svg';
+
+const GetFilter = ({ getProductsByCategory, Pagination }) => {
+  const dispatch = useDispatch();
+  const product = useSelector(state => state.product);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const queryParams = new URLSearchParams(location.search);
+
+  const handleUpdateQueryParam = () => {
+    queryParams.set('min', product.productListFilter.priceRange[0].toString());
+    queryParams.set('max', product.productListFilter.priceRange[1].toString());
+    queryParams.set('brandName', product.productListFilter.brand);
+    queryParams.set('category', product.selectedCategory.toString());
+    queryParams.set('page', product.page.toString());
+
+    const updatedSearch = queryParams.toString();
+
+    navigate({ search: updatedSearch });
+    getProductsByCategory();
+  };
+
+  return (
+    <>
+      <Box position={'sticky'} top={'80px'} dir={'rtl'}>
+        <Box className={'box_shadow'} borderRadius={8} py={5} px={7}>
+          <Grid templateColumns='repeat(2, 1fr)' gap={4}>
+            <GridItem colSpan={1}>
+              <Text textAlign={'right'} cursor={'default'} as={'b'}>فیلترها</Text>
+            </GridItem>
+            <GridItem colSpan={1}>
+              <Text textAlign={'left'} cursor={'pointer'} color={'#8c1111'}>حذف فیلترها</Text>
+            </GridItem>
+          </Grid>
+
+          <Box mt={2}>
+            <Divider borderColor={'black'} orientation='horizontal' />
+          </Box>
+
+          <Accordion allowMultiple>
+            <AccordionItem>
+              <h2>
+                <AccordionButton _hover={{ backgroundColor: '#f3f7fd' }} borderBottomRadius={8}>
+                  <Box as='span' flex='1' textAlign='right'>
+                    برند
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={9}>
+                <Select focusBorderColor='transparent' inputId={'select_brand_search_id'}
+                        options={product.brandNames} placeholder={'جستجو کنید'}
+                        noOptionsMessage={() => 'موردی یافت نشد'}
+                        styles={{
+                          placeholder: (provided) => ({
+                            ...provided,
+                            color: 'gray',
+                          }),
+                          option: (defaultStyles, state) => ({
+                            ...defaultStyles,
+                            color: 'black',
+                            borderColor: 'black',
+                            direction: 'rtl',
+                            cursor: 'pointer',
+                          }),
+                          dropdownIndicator: (provided, state) => ({
+                            ...provided,
+                            color: 'black',
+                          }),
+                          input: (provided, state) => ({
+                            ...provided,
+                            color: 'black',
+                          }),
+                          control: (defaultStyles) => ({
+                            ...defaultStyles,
+                            backgroundColor: 'transparent',
+                            borderColor: 'gray.200',
+                            borderWidth: 1,
+                            boxShadow: 'none',
+                            boxSizing: '10px',
+                            cursor: 'text',
+                          }),
+                          menu: (provided) => ({
+                            ...provided,
+                            marginTop: '-4.5px',
+                            marginBottom: '-4.5px',
+                            maxHeight: '200px',
+                          }),
+                          menuList: (provided) => ({
+                            ...provided,
+                            paddingTop: '0',
+                            paddingBottom: '0',
+                            maxHeight: '200px',
+                          }),
+                          singleValue: (defaultStyles) => ({ ...defaultStyles, color: '#000000' }),
+                        }}
+                        onChange={(event) => {
+                          dispatch(setProductListFilter({
+                            priceRange: [product.productListFilter.priceRange[0], product.productListFilter.priceRange[1]],
+                            brand: event.value.toString(),
+                          }));
+                        }} />
+              </AccordionPanel>
+            </AccordionItem>
+            <AccordionItem>
+              <h2>
+                <AccordionButton _hover={{ backgroundColor: '#f3f7fd' }} borderBottomRadius={8}>
+                  <Box as='span' flex='1' textAlign='right'>
+                    محدوده قیمت
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
+                <Grid dir={'rtl'} templateColumns='repeat(2, 1fr)' gap={4}>
+                  <GridItem colSpan={1}>
+                    <FormControl>
+                      <FormLabel my={'auto'}><Text>از مبلغ:</Text></FormLabel>
+                      <NumberInput size='sm' value={product.productListFilter.priceRange[1]} min={0} step={10000}
+                                   onChange={(event) => {
+                                     dispatch(setProductListFilter({
+                                       priceRange: [Number(product.productListFilter.priceRange[0]), Number(event)],
+                                       brand: product.productListFilter.brand,
+                                     }));
+                                   }}>
+                        <NumberInputField dir={'ltr'} />
+                        <NumberInputStepper>
+                          <NumberIncrementStepper />
+                          <NumberDecrementStepper />
+                        </NumberInputStepper>
+                      </NumberInput>
+                    </FormControl>
+                  </GridItem>
+
+                  <GridItem colSpan={1}>
+                    <FormControl>
+                      <FormLabel my={'auto'}><Text>تا مبلغ:</Text></FormLabel>
+                      <NumberInput size='sm' value={product.productListFilter.priceRange[0]} min={0} step={10000}
+                                   onChange={(event) => {
+                                     dispatch(setProductListFilter({
+                                       priceRange: [Number(event), Number(product.productListFilter.priceRange[1])],
+                                       brand: product.productListFilter.brand,
+                                     }));
+                                   }}>
+                        <NumberInputField dir={'ltr'} />
+                        <NumberInputStepper>
+                          <NumberIncrementStepper />
+                          <NumberDecrementStepper />
+                        </NumberInputStepper>
+                      </NumberInput>
+                    </FormControl>
+                  </GridItem>
+                </Grid>
+
+                <RangeSlider
+                  aria-label={['min', 'max']}
+                  colorScheme='pink'
+                  mt={4}
+                  min={0} max={3000000}
+                  step={1000}
+                  value={product.productListFilter.priceRange}
+                  onChange={(event) => {
+                    dispatch(setProductListFilter({ priceRange: event, brand: product.productListFilter.brand }));
+                  }}
+                >
+                  <RangeSliderTrack>
+                    <RangeSliderFilledTrack />
+                  </RangeSliderTrack>
+                  <RangeSliderThumb index={0} />
+                  <RangeSliderThumb index={1} />
+                </RangeSlider>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+
+          <Button backgroundColor={'green.200'} size={'sm'} mt={2} _hover={{ backgroundColor: 'green.300' }}
+                  onClick={handleUpdateQueryParam}>
+            اعمال فیلتر
+          </Button>
+        </Box>
+
+        <Box mt={5}>
+          <Center>
+            <Pagination />
+          </Center>
+        </Box>
+      </Box>
+    </>
+  );
+};
 
 export const ListProducts = () => {
   const dispatch = useDispatch();
@@ -55,6 +253,8 @@ export const ListProducts = () => {
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const [timeToShowProducts, setTimeToShowProducts] = useState(false);
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const getProductsByCategory = () => {
     let jsonToAPI = {
@@ -114,19 +314,6 @@ export const ListProducts = () => {
     }));
     dispatch(setPage(queryParams.get('page') === null ? 1 : queryParams.get('page')));
     dispatch(setSelectedCategory(queryParams.get('category') === null ? Number(product.selectedCategory) : queryParams.get('category')));
-  };
-
-  const handleUpdateQueryParam = () => {
-    queryParams.set('min', product.productListFilter.priceRange[0].toString());
-    queryParams.set('max', product.productListFilter.priceRange[1].toString());
-    queryParams.set('brandName', product.productListFilter.brand);
-    queryParams.set('category', product.selectedCategory.toString());
-    queryParams.set('page', product.page.toString());
-
-    const updatedSearch = queryParams.toString();
-
-    navigate({ search: updatedSearch });
-    getProductsByCategory();
   };
 
   const Pagination = () => {
@@ -200,178 +387,31 @@ export const ListProducts = () => {
   return (
     <>
       <Grid dir={'rtl'} templateColumns='repeat(8, 1fr)' gap={4} pt={4} px={8}>
-        <GridItem colStart={1} colEnd={3}>
-          <Box position={'sticky'} top={'80px'} dir={'rtl'}>
-            <Box className={'box_shadow'} borderRadius={8} py={5} px={7}>
-              <Grid templateColumns='repeat(2, 1fr)' gap={4}>
-                <GridItem colSpan={1}>
-                  <Text textAlign={'right'} cursor={'default'} as={'b'}>فیلترها</Text>
-                </GridItem>
-                <GridItem colSpan={1}>
-                  <Text textAlign={'left'} cursor={'pointer'} color={'#8c1111'}>حذف فیلترها</Text>
-                </GridItem>
-              </Grid>
+        {isMobile ?
+          <>
+            <Image cursor={'pointer'} onClick={onOpen} src={filterSVG} w={'30px'} h={'30px'} />
+            <Drawer placement={'bottom'} onClose={onClose} isOpen={isOpen}>
+              <DrawerOverlay />
+              <DrawerContent>
+                <DrawerHeader dir={'rtl'} borderBottomWidth='1px'>فیلتر</DrawerHeader>
+                <DrawerBody>
+                  <GetFilter getProductsByCategory={getProductsByCategory} Pagination={Pagination}/>
+                </DrawerBody>
+              </DrawerContent>
+            </Drawer>
+          </>
+          :
+          <GridItem minW={'300px'} colStart={isMobile ? 0 : 1} colEnd={isMobile ? 0 : 3}>
+            <GetFilter getProductsByCategory={getProductsByCategory} Pagination={Pagination}/>
+          </GridItem>
+        }
 
-              <Box mt={2}>
-                <Divider borderColor={'black'} orientation='horizontal' />
-              </Box>
-
-              <Accordion allowMultiple>
-                <AccordionItem>
-                  <h2>
-                    <AccordionButton _hover={{ backgroundColor: '#f3f7fd' }} borderBottomRadius={8}>
-                      <Box as='span' flex='1' textAlign='right'>
-                        برند
-                      </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
-                  </h2>
-                  <AccordionPanel pb={9}>
-                    <Select focusBorderColor='transparent' inputId={'select_brand_search_id'}
-                            options={product.brandNames} placeholder={'جستجو کنید'}
-                            noOptionsMessage={() => 'موردی یافت نشد'}
-                            styles={{
-                              placeholder: (provided) => ({
-                                ...provided,
-                                color: 'gray',
-                              }),
-                              option: (defaultStyles, state) => ({
-                                ...defaultStyles,
-                                color: 'black',
-                                borderColor: 'black',
-                                direction: 'rtl',
-                                cursor: 'pointer',
-                              }),
-                              dropdownIndicator: (provided, state) => ({
-                                ...provided,
-                                color: 'black',
-                              }),
-                              input: (provided, state) => ({
-                                ...provided,
-                                color: 'black',
-                              }),
-                              control: (defaultStyles) => ({
-                                ...defaultStyles,
-                                backgroundColor: 'transparent',
-                                borderColor: 'gray.200',
-                                borderWidth: 1,
-                                boxShadow: 'none',
-                                boxSizing: '10px',
-                                cursor: 'text',
-                              }),
-                              menu: (provided) => ({
-                                ...provided,
-                                marginTop: '-4.5px',
-                                marginBottom: '-4.5px',
-                                maxHeight: '200px',
-                              }),
-                              menuList: (provided) => ({
-                                ...provided,
-                                paddingTop: '0',
-                                paddingBottom: '0',
-                                maxHeight: '200px',
-                              }),
-                              singleValue: (defaultStyles) => ({ ...defaultStyles, color: '#000000' }),
-                            }}
-                            onChange={(event) => {
-                              dispatch(setProductListFilter({
-                                priceRange: [product.productListFilter.priceRange[0], product.productListFilter.priceRange[1]],
-                                brand: event.value.toString(),
-                              }));
-                            }} />
-                  </AccordionPanel>
-                </AccordionItem>
-                <AccordionItem>
-                  <h2>
-                    <AccordionButton _hover={{ backgroundColor: '#f3f7fd' }} borderBottomRadius={8}>
-                      <Box as='span' flex='1' textAlign='right'>
-                        محدوده قیمت
-                      </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
-                  </h2>
-                  <AccordionPanel pb={4}>
-                    <Grid dir={'rtl'} templateColumns='repeat(2, 1fr)' gap={4}>
-                      <GridItem colSpan={1}>
-                        <FormControl>
-                          <FormLabel my={'auto'}><Text>از مبلغ:</Text></FormLabel>
-                          <NumberInput size='sm' value={product.productListFilter.priceRange[1]} min={0} step={10000}
-                                       onChange={(event) => {
-                                         dispatch(setProductListFilter({
-                                           priceRange: [Number(product.productListFilter.priceRange[0]), Number(event)],
-                                           brand: product.productListFilter.brand,
-                                         }));
-                                       }}>
-                            <NumberInputField dir={'ltr'} />
-                            <NumberInputStepper>
-                              <NumberIncrementStepper />
-                              <NumberDecrementStepper />
-                            </NumberInputStepper>
-                          </NumberInput>
-                        </FormControl>
-                      </GridItem>
-
-                      <GridItem colSpan={1}>
-                        <FormControl>
-                          <FormLabel my={'auto'}><Text>تا مبلغ:</Text></FormLabel>
-                          <NumberInput size='sm' value={product.productListFilter.priceRange[0]} min={0} step={10000}
-                                       onChange={(event) => {
-                                         dispatch(setProductListFilter({
-                                           priceRange: [Number(event), Number(product.productListFilter.priceRange[1])],
-                                           brand: product.productListFilter.brand,
-                                         }));
-                                       }}>
-                            <NumberInputField dir={'ltr'} />
-                            <NumberInputStepper>
-                              <NumberIncrementStepper />
-                              <NumberDecrementStepper />
-                            </NumberInputStepper>
-                          </NumberInput>
-                        </FormControl>
-                      </GridItem>
-                    </Grid>
-
-                    <RangeSlider
-                      aria-label={['min', 'max']}
-                      colorScheme='pink'
-                      mt={4}
-                      min={0} max={3000000}
-                      step={1000}
-                      value={product.productListFilter.priceRange}
-                      onChange={(event) => {
-                        dispatch(setProductListFilter({ priceRange: event, brand: product.productListFilter.brand }));
-                      }}
-                    >
-                      <RangeSliderTrack>
-                        <RangeSliderFilledTrack />
-                      </RangeSliderTrack>
-                      <RangeSliderThumb index={0} />
-                      <RangeSliderThumb index={1} />
-                    </RangeSlider>
-                  </AccordionPanel>
-                </AccordionItem>
-              </Accordion>
-
-              <Button backgroundColor={'green.200'} size={'sm'} mt={2} _hover={{ backgroundColor: 'green.300' }}
-                      onClick={handleUpdateQueryParam}>
-                اعمال فیلتر
-              </Button>
-            </Box>
-
-            <Box mt={5}>
-              <Center>
-                <Pagination />
-              </Center>
-            </Box>
-          </Box>
-        </GridItem>
-
-        <GridItem colStart={3} colEnd={9}>
+        <GridItem colStart={isMobile ? 1 : 3} colEnd={9}>
           <Box w={'100%'} overflowY={'auto'} className={'box_shadow'} p={5} pl={6} borderRadius={8} h={'89vh'}
                dir={'ltr'}>
-            <SimpleGrid columns={5} spacing={4} mb={5} dir={'rtl'}>
+            <SimpleGrid columns={[1, 1, 2, 3, 4, 5]} spacing={4} mb={5} dir={'rtl'}>
               {timeToShowProducts && product.products.map((value, index) => (
-                <Box id={'id' + index} key={index} w={'260px'} h={'470px'} borderRadius={8}
+                <Box id={'id' + index} key={index} borderRadius={8} py={3}
                      cursor={'pointer'} borderWidth={1}
                      onMouseEnter={() => {
                        document.getElementById('id' + index).classList.add('box_shadow');

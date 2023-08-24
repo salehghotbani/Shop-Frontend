@@ -43,7 +43,7 @@ export const Product = () => {
   const queryParams = new URLSearchParams(location.search);
 
   const getProductDetails = () => {
-    fetchWithAxios.get(`/shop/getproddetails/?id=${cookies.get('productId')}`, {})
+    fetchWithAxios.get(`/shop/getproddetails/?id=${queryParams.get('id')}`, {})
       .then(function(response) {
           dispatch(setProductDetails(response.data));
           setImageOfProduct(response.data.avatar);
@@ -54,7 +54,7 @@ export const Product = () => {
   };
 
   const getProductValues = () => {
-    fetchWithAxios.get(`/shop/getprodvalues/?id=${cookies.get('productId')}`, {})
+    fetchWithAxios.get(`/shop/getprodvalues/?id=${queryParams.get('id')}`, {})
       .then(function(response) {
           dispatch(setProductValues(response.data));
         },

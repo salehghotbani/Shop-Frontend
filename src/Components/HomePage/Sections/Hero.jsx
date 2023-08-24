@@ -1,4 +1,4 @@
-import { Box, Button, Center, Heading, Image, Text } from '@chakra-ui/react';
+import { Box, Heading, Image, Text, useMediaQuery } from '@chakra-ui/react';
 import heroBackgroundImage from '../../../assets/images/home page/HomeHero.png';
 import heroPhoneBackgroundImage from '../../../assets/images/home page/HomeHeroPhone.png';
 import heroLineBackgroundImage from '../../../assets/images/home page/HomeHeroLine.png';
@@ -11,6 +11,7 @@ export const Hero = () => {
   const [showOverlay, setShowOverlay] = useState(false);
   const [showOverlayText, setShowOverlayText] = useState(false);
   const home = useSelector(state => state.home);
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
@@ -44,7 +45,8 @@ export const Hero = () => {
           opacity: showOverlay ? 1 : 0,
         }}
       >
-        <Image opacity={showOverlay ? 1 : 0} src={heroPhoneBackgroundImage} alt='Overlay' objectFit={'cover'} />
+        <Image width={['140px', '160px', '240px', '320px', '400px', '500px']} opacity={showOverlay ? 1 : 0}
+               src={heroPhoneBackgroundImage} alt='Overlay' objectFit={'cover'} />
       </motion.div>
 
       <motion.div
@@ -54,32 +56,26 @@ export const Hero = () => {
           y: -((mousePosition.y - window.innerHeight / 2) / 100),
         }}
       >
-        <Image src={heroLineBackgroundImage} alt='Overlay' objectFit={'cover'} />
+        <Image width={['140px', '180px', '210px', '230px', '290px', '340px']} src={heroLineBackgroundImage}
+               alt='Overlay' objectFit={'cover'} />
       </motion.div>
 
       <motion.div
         style={{ position: 'absolute', top: '30%', left: '10%', zIndex: 1 }}
         animate={{ opacity: showOverlayText ? 1 : 0 }}
       >
-        <Box dir={'rtl'} w={'700px'}>
+        <Box dir={'rtl'} w={['300px', '280px', '330px', '430px', '560px', '640px', '700px']}>
           <Box textAlign={'justify'} mb={5}>
-            <Heading mb={3} cursor={'default'} opacity={showOverlayText ? 1 : 0} dir={'rtl'} fontSize={'45px'}
-                     as={'h2'}>
+            <Heading mb={3} cursor={'default'} opacity={showOverlayText ? 1 : 0} dir={'rtl'}
+                     fontSize={['10px', '15px', '25px', '35px', '45px']} as={'h2'}>
               {home.heroTitle}
             </Heading>
 
-            <Text cursor={'default'} opacity={showOverlayText ? 1 : 0} fontSize={'25px'} as={'b'}>
+            <Text cursor={'default'} opacity={showOverlayText ? 1 : 0}
+                  fontSize={['5px', '10px', '15px', '20px', '25px']} as={'b'}>
               {home.heroDescription}
             </Text>
           </Box>
-
-          <Center>
-            <Button w={'110px'} h={'50px'} backgroundColor={'#8FA5D1'}>
-              <Text opacity={showOverlayText ? 1 : 0}>
-                خرید
-              </Text>
-            </Button>
-          </Center>
         </Box>
       </motion.div>
     </Box>

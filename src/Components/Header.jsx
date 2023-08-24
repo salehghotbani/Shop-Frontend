@@ -12,6 +12,7 @@ import {
   Center,
   Button,
   Stack,
+  useBoolean, PopoverArrow,
 } from '@chakra-ui/react';
 import shoppingCartLinearIcon from '../assets/icons/Shop/vuesax/linear/shopping-cart.svg';
 import userIcon from '../assets/icons/Users/vuesax/linear/user.svg';
@@ -25,6 +26,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchWithAxios, logout, showToast } from '../Base/BaseFunctions';
 import { setCategory, setProductListFilter, setSelectedCategory } from '../store/features/productsSlice';
 import { CART_DASHBOARD, PROFILE_DASHBOARD } from './Dashboard/DashboardSections';
+import { GetCart } from './Dashboard/Cart';
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -32,6 +34,7 @@ export const Header = () => {
   const product = useSelector(state => state.product);
   const cart = useSelector(state => state.cart);
   const dispatch = useDispatch();
+  const [isOpenCardItemsPopover, setIsOpenCardItemsPopover] = useBoolean();
 
   const getCategory = () => {
     fetchWithAxios.get('/shop/category/', {})
@@ -55,8 +58,8 @@ export const Header = () => {
     return (
       <Popover>
         <PopoverTrigger>
-          <Box p={'6px'} backgroundColor={'white'} borderRadius={'100%'} cursor={'pointer'}>
-            <Image src={userIcon} />
+          <Box p={'6px'} backgroundColor={'white'} borderRadius={'100%'} cursor={'pointer'} w={'40px'} h={'40px'}>
+            <Center><Image src={userIcon} w={'28px'} h={'28px'} /></Center>
           </Box>
         </PopoverTrigger>
         <PopoverContent w={'220px'}>
@@ -113,24 +116,40 @@ export const Header = () => {
         <Grid templateColumns='repeat(5, 1fr)' gap={4}>
           <GridItem colStart={0} colEnd={2}>
             <HStack spacing={3}>
-              <Box p={'6px'} backgroundColor={'white'} borderRadius={'100%'}
-                   cursor={user.isRegistered ? 'pointer' : 'default'} position={'relative'}
-                   onClick={() => {
-                     if (user.isRegistered) {
-                       navigate(`/info?dashboard_section=${CART_DASHBOARD}`, { replace: true });
-                       window.location.reload();
-                     }
-                   }}>
-                {cart.products.length !== 0 &&
-                  <Box position={'absolute'} backgroundColor={'green.600'} w={'22px'} h={'22px'} borderRadius={'100%'}
-                       bottom={-2} left={-1.5}>
-                    <Center>
-                      <Text color={'white'}>{Number(cart.products.length) > 9 ? <>+9</> : cart.products.length}</Text>
-                    </Center>
+              <Popover isOpen={isOpenCardItemsPopover} onClose={setIsOpenCardItemsPopover.on} placement='bottom'>
+                <PopoverTrigger>
+                  <Box p={'6px'} backgroundColor={'white'} borderRadius={'100%'} position={'relative'} w={'40px'}
+                       h={'40px'} cursor={user.isRegistered ? 'pointer' : 'default'}
+                       onClick={() => {
+                         if (user.isRegistered) {
+                           navigate(`/info?dashboard_section=${CART_DASHBOARD}`, { replace: true });
+                           window.location.reload();
+                         }
+                       }}
+                       onMouseEnter={setIsOpenCardItemsPopover.on}
+                       onMouseLeave={setIsOpenCardItemsPopover.off}>
+                    {cart.products.length !== 0 &&
+                      <Box position={'absolute'} backgroundColor={'green.600'} w={'22px'} h={'22px'}
+                           borderRadius={'100%'}
+                           bottom={-2} left={-1.5}>
+                        <Center>
+                          <Text
+                            color={'white'}>{Number(cart.products.length) > 9 ? <>+9</> : cart.products.length}</Text>
+                        </Center>
+                      </Box>
+                    }
+                    <Center><Image src={shoppingCartLinearIcon} w={'28px'} /></Center>
                   </Box>
-                }
-                <Image src={shoppingCartLinearIcon} />
-              </Box>
+                </PopoverTrigger>
+
+                <PopoverContent w={'600px'} maxH={'340px'} dir={'ltr'} overflowY={'auto'}>
+                  <PopoverBody dir={'rtl'} onMouseEnter={setIsOpenCardItemsPopover.on}
+                               onMouseLeave={setIsOpenCardItemsPopover.off}>
+                    <PopoverArrow />
+                    <GetCart />
+                  </PopoverBody>
+                </PopoverContent>
+              </Popover>
               <UserIcon />
             </HStack>
           </GridItem>

@@ -116,7 +116,7 @@ export const getProductsCart = (dispatch) => {
   fetchWithAxios.get(`/getprodscart`, {})
     .then((response) => {
       console.log(response);
-      dispatch(setTotalPrice(response.data['total_price'][0]));
+      dispatch(setTotalPrice(response.data['total_price']));
       dispatch(setProducts(response.data.products));
     })
     .catch((e) => {
