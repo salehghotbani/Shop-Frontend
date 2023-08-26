@@ -42,6 +42,7 @@ import {
 } from '@chakra-ui/react';
 import {
   setBrandNames,
+  setMaximumAmountFilter,
   setNumberElementShownPerPage,
   setPage,
   setProductListFilter,
@@ -53,8 +54,11 @@ import Select from 'react-select';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { addToCart, backendURL, cookies, fetchWithAxios, showToast } from '../../Base/BaseFunctions';
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import { maxPrice, minPrice } from '../../Base/BaseAttributes';
+import { minPrice } from '../../Base/BaseAttributes';
 import filterSVG from '../../assets/icons/filter.svg';
+import { Canvas } from '@react-three/fiber';
+import { Environment, OrbitControls } from '@react-three/drei';
+import { Show3DGLB } from './Show3DGLB';
 
 const GetFilter = ({ getProductsByCategory, Pagination }) => {
   const dispatch = useDispatch();
@@ -103,7 +107,7 @@ const GetFilter = ({ getProductsByCategory, Pagination }) => {
                   <AccordionIcon />
                 </AccordionButton>
               </h2>
-              <AccordionPanel pb={9}>
+              <AccordionPanel pb={9} h={'100px'}>
                 <Select focusBorderColor='transparent' inputId={'select_brand_search_id'}
                         options={product.brandNames} placeholder={'جستجو کنید'}
                         noOptionsMessage={() => 'موردی یافت نشد'}
@@ -140,13 +144,13 @@ const GetFilter = ({ getProductsByCategory, Pagination }) => {
                             ...provided,
                             marginTop: '-4.5px',
                             marginBottom: '-4.5px',
-                            maxHeight: '200px',
+                            maxHeight: '100px',
                           }),
                           menuList: (provided) => ({
                             ...provided,
                             paddingTop: '0',
                             paddingBottom: '0',
-                            maxHeight: '200px',
+                            maxHeight: '100px',
                           }),
                           singleValue: (defaultStyles) => ({ ...defaultStyles, color: '#000000' }),
                         }}
@@ -212,7 +216,7 @@ const GetFilter = ({ getProductsByCategory, Pagination }) => {
                   aria-label={['min', 'max']}
                   colorScheme='pink'
                   mt={4}
-                  min={0} max={3000000}
+                  min={0} max={product.maximumAmountFilter}
                   step={1000}
                   value={product.productListFilter.priceRange}
                   onChange={(event) => {
@@ -305,15 +309,25 @@ export const ListProducts = () => {
   }, [product.selectedCategory]);
 
   const getQueryParameter = () => {
-    dispatch(setProductListFilter({
-      priceRange: [
-        queryParams.get('min') === null ? minPrice.toString() : Number(queryParams.get('min')),
-        queryParams.get('max') === null ? maxPrice.toString() : Number(queryParams.get('max')),
-      ],
-      brand: queryParams.get('brandName') === null ? '' : queryParams.get('brandName'),
-    }));
-    dispatch(setPage(queryParams.get('page') === null ? 1 : queryParams.get('page')));
-    dispatch(setSelectedCategory(queryParams.get('category') === null ? Number(product.selectedCategory) : queryParams.get('category')));
+    let maxPriceTemp = 1;
+    fetchWithAxios.get(`/shop/getmaxprice/?category_id=${Number(queryParams.get('category'))}`, {})
+      .then(function(response) {
+          maxPriceTemp = Number(response.data['price__max']);
+          dispatch(setMaximumAmountFilter(Number(response.data['price__max'])));
+
+          dispatch(setProductListFilter({
+            priceRange: [
+              queryParams.get('min') === null ? minPrice.toString() : Number(queryParams.get('min')),
+              queryParams.get('max') === null  ? maxPriceTemp : Number(queryParams.get('max')),
+            ],
+            brand: queryParams.get('brandName') === null ? '' : queryParams.get('brandName'),
+          }));
+          dispatch(setPage(queryParams.get('page') === null ? 1 : queryParams.get('page')));
+          dispatch(setSelectedCategory(queryParams.get('category') === null ? Number(product.selectedCategory) : queryParams.get('category')));
+        },
+      ).catch((e) => {
+      showToast('خطا', e.message);
+    });
   };
 
   const Pagination = () => {
@@ -386,7 +400,7 @@ export const ListProducts = () => {
 
   return (
     <>
-      <Grid dir={'rtl'} templateColumns='repeat(8, 1fr)' gap={4} pt={4} px={8}>
+      <Grid dir={'rtl'} templateColumns={isMobile ? 'repeat(1, 1fr)' : 'repeat(8, 1fr)'} gap={4} pt={4} px={8}>
         {isMobile ?
           <>
             <Image cursor={'pointer'} onClick={onOpen} src={filterSVG} w={'30px'} h={'30px'} />
@@ -395,18 +409,18 @@ export const ListProducts = () => {
               <DrawerContent>
                 <DrawerHeader dir={'rtl'} borderBottomWidth='1px'>فیلتر</DrawerHeader>
                 <DrawerBody>
-                  <GetFilter getProductsByCategory={getProductsByCategory} Pagination={Pagination}/>
+                  <GetFilter getProductsByCategory={getProductsByCategory} Pagination={Pagination} />
                 </DrawerBody>
               </DrawerContent>
             </Drawer>
           </>
           :
-          <GridItem minW={'300px'} colStart={isMobile ? 0 : 1} colEnd={isMobile ? 0 : 3}>
-            <GetFilter getProductsByCategory={getProductsByCategory} Pagination={Pagination}/>
+          <GridItem minW={'300px'} colSpan={isMobile ? 0 : 2}>
+            <GetFilter getProductsByCategory={getProductsByCategory} Pagination={Pagination} />
           </GridItem>
         }
 
-        <GridItem colStart={isMobile ? 1 : 3} colEnd={9}>
+        <GridItem colSpan={isMobile ? 1 : 6}>
           <Box w={'100%'} overflowY={'auto'} className={'box_shadow'} p={5} pl={6} borderRadius={8} h={'89vh'}
                dir={'ltr'}>
             <SimpleGrid columns={[1, 1, 2, 3, 4, 5]} spacing={4} mb={5} dir={'rtl'}>
@@ -419,12 +433,23 @@ export const ListProducts = () => {
                      onMouseLeave={() => {
                        document.getElementById('id' + index).classList.remove('box_shadow');
                      }}>
-                  <Center onClick={() => {
-                    cookies.set('productId', value.id, { path: '/' });
-                    navigate(`/productInfo?id=${value.id}&category=${product.selectedCategory}`);
-                  }}>
-                    <Box backgroundImage={backendURL + '/' + value.avatar} w={'240px'} h={'240px'} mt={'30px'}
-                         backgroundPosition={'center'} backgroundRepeat={'no-repeat'} backgroundSize={'cover'} />
+                  <Center mt={'30px'}
+                          onClick={() => {
+                            cookies.set('productId', value.id, { path: '/' });
+                            navigate(`/productInfo?id=${value.id}&category=${product.selectedCategory}`);
+                          }}>
+                    {(value.avatar).toString().split('.')[(value.avatar).toString().split('.').length - 1] === 'glb' ?
+                      <>
+                        <Canvas camera={{ position: [0, 0.2, 0.4] }} style={{ height: '240px' }}>
+                          <Environment preset='forest' />
+                          <Show3DGLB source={backendURL + '/' + value.avatar} />
+                          <OrbitControls autoRotate />
+                        </Canvas>
+                      </>
+                      :
+                      <Box backgroundImage={backendURL + '/' + value.avatar} w={'240px'} h={'240px'}
+                           backgroundPosition={'center'} backgroundRepeat={'no-repeat'} backgroundSize={'cover'} />
+                    }
                   </Center>
                   <Stack mx={5} mt={6}>
                     <Stack mb={3} onClick={() => {
@@ -452,7 +477,7 @@ export const ListProducts = () => {
             </SimpleGrid>
           </Box>
         </GridItem>
-      </Grid>
+      </Grid>s
 
       <Box position='fixed' bottom='0' right='0' px={9} py={7}>
         <Menu maxW={'100px'}>

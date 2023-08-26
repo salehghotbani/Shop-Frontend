@@ -112,9 +112,19 @@ export const Product = () => {
           <GridItem colSpan={2} w='100%' my={'70px'}>
             <Box borderRadius={7} dir={'rtl'} backgroundColor={'white'} py={3} px={4} className={'box_shadow'}>
               <Center>
-                <Box backgroundImage={backendURL + '/' + imageOfProduct} w={'200px'} h={'200px'} mx={2}
-                     backgroundPosition={'center'} backgroundRepeat={'no-repeat'}
-                     backgroundSize={'cover'} />
+                {imageOfProduct !== null && (imageOfProduct).toString().split('.')[(imageOfProduct).toString().split('.').length - 1] === 'glb' ?
+                  <>
+                    <Canvas camera={{ position: [0, 0.2, 0.4] }}>
+                      <Environment preset='forest' />
+                      <Show3DGLB source={backendURL + '/' + imageOfProduct} />
+                      <OrbitControls />
+                    </Canvas>
+                  </>
+                  :
+                  <Box backgroundImage={backendURL + '/' + imageOfProduct} w={'200px'} h={'200px'} mx={2}
+                       backgroundPosition={'center'} backgroundRepeat={'no-repeat'}
+                       backgroundSize={'cover'} />
+                }
               </Center>
               <Box px={1} mt={1}>
                 <Divider borderColor={'gray.400'} />
@@ -202,11 +212,9 @@ export const Product = () => {
                 <>
                   <Canvas shadows camera={{ position: [0, 0.2, 0.4] }}>
                     <Environment preset='forest' />
-                    <Show3DGLB />
-                    <ContactShadows position={[0, -0.8, 0]} color='#ffffff' />
+                    <Show3DGLB source={backendURL + '/' + imageOfProduct} />
                     <OrbitControls autoRotate />
                   </Canvas>
-                  <Show3DGLB />
                 </>
                 :
                 <Box>
@@ -271,9 +279,19 @@ export const Product = () => {
             <Box minW={'200px'} maxW={'250px'} pt={5} borderRadius={8} borderWidth={1} className={'box_shadow'}
                  dir={'rtl'} position={'sticky'} top={'80px'}>
               <Center>
-                <Box backgroundImage={backendURL + '/' + imageOfProduct} w={'200px'} h={'200px'} mx={2}
-                     backgroundPosition={'center'} backgroundRepeat={'no-repeat'}
-                     backgroundSize={'cover'} />
+                {imageOfProduct !== null && (imageOfProduct).toString().split('.')[(imageOfProduct).toString().split('.').length - 1] === 'glb' ?
+                  <>
+                    <Canvas shadows camera={{ position: [0, 0.2, 0.4] }}>
+                      <Environment preset='forest' />
+                      <Show3DGLB source={backendURL + '/' + imageOfProduct} />
+                      <OrbitControls />
+                    </Canvas>
+                  </>
+                  :
+                  <Box backgroundImage={backendURL + '/' + imageOfProduct} w={'200px'} h={'200px'} mx={2}
+                       backgroundPosition={'center'} backgroundRepeat={'no-repeat'}
+                       backgroundSize={'cover'} />
+                }
               </Center>
 
               <Box mx={5}>

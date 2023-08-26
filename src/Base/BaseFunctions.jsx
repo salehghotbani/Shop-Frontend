@@ -7,8 +7,8 @@ import { setProducts, setTotalPrice } from '../store/features/cartSlice';
 import moment from 'jalali-moment';
 import jalaliMoment from 'jalali-moment';
 
-//http://51.68.171.248:8000
-export const backendURL = 'http://localhost:8000';
+// https://backend.ghotbani.ir
+export const backendURL = 'http://192.168.1.106:8000';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';

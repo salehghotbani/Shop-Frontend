@@ -32,6 +32,9 @@ import availabilityLogo from '../../assets/images/availability.png';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import componentIcon from '../../assets/icons/Design-Tools/vuesax/bold/component.svg';
 import { useNavigate } from 'react-router-dom';
+import { Canvas } from '@react-three/fiber';
+import { Environment, OrbitControls } from '@react-three/drei';
+import { Show3DGLB } from '../Products/Show3DGLB';
 
 export const GetCart = () => {
   const cart = useSelector(state => state.cart);
@@ -48,13 +51,23 @@ export const GetCart = () => {
         <Grid templateColumns='repeat(4, 1fr)' gap={5} p={'30px'}>
           <GridItem colSpan={1} dir={'rtl'}>
             <Center borderRadius={'30px'} p={5}>
-              <Box cursor={'pointer'} backgroundImage={backendURL + '/' + value.avatar} w={'200px'}
-                   h={'200px'} backgroundPosition={'center'} backgroundRepeat={'no-repeat'}
-                   backgroundSize={'cover'}
-                   onClick={() => {
-                     navigate(`/productInfo?id=${value.id}&category=${value.category_id}`);
-                     window.location.reload();
-                   }} />
+              {value.avatar !== null && (value.avatar).toString().split('.')[(value.avatar).toString().split('.').length - 1] === 'glb' ?
+                <>
+                  <Canvas camera={{ position: [0, 0.2, 0.4] }} style={{ height: '200px', minWidth: '140px' }}>
+                    <Environment preset='forest' />
+                    <Show3DGLB source={backendURL + '/' + value.avatar} />
+                    <OrbitControls autoRotate />
+                  </Canvas>
+                </>
+                :
+                <Box cursor={'pointer'} backgroundImage={backendURL + '/' + value.avatar} w={'200px'}
+                     h={'200px'} backgroundPosition={'center'} backgroundRepeat={'no-repeat'}
+                     backgroundSize={'cover'}
+                     onClick={() => {
+                       navigate(`/productInfo?id=${value.id}&category=${value.category_id}`);
+                       window.location.reload();
+                     }} />
+              }
             </Center>
           </GridItem>
 
@@ -133,13 +146,49 @@ export const GetCart = () => {
 export const Cart = () => {
   const dispatch = useDispatch();
   const cart = useSelector(state => state.cart);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getProductsCart(dispatch);
   }, []);
 
+  const createOrderIdPay = (order_id) => {
+    fetchWithAxios.get('/getcustomerinfo', {})
+      .then((userInfoResponse) => {
+        fetchWithAxios.post('https://api.idpay.ir/v1.1/payment',
+          {
+            'order_id': parseInt(order_id),
+            'amount': parseInt(cart.totalPrice) * 10,
+            'name': userInfoResponse.data.first_name + ' ' + userInfoResponse.data.last_name,
+            'phone': userInfoResponse.data.phone_number,
+            'mail': userInfoResponse.email,
+            'desc': '',
+            'callback': 'https://localhost:3000/callback',
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'X-API-KEY': '6a7f99eb-7c20-4412-a972-6dfb7cd253a4',
+              'X-SANDBOX': 1,
+            },
+          })
+          .then((response) => {
+            navigate(response.data.link, { replace: true });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const createOrder = () => {
     fetchWithAxios.get('/delivery/createorder/', {})
+      .then((response) => {
+        createOrderIdPay(response.data.order_id);
+      })
       .catch((e) => {
         showToast('خطا', e.message);
       });

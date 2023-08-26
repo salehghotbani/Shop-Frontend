@@ -7,6 +7,7 @@ const productsSlice = createSlice({
     amazingProducts: [],
     bestSellingProducts: [],
     productListFilter: { priceRange: [0, 2000000], brand: '' },
+    maximumAmountFilter: 1,
     brandNames: [],
     selectedCategory: 0,
     page: 1,
@@ -29,6 +30,9 @@ const productsSlice = createSlice({
     },
     setProductListFilter: (state, action) => {
       state.productListFilter = action.payload;
+    },
+    setMaximumAmountFilter: (state, action) => {
+      state.maximumAmountFilter = action.payload;
     },
     setBrandNames: (state, action) => {
       state.brandNames = action.payload;
@@ -65,6 +69,7 @@ export const {
   setAmazingProducts,
   setBestSellingProducts,
   setProductListFilter,
+  setMaximumAmountFilter,
   setBrandNames,
   setSelectedCategory,
   setPage,
