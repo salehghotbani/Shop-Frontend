@@ -80,6 +80,19 @@ const GetFilter = ({ getProductsByCategory, Pagination }) => {
     getProductsByCategory();
   };
 
+  const removeFilters = () => {
+    if (queryParams.has('min'))
+      queryParams.delete('min');
+    if (queryParams.has('max'))
+      queryParams.delete('max');
+    if (queryParams.has('brandName'))
+      queryParams.delete('brandName');
+
+    const updatedSearch = queryParams.toString();
+    navigate({ search: updatedSearch });
+    window.location.reload();
+  };
+
   return (
     <>
       <Box position={'sticky'} top={'80px'} dir={'rtl'}>
@@ -89,7 +102,7 @@ const GetFilter = ({ getProductsByCategory, Pagination }) => {
               <Text textAlign={'right'} cursor={'default'} as={'b'}>فیلترها</Text>
             </GridItem>
             <GridItem colSpan={1}>
-              <Text textAlign={'left'} cursor={'pointer'} color={'#8c1111'}>حذف فیلترها</Text>
+              <Text textAlign={'left'} cursor={'pointer'} color={'#8c1111'} onClick={removeFilters}>حذف فیلترها</Text>
             </GridItem>
           </Grid>
 
@@ -306,7 +319,7 @@ export const ListProducts = () => {
       getProductsByCategory();
       getBrands();
     }
-  }, [product.selectedCategory]);
+  }, [product.selectedCategory, product.numberElementShownPerPage]);
 
   const getQueryParameter = () => {
     let maxPriceTemp = 1;
@@ -318,7 +331,7 @@ export const ListProducts = () => {
           dispatch(setProductListFilter({
             priceRange: [
               queryParams.get('min') === null ? minPrice.toString() : Number(queryParams.get('min')),
-              queryParams.get('max') === null  ? maxPriceTemp : Number(queryParams.get('max')),
+              queryParams.get('max') === null ? maxPriceTemp : Number(queryParams.get('max')),
             ],
             brand: queryParams.get('brandName') === null ? '' : queryParams.get('brandName'),
           }));

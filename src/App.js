@@ -12,30 +12,18 @@ import './App.css';
 import theme from './theme';
 import { Register } from './Components/Authentication/Register';
 import { Login } from './Components/Authentication/Login';
-import { fetchWithAxios, getProductsCart } from './Base/BaseFunctions';
+import { checkAuth, getProductsCart } from './Base/BaseFunctions';
 import { useDispatch } from 'react-redux';
-import { setRegistrationStatus, setUsername } from './store/features/userSlice';
 import { ListProducts } from './Components/Products/ListProducts';
 import { Dashboard } from './Components/Dashboard/Dashboard';
 import { Product } from './Components/Products/Product';
+import { CheckPay } from './Components/Dashboard/CheckPay';
 
 function App() {
   const dispatch = useDispatch();
 
-  const checkLogin = () => {
-    fetchWithAxios.get('/shop/checkauth/', {})
-      .then(function(response) {
-          dispatch(setRegistrationStatus(true));
-          dispatch(setUsername(response.data.username));
-        },
-      ).catch(() => {
-      dispatch(setUsername(''));
-      dispatch(setRegistrationStatus(false));
-    });
-  };
-
   useEffect(() => {
-    checkLogin();
+    checkAuth(dispatch);
     getProductsCart(dispatch);
   }, []);
 
@@ -110,6 +98,17 @@ function App() {
               transition={{ duration: 0.4 }}
             >
               <Product />
+            </motion.div>
+          } />
+          <Route path='/checkpay' element={
+            <motion.div
+              key='searchPanel'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <CheckPay />
             </motion.div>
           } />
         </Routes>

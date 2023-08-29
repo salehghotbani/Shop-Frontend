@@ -1,6 +1,6 @@
 import { Box, Button, Divider, Grid, GridItem, Stack } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CART_DASHBOARD, PROFILE_DASHBOARD } from './DashboardSections';
+import { CART_DASHBOARD, PENDING_ORDERS, PROFILE_DASHBOARD } from './DashboardSections';
 import { Profile } from './Profile';
 import { backgroundBlue } from '../../Base/BaseAttributes';
 import { setDashboardSection } from '../../store/features/dashboardSlice';
@@ -8,6 +8,7 @@ import { Cart } from './Cart';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { logout } from '../../Base/BaseFunctions';
+import { PendingOrders } from './PendingOrders';
 
 export const Dashboard = () => {
   const dispatch = useDispatch();
@@ -22,6 +23,8 @@ export const Dashboard = () => {
         return <Profile />;
       case CART_DASHBOARD:
         return <Cart />;
+      case PENDING_ORDERS:
+        return <PendingOrders />;
       default:
         return <Profile />;
     }
@@ -78,6 +81,16 @@ export const Dashboard = () => {
                             setQueryParameter(CART_DASHBOARD);
                         }}>
                   سبد خرید
+                </Button>
+                <Button color={'white'}
+                        backgroundColor={dashboard.dashboardSection === PENDING_ORDERS ? 'yellow.800' : backgroundBlue}
+                        _hover={{ backgroundColor: 'yellow.800' }}
+                        onClick={() => {
+                          dispatch(setDashboardSection(PENDING_ORDERS));
+                          if (queryParams.get('dashboard_section') !== PENDING_ORDERS)
+                            setQueryParameter(PENDING_ORDERS);
+                        }}>
+                  سفارش در انتظار
                 </Button>
 
                 <Divider borderColor={'white'} />

@@ -6,9 +6,11 @@ import React from 'react';
 import { setProducts, setTotalPrice } from '../store/features/cartSlice';
 import moment from 'jalali-moment';
 import jalaliMoment from 'jalali-moment';
+import { setRegistrationStatus, setUsername } from '../store/features/userSlice';
 
 // https://backend.ghotbani.ir
-export const backendURL = 'http://192.168.1.106:8000';
+export const backendURL = 'http://localhost:8000';
+export const frontendURL = 'http://frontend.ghotbani.ir'
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -155,3 +157,32 @@ export const GregorianToJalaliConverter = ({ gregorianDate }) => {
 
   return <Text fontSize={'14px'}>{jalaliDate}</Text>;
 };
+
+export const checkAuth = async (dispatch) => {
+  await fetchWithAxios.get('/shop/checkauth/', {})
+    .then(function(response) {
+        dispatch(setRegistrationStatus(true));
+        dispatch(setUsername(response.data.username));
+        return true;
+      },
+    ).catch(() => {
+      dispatch(setUsername(''));
+      dispatch(setRegistrationStatus(false));
+      return false;
+    });
+};
+
+export const getCurrentDateTime = () => {
+  const now = new Date();
+
+  const year = now.getUTCFullYear();
+  const month = String(now.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(now.getUTCDate()).padStart(2, '0');
+
+  const hours = String(now.getUTCHours()).padStart(2, '0');
+  const minutes = String(now.getUTCMinutes()).padStart(2, '0');
+  const seconds = String(now.getUTCSeconds()).padStart(2, '0');
+  const milliseconds = String(now.getUTCMilliseconds()).padStart(6, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds}+00`;
+}

@@ -141,14 +141,15 @@ export const Header = () => {
                     <Center><Image src={shoppingCartLinearIcon} w={'28px'} /></Center>
                   </Box>
                 </PopoverTrigger>
-
-                <PopoverContent w={'600px'} maxH={'340px'} dir={'ltr'} overflowY={'auto'}>
-                  <PopoverBody dir={'rtl'} onMouseEnter={setIsOpenCardItemsPopover.on}
-                               onMouseLeave={setIsOpenCardItemsPopover.off}>
-                    <PopoverArrow />
-                    <GetCart />
-                  </PopoverBody>
-                </PopoverContent>
+                {user.isRegistered &&
+                  <PopoverContent w={'600px'} maxH={'340px'} dir={'ltr'} overflowY={'auto'}>
+                    <PopoverBody dir={'rtl'} onMouseEnter={setIsOpenCardItemsPopover.on}
+                                 onMouseLeave={setIsOpenCardItemsPopover.off}>
+                      <PopoverArrow />
+                      <GetCart />
+                    </PopoverBody>
+                  </PopoverContent>
+                }
               </Popover>
               <UserIcon />
             </HStack>

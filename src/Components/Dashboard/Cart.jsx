@@ -20,7 +20,7 @@ import {
 import {
   addToCart,
   backendURL,
-  fetchWithAxios,
+  fetchWithAxios, frontendURL,
   getProductsCart,
   removeFromCart,
   showToast,
@@ -35,14 +35,20 @@ import { useNavigate } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls } from '@react-three/drei';
 import { Show3DGLB } from '../Products/Show3DGLB';
+import axios from 'axios';
 
 export const GetCart = () => {
   const cart = useSelector(state => state.cart);
+  const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
+    // if (user.isRegistered) {
     getProductsCart(dispatch);
+    // } else {
+    //   navigate('/login', { replace: true });
+    // }
   }, []);
 
   return (
@@ -155,25 +161,23 @@ export const Cart = () => {
   const createOrderIdPay = (order_id) => {
     fetchWithAxios.get('/getcustomerinfo', {})
       .then((userInfoResponse) => {
-        fetchWithAxios.post('https://api.idpay.ir/v1.1/payment',
+        axios.post('https://sandbox.banktest.ir/saman/sep.shaparak.ir/OnlinePG/OnlinePG',
           {
-            'order_id': parseInt(order_id),
-            'amount': parseInt(cart.totalPrice) * 10,
-            'name': userInfoResponse.data.first_name + ' ' + userInfoResponse.data.last_name,
-            'phone': userInfoResponse.data.phone_number,
-            'mail': userInfoResponse.email,
-            'desc': '',
-            'callback': 'https://localhost:3000/callback',
+            'action': 'token',
+            'TerminalId': '134754750',
+            'Amount': parseInt(cart.totalPrice) * 10,
+            'ResNum': order_id.toString(),
+            'RedirectUrl': frontendURL + '/checkpay',
+            'CellNumber': userInfoResponse.phone_number,
           },
           {
-            headers: {
-              'Content-Type': 'application/json',
-              'X-API-KEY': '6a7f99eb-7c20-4412-a972-6dfb7cd253a4',
-              'X-SANDBOX': 1,
+            auth: {
+              username: 'user134754749', // Username
+              password: '38531349', // Password
             },
           })
           .then((response) => {
-            navigate(response.data.link, { replace: true });
+            navigate(`https://sep.shaparak.ir/OnlinePG/SendToken?token=${response.data.token}&GetMethod=true`, { replace: true });
           })
           .catch((error) => {
             console.log(error);
