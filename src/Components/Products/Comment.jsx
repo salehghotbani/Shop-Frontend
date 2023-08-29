@@ -196,11 +196,11 @@ export const Comment = () => {
         null
       }
 
-      {commentProduct.comments !== undefined && commentProduct.comments.map((value, index, array) => {
+      {commentProduct.comments !== undefined && commentProduct.comments.map((value, index) => {
         if (value.title !== '') {
           return (
             <>
-              <Stack p={6} m={3} className={'box_shadow'} borderRadius={7} backgroundColor={'gray.50'}>
+              <Stack key={index} p={6} m={3} className={'box_shadow'} borderRadius={7} backgroundColor={'gray.50'}>
                 <Flex>
                   <Tag variant='subtle' backgroundColor={() => getColorStar(value.rate)}>
                     <TagLeftIcon boxSize='12px' as={StarIcon} />
