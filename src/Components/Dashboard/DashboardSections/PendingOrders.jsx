@@ -1,9 +1,9 @@
-import { fetchWithAxios, showToast } from '../../Base/BaseFunctions';
+import { fetchWithAxios, showToast } from '../../../Base/BaseFunctions';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setIsSubmitted,
-} from '../../store/features/profileSlice';
+} from '../../../store/features/profileSlice';
 
 export const PendingOrders = () => {
   const dispatch = useDispatch();

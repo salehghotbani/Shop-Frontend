@@ -12,7 +12,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { addToCart, backendURL, cookies, fetchWithAxios, showToast } from '../../Base/BaseFunctions';
+import { addToCart, backendURL, cookies, fetchWithAxios, ShowGLB, showToast } from '../../Base/BaseFunctions';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setProductDetails,
@@ -113,13 +113,7 @@ export const Product = () => {
             <Box borderRadius={7} dir={'rtl'} backgroundColor={'white'} py={3} px={4} className={'box_shadow'}>
               <Center>
                 {imageOfProduct !== null && (imageOfProduct).toString().split('.')[(imageOfProduct).toString().split('.').length - 1] === 'glb' ?
-                  <>
-                    <Canvas camera={{ position: [0, 0.2, 0.4] }}>
-                      <Environment preset='forest' />
-                      <Show3DGLB source={backendURL + '/' + imageOfProduct} />
-                      <OrbitControls />
-                    </Canvas>
-                  </>
+                  <ShowGLB autoRotate={false} image={backendURL + '/' + imageOfProduct} />
                   :
                   <Box backgroundImage={backendURL + '/' + imageOfProduct} w={'200px'} h={'200px'} mx={2}
                        backgroundPosition={'center'} backgroundRepeat={'no-repeat'}
@@ -209,13 +203,7 @@ export const Product = () => {
           <GridItem colSpan={3} w='100%' h={'700px'}>
             {imageOfProduct !== null ?
               (imageOfProduct).toString().split('.')[(imageOfProduct).toString().split('.').length - 1] === 'glb' ?
-                <>
-                  <Canvas shadows camera={{ position: [0, 0.2, 0.4] }}>
-                    <Environment preset='forest' />
-                    <Show3DGLB source={backendURL + '/' + imageOfProduct} />
-                    <OrbitControls autoRotate />
-                  </Canvas>
-                </>
+                <ShowGLB autoRotate={true} image={backendURL + '/' + imageOfProduct} />
                 :
                 <Box>
                   <Zoom
@@ -280,13 +268,7 @@ export const Product = () => {
                  dir={'rtl'} position={'sticky'} top={'80px'}>
               <Center>
                 {imageOfProduct !== null && (imageOfProduct).toString().split('.')[(imageOfProduct).toString().split('.').length - 1] === 'glb' ?
-                  <>
-                    <Canvas shadows camera={{ position: [0, 0.2, 0.4] }}>
-                      <Environment preset='forest' />
-                      <Show3DGLB source={backendURL + '/' + imageOfProduct} />
-                      <OrbitControls />
-                    </Canvas>
-                  </>
+                  <ShowGLB autoRotate={false} image={backendURL + '/' + imageOfProduct} />
                   :
                   <Box backgroundImage={backendURL + '/' + imageOfProduct} w={'200px'} h={'200px'} mx={2}
                        backgroundPosition={'center'} backgroundRepeat={'no-repeat'}

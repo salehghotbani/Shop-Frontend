@@ -16,7 +16,7 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react';
-import { fetchWithAxios, showToast } from '../../Base/BaseFunctions';
+import { fetchWithAxios, showToast } from '../../../Base/BaseFunctions';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -28,9 +28,9 @@ import {
   setLastName,
   setPhoneNumber,
   setUsername,
-} from '../../store/features/profileSlice';
-import man_avatar from '../../assets/images/man_avatar.png';
-import woman_avatar from '../../assets/images/woman_avatar.jpg';
+} from '../../../store/features/profileSlice';
+import man_avatar from '../../../assets/images/man_avatar.png';
+import woman_avatar from '../../../assets/images/woman_avatar.jpg';
 
 export const Profile = () => {
   const dispatch = useDispatch();

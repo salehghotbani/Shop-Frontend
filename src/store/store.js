@@ -10,6 +10,7 @@ import dashboardSlice from './features/dashboardSlice';
 import questionProductSlice from './features/questionProductSlice';
 import commentProductSlice from './features/commentProductSlice';
 import cartSlice from './features/cartSlice';
+import allOrdersSlice from './features/allOrdersSlice';
 
 const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ const store = configureStore({
     questionProduct: questionProductSlice,
     dashboard: dashboardSlice,
     cart: cartSlice,
+    allOrders: allOrdersSlice,
   },
 });
 

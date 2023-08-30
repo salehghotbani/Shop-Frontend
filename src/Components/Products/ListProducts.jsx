@@ -52,7 +52,15 @@ import {
 } from '../../store/features/productsSlice';
 import Select from 'react-select';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { addToCart, backendURL, cookies, fetchWithAxios, showToast } from '../../Base/BaseFunctions';
+import {
+  addToCart,
+  backendURL,
+  cookies,
+  fetchWithAxios,
+  Pagination,
+  ShowGLB,
+  showToast,
+} from '../../Base/BaseFunctions';
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { minPrice } from '../../Base/BaseAttributes';
 import filterSVG from '../../assets/icons/filter.svg';
@@ -60,7 +68,7 @@ import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls } from '@react-three/drei';
 import { Show3DGLB } from './Show3DGLB';
 
-const GetFilter = ({ getProductsByCategory, Pagination }) => {
+const GetFilter = ({ getProductsByCategory }) => {
   const dispatch = useDispatch();
   const product = useSelector(state => state.product);
   const location = useLocation();
@@ -254,7 +262,9 @@ const GetFilter = ({ getProductsByCategory, Pagination }) => {
 
         <Box mt={5}>
           <Center>
-            <Pagination />
+            <Pagination dispatch={dispatch} page={product.page} setPage={setPage}
+                        numberElementShownPerPage={product.numberElementShownPerPage}
+                        totalProducts={product.totalProductsByFiltersAndCategory} />
           </Center>
         </Box>
       </Box>
@@ -343,74 +353,6 @@ export const ListProducts = () => {
     });
   };
 
-  const Pagination = () => {
-    const pageRange = 5;
-    const totalPages = product.totalProductsByFiltersAndCategory;
-
-    let startPage = Math.max(1, Number(product.page) - Math.floor(pageRange / 2));
-    let endPage = Math.min(totalPages, startPage + pageRange - 1);
-
-    if (totalPages / product.numberElementShownPerPage > 1) {
-      if (totalPages / product.numberElementShownPerPage <= 5) {
-        endPage = totalPages;
-      }
-
-      if (endPage - startPage + 1 < pageRange) {
-        startPage = Math.max(1, endPage - pageRange + 1);
-      }
-
-      return (
-        <ButtonGroup spacing='2'>
-          <Button backgroundColor={'white'}
-                  borderColor={'gray.300'}
-                  textColor={'gray.700'}
-                  borderRadius={4} size={'sm'} borderWidth={1}
-                  onClick={() => {
-                    if (Number(product.page) > 1) {
-                      dispatch(setPage(Number(product.page) - 1));
-                    } else {
-                      dispatch(setPage(1));
-                    }
-                  }}>
-            <ChevronRightIcon />
-          </Button>
-
-          {Array.from({ length: endPage - startPage + 1 }, (_, i) => i + startPage).map((ItteratePage, index) => (
-            <Button key={index}
-                    size={'sm'}
-                    borderWidth={1}
-                    disabled={Number(product.page) === ItteratePage}
-                    borderRadius={4}
-                    onClick={() => {
-                      dispatch(setPage(ItteratePage));
-                    }}
-                    backgroundColor={Number(product.page) === ItteratePage ? 'white' : 'gray.200'}
-                    borderColor={'gray.300'}
-                    _hover={{ backgroundColor: Number(product.page) === ItteratePage ? 'gray.200' : 'gray.600' }}>
-              {ItteratePage}
-            </Button>
-          ))}
-
-          <Button backgroundColor={'white'}
-                  borderColor={'gray.300'}
-                  textColor={'gray.700'}
-                  borderRadius={4} size={'sm'} borderWidth={1}
-                  onClick={() => {
-                    if (Number(product.page) < endPage) {
-                      dispatch(setPage(Number(product.page) + 1));
-                    } else {
-                      dispatch(setPage(endPage));
-                    }
-                  }}>
-            <ChevronLeftIcon />
-          </Button>
-        </ButtonGroup>
-      );
-    } else {
-      return <></>;
-    }
-  };
-
   return (
     <>
       <Grid dir={'rtl'} templateColumns={isMobile ? 'repeat(1, 1fr)' : 'repeat(8, 1fr)'} gap={4} pt={4} px={8}>
@@ -422,14 +364,14 @@ export const ListProducts = () => {
               <DrawerContent>
                 <DrawerHeader dir={'rtl'} borderBottomWidth='1px'>فیلتر</DrawerHeader>
                 <DrawerBody>
-                  <GetFilter getProductsByCategory={getProductsByCategory} Pagination={Pagination} />
+                  <GetFilter getProductsByCategory={getProductsByCategory} />
                 </DrawerBody>
               </DrawerContent>
             </Drawer>
           </>
           :
           <GridItem minW={'300px'} colSpan={isMobile ? 0 : 2}>
-            <GetFilter getProductsByCategory={getProductsByCategory} Pagination={Pagination} />
+            <GetFilter getProductsByCategory={getProductsByCategory} />
           </GridItem>
         }
 
@@ -452,13 +394,7 @@ export const ListProducts = () => {
                             navigate(`/productInfo?id=${value.id}&category=${product.selectedCategory}`);
                           }}>
                     {(value.avatar).toString().split('.')[(value.avatar).toString().split('.').length - 1] === 'glb' ?
-                      <>
-                        <Canvas camera={{ position: [0, 0.2, 0.4] }} style={{ height: '240px' }}>
-                          <Environment preset='forest' />
-                          <Show3DGLB source={backendURL + '/' + value.avatar} />
-                          <OrbitControls autoRotate />
-                        </Canvas>
-                      </>
+                      <ShowGLB autoRotate={true} image={backendURL + '/' + value.avatar} />
                       :
                       <Box backgroundImage={backendURL + '/' + value.avatar} w={'240px'} h={'240px'}
                            backgroundPosition={'center'} backgroundRepeat={'no-repeat'} backgroundSize={'cover'} />

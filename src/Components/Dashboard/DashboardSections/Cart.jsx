@@ -20,21 +20,20 @@ import {
 import {
   addToCart,
   backendURL,
-  fetchWithAxios, frontendURL,
+  fetchWithAxios,
+  frontendURL,
   getProductsCart,
   removeFromCart,
+  ShowGLB,
   showToast,
-} from '../../Base/BaseFunctions';
+} from '../../../Base/BaseFunctions';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import standardLogo from '../../assets/images/standard.png';
-import availabilityLogo from '../../assets/images/availability.png';
+import standardLogo from '../../../assets/images/standard.png';
+import availabilityLogo from '../../../assets/images/availability.png';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
-import componentIcon from '../../assets/icons/Design-Tools/vuesax/bold/component.svg';
+import componentIcon from '../../../assets/icons/Design-Tools/vuesax/bold/component.svg';
 import { useNavigate } from 'react-router-dom';
-import { Canvas } from '@react-three/fiber';
-import { Environment, OrbitControls } from '@react-three/drei';
-import { Show3DGLB } from '../Products/Show3DGLB';
 import axios from 'axios';
 
 export const GetCart = () => {
@@ -58,13 +57,7 @@ export const GetCart = () => {
           <GridItem colSpan={1} dir={'rtl'}>
             <Center borderRadius={'30px'} p={5}>
               {value.avatar !== null && (value.avatar).toString().split('.')[(value.avatar).toString().split('.').length - 1] === 'glb' ?
-                <>
-                  <Canvas camera={{ position: [0, 0.2, 0.4] }} style={{ height: '200px', minWidth: '140px' }}>
-                    <Environment preset='forest' />
-                    <Show3DGLB source={backendURL + '/' + value.avatar} />
-                    <OrbitControls autoRotate />
-                  </Canvas>
-                </>
+                <ShowGLB autoRotate={true} image={backendURL + '/' + value.avatar} />
                 :
                 <Box cursor={'pointer'} backgroundImage={backendURL + '/' + value.avatar} w={'200px'}
                      h={'200px'} backgroundPosition={'center'} backgroundRepeat={'no-repeat'}

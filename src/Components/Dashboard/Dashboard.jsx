@@ -1,14 +1,15 @@
 import { Box, Button, Divider, Grid, GridItem, Stack } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CART_DASHBOARD, PENDING_ORDERS, PROFILE_DASHBOARD } from './DashboardSections';
-import { Profile } from './Profile';
+import { ALL_ORDERS, CART_DASHBOARD, PENDING_ORDERS, PROFILE_DASHBOARD } from './DashboardSections';
+import { Profile } from './DashboardSections/Profile';
 import { backgroundBlue } from '../../Base/BaseAttributes';
 import { setDashboardSection } from '../../store/features/dashboardSlice';
-import { Cart } from './Cart';
+import { Cart } from './DashboardSections/Cart';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { logout } from '../../Base/BaseFunctions';
-import { PendingOrders } from './PendingOrders';
+import { PendingOrders } from './DashboardSections/PendingOrders';
+import { AllOrders } from './DashboardSections/AllOrders';
 
 export const Dashboard = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,8 @@ export const Dashboard = () => {
         return <Cart />;
       case PENDING_ORDERS:
         return <PendingOrders />;
+      case ALL_ORDERS:
+        return <AllOrders />;
       default:
         return <Profile />;
     }
@@ -91,6 +94,16 @@ export const Dashboard = () => {
                             setQueryParameter(PENDING_ORDERS);
                         }}>
                   سفارش در انتظار
+                </Button>
+                <Button color={'white'}
+                        backgroundColor={dashboard.dashboardSection === ALL_ORDERS ? 'cyan.800' : backgroundBlue}
+                        _hover={{ backgroundColor: 'cyan.800' }}
+                        onClick={() => {
+                          dispatch(setDashboardSection(ALL_ORDERS));
+                          if (queryParams.get('dashboard_section') !== ALL_ORDERS)
+                            setQueryParameter(ALL_ORDERS);
+                        }}>
+                  سفارشات
                 </Button>
 
                 <Divider borderColor={'white'} />

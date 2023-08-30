@@ -26,7 +26,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchWithAxios, logout, showToast } from '../Base/BaseFunctions';
 import { setCategory, setProductListFilter, setSelectedCategory } from '../store/features/productsSlice';
 import { CART_DASHBOARD, PROFILE_DASHBOARD } from './Dashboard/DashboardSections';
-import { GetCart } from './Dashboard/Cart';
+import { GetCart } from './Dashboard/DashboardSections/Cart';
 
 export const Header = () => {
   const navigate = useNavigate();
