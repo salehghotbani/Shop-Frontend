@@ -55,7 +55,7 @@ export const Profile = () => {
     fetchWithAxios.get(`/getcustomerinfo`, {})
       .then(function(response) {
           const data = response.data;
-          console.log(data);
+
           dispatch(setUsername(data.username));
           dispatch(setEmail(data.email));
           dispatch(setFirstName(data.first_name));
@@ -104,7 +104,6 @@ export const Profile = () => {
                         <Switch isChecked={profile.gender} size={'md'} dir={'rtl'} colorScheme='red'
                                 readOnly={profile.isSubmitted}
                                 onChange={(event) => {
-                                  console.log(event.target.checked);
                                   dispatch(setGender(event.target.checked));
                                 }} />
                         <Text>مرد</Text>

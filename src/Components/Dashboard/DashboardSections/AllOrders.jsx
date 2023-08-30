@@ -11,18 +11,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setIsSubmitted } from '../../../store/features/profileSlice';
 import {
   Box,
+  Button,
   Divider,
   Flex,
   Grid,
   GridItem,
   Text,
+  Tooltip,
 } from '@chakra-ui/react';
 import { setAllOrders } from '../../../store/features/allOrdersSlice';
 import Carousel from 'react-multi-carousel';
+import { useNavigate } from 'react-router-dom';
+import { setIsInReview } from '../../../store/features/dashboardSlice';
 
 const OrderComponent = ({ order }) => {
   const [imageOfProducts, setImageOfProducts] = useState([]);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const getImageOrdersAxios = async (orderId) => {
     try {
@@ -46,8 +51,8 @@ const OrderComponent = ({ order }) => {
   };
 
   useEffect(() => {
-    fetchImageOfProducts();
-  }, [order.id]);
+    fetchImageOfProducts().then(null);
+  }, []);
 
   const responsive = {
     superLargeDesktop: {
@@ -82,19 +87,26 @@ const OrderComponent = ({ order }) => {
         {imageOfProducts.map((products_images_value, products_images_index) => {
           if (products_images_value.avatar.toString().includes('.glb')) {
             return (
-              <Box key={order.id + products_images_index}>
-                <ShowGLB autoRotate={false} image={backendURL + '/' + products_images_value.avatar} />
-              </Box>
+              <Tooltip hasArrow label={products_images_value.name} bg='blue.200' color='black'>
+                <Box key={order.id + products_images_index}>
+                  <ShowGLB autoRotate={false} image={backendURL + '/' + products_images_value.avatar} />
+                </Box>
+              </Tooltip>
             );
           } else {
             return (
-              <Box
-                key={order.id + products_images_index}
-                backgroundImage={`url(${backendURL}/${products_images_value.avatar})`}
-                w={'200px'} h={'200px'} mx={2}
-                backgroundPosition={'center'} backgroundRepeat={'no-repeat'}
-                backgroundSize={'cover'}
-              />
+              <Tooltip hasArrow label={products_images_value.name} bg='blue.200' color='black'>
+                <Box
+                  key={order.id + products_images_index}
+                  backgroundImage={`url(${backendURL}/${products_images_value.avatar})`}
+                  w={'200px'} h={'200px'} mx={2}
+                  backgroundPosition={'center'}
+                  backgroundRepeat={'no-repeat'}
+                  backgroundSize={'cover'}
+                  cursor={'pointer'}
+                  onClick={() => navigate(`/productInfo?id=${products_images_value.id}&category=${products_images_value.category}`)}
+                />
+              </Tooltip>
             );
           }
         })}
@@ -106,6 +118,7 @@ const OrderComponent = ({ order }) => {
 export const AllOrders = () => {
   const dispatch = useDispatch();
   const allOrders = useSelector(state => state.allOrders);
+  // const navigate = useNavigate();
 
   const getAllOrdersAxios = () => {
     fetchWithAxios.get(`/delivery/getallorders`, {})
@@ -122,10 +135,10 @@ export const AllOrders = () => {
   }, []);
 
   return (
-    <Box maxH={'89vh'} borderRadius={'30px'} className={'box_shadow'} dir={'ltr'} p={5} overflowY={'auto'}>
+    <Box h={'89vh'} borderRadius={'30px'} className={'box_shadow'} dir={'ltr'} p={5} overflowY={'auto'}>
       {allOrders.orders && allOrders.orders.map((value, index) => (
-        <Box dir={'rtl'} key={index} className={'box_shadow'} my={2} borderRadius={'20px'} p={2}>
-          <Grid templateColumns='repeat(5, 1fr)' gap={4}>
+        <Box dir={'rtl'} key={index} className={'box_shadow'} my={2} borderRadius={'20px'} p={5}>
+          <Grid templateColumns='repeat(6, 1fr)' gap={4}>
             <GridItem colStart={1} colEnd={2}>
               <Flex>
                 <Text>تاریخ سفارش:</Text>
@@ -155,12 +168,22 @@ export const AllOrders = () => {
                 </Text>
               </Flex>
             </GridItem>
+
+            <GridItem colStart={6} colEnd={7} dir={'ltr'} mx={2} mb={1}>
+              <Button my={'auto'} backgroundColor={'cyan.600'} _hover={{ backgroundColor: 'cyan.700' }} size={'sm'}
+                      color={'white'}
+                      onClick={() => {
+                        dispatch(setIsInReview(true));
+                      }}>
+                مرور
+              </Button>
+            </GridItem>
           </Grid>
 
           <Divider borderColor={'gray.400'} />
 
           <Box borderRadius={'20px'} borderWidth={1} m={3} p={2}>
-            <OrderComponent key={index} order={value} />
+            <OrderComponent order={value} />
           </Box>
         </Box>
       ))}

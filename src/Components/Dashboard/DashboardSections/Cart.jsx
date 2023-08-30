@@ -87,7 +87,6 @@ export const GetCart = () => {
                 </FormLabel>
                 <NumberInput size='sm' maxW={24} defaultValue={value.quantity} min={0}
                              onChange={(event) => {
-                               console.log(event);
                                if (event < value.quantity) {
                                  removeFromCart(dispatch, value.id);
                                } else {

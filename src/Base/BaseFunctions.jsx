@@ -121,7 +121,6 @@ export const logout = (navigate) => {
 export const getProductsCart = (dispatch) => {
   fetchWithAxios.get(`/getprodscart`, {})
     .then((response) => {
-      console.log(response);
       dispatch(setTotalPrice(response.data['total_price']));
       dispatch(setProducts(response.data.products));
     })

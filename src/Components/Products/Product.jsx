@@ -19,9 +19,6 @@ import {
   setProductValues,
   setSameProducts,
 } from '../../store/features/productsSlice';
-import { ContactShadows, Environment, OrbitControls } from '@react-three/drei';
-import { Show3DGLB } from './Show3DGLB';
-import { Canvas } from '@react-three/fiber';
 import Zoom from 'react-img-zoom';
 import { StarIcon } from '@chakra-ui/icons';
 import componentIcon from '../../assets/icons/Design-Tools/vuesax/bold/component.svg';
@@ -67,7 +64,6 @@ export const Product = () => {
     fetchWithAxios.post(`/shop/getprodbyfilter/?id=${queryParams.get('category')}&page=1&count=7`, {})
       .then(function(response) {
           let tempArray = [];
-          console.log('***********', response.data);
           response.data.products.map((value) => {
             tempArray.push(value);
           });

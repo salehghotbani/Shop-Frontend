@@ -388,7 +388,7 @@ export const ListProducts = () => {
                      onMouseLeave={() => {
                        document.getElementById('id' + index).classList.remove('box_shadow');
                      }}>
-                  <Center mt={'30px'}
+                  <Center mt={'30px'} w={'240px'} h={'240px'}
                           onClick={() => {
                             cookies.set('productId', value.id, { path: '/' });
                             navigate(`/productInfo?id=${value.id}&category=${product.selectedCategory}`);
