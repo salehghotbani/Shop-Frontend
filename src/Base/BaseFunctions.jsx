@@ -13,7 +13,8 @@ import { Show3DGLB } from '../Components/Products/Show3DGLB';
 import { Canvas } from '@react-three/fiber';
 
 // https://backend.ghotbani.ir
-export const backendURL = 'http://localhost:8000';
+// export const backendURL = 'http://localhost:8000';
+export const backendURL = 'https://backend.ghotbani.ir';
 export const frontendURL = 'http://frontend.ghotbani.ir';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
