@@ -9,6 +9,9 @@ const commentProductSlice = createSlice({
     positivePoint: [],
     negativePoint: [],
     comments: [],
+    page: 1,
+    numberElementShownPerPage: 5,
+    totalProductsByFiltersAndCategory: 1,
   },
   reducers: {
     setTitle: (state, action) => {
@@ -29,6 +32,15 @@ const commentProductSlice = createSlice({
     setComments: (state, action) => {
       state.comments = action.payload;
     },
+    setPage: (state, action) => {
+      state.page = action.payload;
+    },
+    setNumberElementShownPerPage: (state, action) => {
+      state.numberElementShownPerPage = action.payload;
+    },
+    setTotalProductsByFiltersAndCategory: (state, action) => {
+      state.totalProductsByFiltersAndCategory = action.payload;
+    },
   },
 });
 
@@ -39,6 +51,9 @@ export const {
   setPositivePoint,
   setNegativePoint,
   setComments,
+  setPage,
+  setNumberElementShownPerPage,
+  setTotalProductsByFiltersAndCategory,
 } = commentProductSlice.actions;
 
 export default commentProductSlice.reducer;

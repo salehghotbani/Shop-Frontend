@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import {
   Box,
   Button,
+  Center,
   Divider,
   Flex,
   FormControl,
@@ -16,6 +17,7 @@ import {
   TagLeftIcon,
   Text,
   Textarea,
+  VStack,
 } from '@chakra-ui/react';
 import { StarRating } from './StarRating';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,24 +25,35 @@ import {
   setComments,
   setDescription,
   setNegativePoint,
+  setPage,
   setPositivePoint,
   setRate,
   setTitle,
+  setTotalProductsByFiltersAndCategory,
 } from '../../store/features/commentProductSlice';
-import { fetchWithAxios, GregorianToJalaliConverter, MultiSelect, showToast } from '../../Base/BaseFunctions';
-import { useLocation } from 'react-router-dom';
+import {
+  fetchWithAxios,
+  GregorianToJalaliConverter,
+  MultiSelect,
+  Pagination,
+  showToast,
+} from '../../Base/BaseFunctions';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AddIcon, MinusIcon, StarIcon } from '@chakra-ui/icons';
 
 export const Comment = () => {
   const commentProduct = useSelector(state => state.commentProduct);
+  const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  const navigate = useNavigate();
 
   const getCommentsAxios = () => {
-    fetchWithAxios.get(`/shop/getcommentsprod/?id=${queryParams.get('id')}&page=1&count=10`, {})
+    fetchWithAxios.get(`/shop/getcommentsprod/?id=${queryParams.get('id')}&page=${commentProduct.page}&count=${commentProduct.numberElementShownPerPage}`, {})
       .then(function(response) {
           dispatch(setComments(response.data.comments));
+          dispatch(setTotalProductsByFiltersAndCategory(response.data.length));
         },
       ).catch((e) => {
       showToast('خطا', e.message);
@@ -72,7 +85,7 @@ export const Comment = () => {
 
   useEffect(() => {
     getCommentsAxios();
-  }, []);
+  }, [commentProduct.page]);
 
   const getColorStar = (star) => {
     switch (star) {
@@ -96,111 +109,105 @@ export const Comment = () => {
 
       <Divider mt={1} borderColor={'gray.400'} />
 
-      <Stack spacing={2} p={5}>
-        <Flex>
-          <FormControl my={'auto'} isRequired ml={5}>
-            <Flex dir={'rtl'}>
-              <FormLabel width={'100px'} my={'auto'}>
-                <Text as={'b'}>
-                  عنوان نظر:
-                </Text>
-              </FormLabel>
-              <Input dir={'rtl'} type='text' placeholder={'عنوان نظر'} value={commentProduct.title}
-                     onChange={(event) => {
-                       dispatch(setTitle(event.target.value));
-                     }} />
-            </Flex>
-          </FormControl>
-
-          <FormControl my={'auto'} isRequired mr={5}>
-            <Grid templateColumns='repeat(5, 1fr)' gap={4}>
-              <GridItem colSpan={2}>
+      {user.isRegistered ?
+        <Stack spacing={2} p={5}>
+          <Flex>
+            <FormControl my={'auto'} isRequired ml={5}>
+              <Flex dir={'rtl'}>
                 <FormLabel width={'100px'} my={'auto'}>
                   <Text as={'b'}>
-                    امتیاز:
+                    عنوان نظر:
                   </Text>
                 </FormLabel>
-              </GridItem>
-              <GridItem colStart={4} colEnd={6}>
-                <StarRating />
-              </GridItem>
-            </Grid>
-          </FormControl>
-        </Flex>
+                <Input dir={'rtl'} type='text' placeholder={'عنوان نظر'} value={commentProduct.title}
+                       onChange={(event) => {
+                         dispatch(setTitle(event.target.value));
+                       }} />
+              </Flex>
+            </FormControl>
 
-        <Flex>
+            <FormControl my={'auto'} isRequired mr={5}>
+              <Grid templateColumns='repeat(5, 1fr)' gap={4}>
+                <GridItem colSpan={2}>
+                  <FormLabel width={'100px'} my={'auto'}>
+                    <Text as={'b'}>
+                      امتیاز:
+                    </Text>
+                  </FormLabel>
+                </GridItem>
+                <GridItem colStart={4} colEnd={6}>
+                  <StarRating />
+                </GridItem>
+              </Grid>
+            </FormControl>
+          </Flex>
+
+          <Flex>
+            <FormControl my={'auto'} isRequired ml={5}>
+              <Flex dir={'rtl'}>
+                <FormLabel width={'115px'} my={'auto'}>
+                  <Text as={'b'}>
+                    نکات مثبت:
+                  </Text>
+                </FormLabel>
+                <Box w={'100%'}>
+                  <MultiSelect dispatch={dispatch} multiValueBackColor={'green'} multiValueRemoveBackColor={'red.500'}
+                               setReduxMethod={setPositivePoint} defaultValue={commentProduct.positivePoint} />
+                </Box>
+              </Flex>
+            </FormControl>
+
+            <FormControl my={'auto'} isRequired mr={5}>
+              <Flex dir={'rtl'}>
+                <FormLabel width={'115px'} my={'auto'}>
+                  <Text as={'b'}>
+                    نکات مثبت:
+                  </Text>
+                </FormLabel>
+                <Box w={'100%'}>
+                  <MultiSelect dispatch={dispatch} multiValueBackColor={'red'} multiValueRemoveBackColor={'orange'}
+                               setReduxMethod={setNegativePoint} defaultValue={commentProduct.negativePoint} />
+                </Box>
+              </Flex>
+            </FormControl>
+          </Flex>
+
           <FormControl my={'auto'} isRequired ml={5}>
-            <Flex dir={'rtl'}>
-              <FormLabel width={'115px'} my={'auto'}>
-                <Text as={'b'}>
-                  نکات مثبت:
-                </Text>
-              </FormLabel>
-              <Box w={'100%'}>
-                <MultiSelect dispatch={dispatch} multiValueBackColor={'green'} multiValueRemoveBackColor={'red.500'}
-                             setReduxMethod={setPositivePoint} defaultValue={commentProduct.positivePoint} />
-              </Box>
-            </Flex>
+            <FormLabel width={'100px'} my={'auto'}>
+              <Text as={'b'}>
+                توضیحات:
+              </Text>
+            </FormLabel>
+            <Textarea minH={'200px'} placeholder='توضیحات' value={commentProduct.description}
+                      onChange={(event) => {
+                        dispatch(setDescription(event.target.value));
+                      }} />
           </FormControl>
 
-          <FormControl my={'auto'} isRequired mr={5}>
-            <Flex dir={'rtl'}>
-              <FormLabel width={'115px'} my={'auto'}>
-                <Text as={'b'}>
-                  نکات مثبت:
-                </Text>
-              </FormLabel>
-              <Box w={'100%'}>
-                <MultiSelect dispatch={dispatch} multiValueBackColor={'red'} multiValueRemoveBackColor={'orange'}
-                             setReduxMethod={setNegativePoint} defaultValue={commentProduct.negativePoint} />
-              </Box>
-            </Flex>
-          </FormControl>
-        </Flex>
-
-        <FormControl my={'auto'} isRequired ml={5}>
-          <FormLabel width={'100px'} my={'auto'}>
-            <Text as={'b'}>
-              توضیحات:
-            </Text>
-          </FormLabel>
-          <Textarea minH={'200px'} placeholder='توضیحات' value={commentProduct.description}
-                    onChange={(event) => {
-                      dispatch(setDescription(event.target.value));
-                    }} />
-        </FormControl>
-
-        <Button backgroundColor={'green.500'} _hover={{ backgroundColor: 'green.600' }} color={'white'}
-                onClick={() => setCommentsAxios()}>
-          ارسال
-        </Button>
-      </Stack>
-
-      {/*"id": 1,
-      "title": "عنوان",
-      "text": "خیلی خوشم نیومد",
-      "date": "2023-08-19T22:42:42.239309+03:30",
-      "rate": 4,
-      "positive": [
-      "نداشت"
-      ],
-      "negative": [
-      "خیلی خوب نبود"
-      ],
-      "product": 4,
-      "customer": 3*/}
-
-      {commentProduct.comments !== undefined && commentProduct.comments.length !== 0 ?
-        <Divider mt={1} borderColor={'gray.400'} />
+          <Button backgroundColor={'green.500'} _hover={{ backgroundColor: 'green.600' }} color={'white'}
+                  onClick={() => setCommentsAxios()}>
+            ارسال
+          </Button>
+        </Stack>
         :
-        null
+        <VStack spacing={1} p={5}>
+          <Text fontSize={'18px'}>برای ثبت نظر ابتدا وارد سایت شوید</Text>
+          <Button size={'sm'} color={'white'} backgroundColor={'green.500'} _hover={{ backgroundColor: 'green.600' }}
+                  onClick={() => navigate('/login', { replace: true })}>
+            ورود
+          </Button>
+        </VStack>
       }
 
-      {commentProduct.comments !== undefined && commentProduct.comments.map((value, index, array) => {
+      {commentProduct.comments !== undefined && commentProduct.comments.length !== 0 &&
+        <Divider mt={1} borderColor={'gray.400'} />
+      }
+
+      {commentProduct.comments !== undefined && commentProduct.comments.map((value, index) => {
         if (value.title !== '') {
           return (
             <>
-              <Stack p={6} m={3} className={'box_shadow'} borderRadius={7} backgroundColor={'gray.50'}>
+              <Stack key={index} p={6} m={3} className={'box_shadow'} borderRadius={7} backgroundColor={'gray.50'}>
                 <Flex>
                   <Tag variant='subtle' backgroundColor={() => getColorStar(value.rate)}>
                     <TagLeftIcon boxSize='12px' as={StarIcon} />
@@ -212,7 +219,7 @@ export const Comment = () => {
                   <Box my={'auto'}>
                     <GregorianToJalaliConverter gregorianDate={value.date} />
                   </Box>
-                </Flex>p={6} m={3} className={'box_shadow'} borderRadius={7}
+                </Flex>
 
                 <Divider mt={1} borderColor={'gray.500'} />
 
@@ -244,6 +251,12 @@ export const Comment = () => {
           return <></>;
         }
       })}
+
+      <Center pt={3}>
+        <Pagination dispatch={dispatch} page={commentProduct.page} setPage={setPage}
+                    numberElementShownPerPage={commentProduct.numberElementShownPerPage}
+                    totalProducts={commentProduct.totalProductsByFiltersAndCategory} />
+      </Center>
     </Box>
   );
 };

@@ -1,12 +1,12 @@
 import React from 'react';
 import { useGLTF } from '@react-three/drei';
-import laptop_GLB from '../../assets/laptop-transformed.glb';
 
-export const Show3DGLB = (props) => {
-  const { nodes, materials } = useGLTF(laptop_GLB);
+export const Show3DGLB = ({ source }) => {
+  const { nodes, materials } = useGLTF(source);
+  useGLTF.preload(source);
 
   return (
-    <group {...props} dispose={null}>
+    <group dispose={null}>
       <group position={[-0.019, 0.007, -0.08]} rotation={[0, -Math.PI / 2, 0]}>
         <mesh geometry={nodes.Cube002.geometry} material={materials.PaletteMaterial002} />
         <mesh geometry={nodes.Cube002_1.geometry} material={materials.PaletteMaterial001} />
@@ -18,5 +18,3 @@ export const Show3DGLB = (props) => {
     </group>
   );
 };
-
-useGLTF.preload(laptop_GLB);

@@ -1,31 +1,39 @@
 import React, { useEffect } from 'react';
 import {
   Box,
-  Button,
+  Button, Center,
   Divider,
+  Flex,
   FormControl,
   FormLabel,
   Stack,
   Text,
-  Textarea,
+  Textarea, VStack,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchWithAxios, showToast } from '../../Base/BaseFunctions';
-import { setQuestionForSend, setQuestions } from '../../store/features/questionProductSlice';
-import { useLocation } from 'react-router-dom';
+import { fetchWithAxios, GregorianToJalaliConverter, Pagination, showToast } from '../../Base/BaseFunctions';
+import {
+  setPage,
+  setQuestionForSend,
+  setQuestions,
+  setTotalProductsByFiltersAndCategory,
+} from '../../store/features/questionProductSlice';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const Question = () => {
   const question = useSelector(state => state.questionProduct);
   const product = useSelector(state => state.product);
+  const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  const navigate = useNavigate();
 
   const getQuestion = () => {
-    fetchWithAxios.get(`/shop/getquestionsprod/?id=${queryParams.get('id')}&page=1&count=10`, {})
+    fetchWithAxios.get(`/shop/getquestionsprod/?id=${queryParams.get('id')}&page=${question.page}&count=${question.numberElementShownPerPage}`, {})
       .then((response) => {
-        console.log(response);
         dispatch(setQuestions(response.data.questions));
+        dispatch(setTotalProductsByFiltersAndCategory(response.data.length));
       })
       .catch((e) => {
         showToast('خطا', e.message);
@@ -45,7 +53,7 @@ export const Question = () => {
 
   useEffect(() => {
     getQuestion();
-  }, []);
+  }, [question.page]);
 
   return (
     <Box className={'box_shadow'} p={5} borderRadius={9}>
@@ -53,30 +61,58 @@ export const Question = () => {
 
       <Divider mt={1} borderColor={'gray.400'} />
 
-      <Stack spacing={2} p={5}>
-        <FormControl my={'auto'} isRequired ml={5}>
-          <FormLabel width={'100px'} my={'auto'}>
-            <Text as={'b'}>
-              سوال:
-            </Text>
-          </FormLabel>
-          <Textarea minH={'200px'} placeholder='سوال' value={question.question}
-                    onChange={(event) => {
-                      dispatch(setQuestionForSend(event.target.value));
-                    }} />
-        </FormControl>
+      {user.isRegistered ?
+        <Stack spacing={2} p={5}>
+          <FormControl my={'auto'} isRequired ml={5}>
+            <FormLabel width={'100px'} my={'auto'}>
+              <Text as={'b'}>
+                سوال:
+              </Text>
+            </FormLabel>
+            <Textarea minH={'200px'} placeholder='سوال' value={question.question}
+                      onChange={(event) => {
+                        dispatch(setQuestionForSend(event.target.value));
+                      }} />
+          </FormControl>
 
-        <Button backgroundColor={'green.500'} _hover={{ backgroundColor: 'green.600' }} color={'white'}
-                onClick={() => sendQuestion()}>
-          ارسال
-        </Button>
-      </Stack>
-
-      {question.questions !== undefined && question.questions.length !== 0 ?
-        <Divider mt={1} borderColor={'gray.400'} />
+          <Button backgroundColor={'green.500'} _hover={{ backgroundColor: 'green.600' }} color={'white'}
+                  onClick={() => sendQuestion()}>
+            ارسال
+          </Button>
+        </Stack>
         :
-        null
+        <VStack spacing={1} p={5}>
+          <Text fontSize={'18px'}>برای ثبت سوال ابتدا وارد سایت شوید</Text>
+          <Button size={'sm'} color={'white'} backgroundColor={'green.500'} _hover={{ backgroundColor: 'green.600' }}
+                  onClick={() => navigate('/login', { replace: true })}>
+            ورود
+          </Button>
+        </VStack>
       }
+
+      {question.questions !== undefined && question.questions.length !== 0 &&
+        <Divider mt={1} borderColor={'gray.400'} />}
+
+      {question.questions !== undefined && question.questions.map((value, index) => (
+        <Stack key={index} p={6} m={3} className={'box_shadow'} borderRadius={7} backgroundColor={'gray.50'}>
+
+          <Flex>
+            <Box my={'auto'}>
+              <GregorianToJalaliConverter gregorianDate={value.date} />
+            </Box>
+          </Flex>
+
+          <Divider mt={1} borderColor={'gray.500'} />
+
+          <Text>{value.text}</Text>
+        </Stack>
+      ))}
+
+      <Center pt={3}>
+        <Pagination dispatch={dispatch} page={question.page} setPage={setPage}
+                    numberElementShownPerPage={question.numberElementShownPerPage}
+                    totalProducts={question.totalProductsByFiltersAndCategory} />
+      </Center>
     </Box>
   );
 };

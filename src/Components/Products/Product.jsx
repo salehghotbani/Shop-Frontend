@@ -12,16 +12,13 @@ import {
   Text,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { addToCart, backendURL, cookies, fetchWithAxios, showToast } from '../../Base/BaseFunctions';
+import { addToCart, backendURL, cookies, fetchWithAxios, ShowGLB, showToast } from '../../Base/BaseFunctions';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setProductDetails,
   setProductValues,
   setSameProducts,
 } from '../../store/features/productsSlice';
-import { ContactShadows, Environment, OrbitControls } from '@react-three/drei';
-import { Show3DGLB } from './Show3DGLB';
-import { Canvas } from '@react-three/fiber';
 import Zoom from 'react-img-zoom';
 import { StarIcon } from '@chakra-ui/icons';
 import componentIcon from '../../assets/icons/Design-Tools/vuesax/bold/component.svg';
@@ -43,7 +40,7 @@ export const Product = () => {
   const queryParams = new URLSearchParams(location.search);
 
   const getProductDetails = () => {
-    fetchWithAxios.get(`/shop/getproddetails/?id=${cookies.get('productId')}`, {})
+    fetchWithAxios.get(`/shop/getproddetails/?id=${queryParams.get('id')}`, {})
       .then(function(response) {
           dispatch(setProductDetails(response.data));
           setImageOfProduct(response.data.avatar);
@@ -54,7 +51,7 @@ export const Product = () => {
   };
 
   const getProductValues = () => {
-    fetchWithAxios.get(`/shop/getprodvalues/?id=${cookies.get('productId')}`, {})
+    fetchWithAxios.get(`/shop/getprodvalues/?id=${queryParams.get('id')}`, {})
       .then(function(response) {
           dispatch(setProductValues(response.data));
         },
@@ -67,7 +64,6 @@ export const Product = () => {
     fetchWithAxios.post(`/shop/getprodbyfilter/?id=${queryParams.get('category')}&page=1&count=7`, {})
       .then(function(response) {
           let tempArray = [];
-          console.log('***********', response.data);
           response.data.products.map((value) => {
             tempArray.push(value);
           });
@@ -112,9 +108,13 @@ export const Product = () => {
           <GridItem colSpan={2} w='100%' my={'70px'}>
             <Box borderRadius={7} dir={'rtl'} backgroundColor={'white'} py={3} px={4} className={'box_shadow'}>
               <Center>
-                <Box backgroundImage={backendURL + '/' + imageOfProduct} w={'200px'} h={'200px'} mx={2}
-                     backgroundPosition={'center'} backgroundRepeat={'no-repeat'}
-                     backgroundSize={'cover'} />
+                {imageOfProduct !== null && (imageOfProduct).toString().split('.')[(imageOfProduct).toString().split('.').length - 1] === 'glb' ?
+                  <ShowGLB autoRotate={false} image={backendURL + '/' + imageOfProduct} />
+                  :
+                  <Box backgroundImage={backendURL + '/' + imageOfProduct} w={'200px'} h={'200px'} mx={2}
+                       backgroundPosition={'center'} backgroundRepeat={'no-repeat'}
+                       backgroundSize={'cover'} />
+                }
               </Center>
               <Box px={1} mt={1}>
                 <Divider borderColor={'gray.400'} />
@@ -199,15 +199,7 @@ export const Product = () => {
           <GridItem colSpan={3} w='100%' h={'700px'}>
             {imageOfProduct !== null ?
               (imageOfProduct).toString().split('.')[(imageOfProduct).toString().split('.').length - 1] === 'glb' ?
-                <>
-                  <Canvas shadows camera={{ position: [0, 0.2, 0.4] }}>
-                    <Environment preset='forest' />
-                    <Show3DGLB />
-                    <ContactShadows position={[0, -0.8, 0]} color='#ffffff' />
-                    <OrbitControls autoRotate />
-                  </Canvas>
-                  <Show3DGLB />
-                </>
+                <ShowGLB autoRotate={true} image={backendURL + '/' + imageOfProduct} />
                 :
                 <Box>
                   <Zoom
@@ -271,9 +263,13 @@ export const Product = () => {
             <Box minW={'200px'} maxW={'250px'} pt={5} borderRadius={8} borderWidth={1} className={'box_shadow'}
                  dir={'rtl'} position={'sticky'} top={'80px'}>
               <Center>
-                <Box backgroundImage={backendURL + '/' + imageOfProduct} w={'200px'} h={'200px'} mx={2}
-                     backgroundPosition={'center'} backgroundRepeat={'no-repeat'}
-                     backgroundSize={'cover'} />
+                {imageOfProduct !== null && (imageOfProduct).toString().split('.')[(imageOfProduct).toString().split('.').length - 1] === 'glb' ?
+                  <ShowGLB autoRotate={false} image={backendURL + '/' + imageOfProduct} />
+                  :
+                  <Box backgroundImage={backendURL + '/' + imageOfProduct} w={'200px'} h={'200px'} mx={2}
+                       backgroundPosition={'center'} backgroundRepeat={'no-repeat'}
+                       backgroundSize={'cover'} />
+                }
               </Center>
 
               <Box mx={5}>

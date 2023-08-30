@@ -41,7 +41,7 @@ export const Description = () => {
             opacity: showOverlay ? 1 : 0,
           }}
         >
-          <Image opacity={showOverlay ? 1 : 0} src={IntroduceCardImage} alt='Overlay' objectFit={'cover'} />
+          <Image width={['140px', '130px', '180px', '300px', '400px', '490px']} opacity={showOverlay ? 1 : 0} src={IntroduceCardImage} alt='Overlay' objectFit={'cover'} />
         </motion.div>
 
         <motion.div

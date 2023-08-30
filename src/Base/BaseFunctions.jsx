@@ -1,14 +1,20 @@
 import axios from 'axios';
-import { Text, createStandaloneToast } from '@chakra-ui/react';
+import { Text, createStandaloneToast, ButtonGroup, Button } from '@chakra-ui/react';
 import Cookies from 'universal-cookie';
 import CreatableSelect from 'react-select/creatable';
 import React from 'react';
 import { setProducts, setTotalPrice } from '../store/features/cartSlice';
 import moment from 'jalali-moment';
 import jalaliMoment from 'jalali-moment';
+import { setRegistrationStatus, setUsername } from '../store/features/userSlice';
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { Environment, OrbitControls } from '@react-three/drei';
+import { Show3DGLB } from '../Components/Products/Show3DGLB';
+import { Canvas } from '@react-three/fiber';
 
-//http://51.68.171.248:8000
+// https://backend.ghotbani.ir
 export const backendURL = 'http://localhost:8000';
+export const frontendURL = 'http://frontend.ghotbani.ir';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -115,8 +121,7 @@ export const logout = (navigate) => {
 export const getProductsCart = (dispatch) => {
   fetchWithAxios.get(`/getprodscart`, {})
     .then((response) => {
-      console.log(response);
-      dispatch(setTotalPrice(response.data['total_price'][0]));
+      dispatch(setTotalPrice(response.data['total_price']));
       dispatch(setProducts(response.data.products));
     })
     .catch((e) => {
@@ -154,4 +159,134 @@ export const GregorianToJalaliConverter = ({ gregorianDate }) => {
   const jalaliDate = jalaliMoment(parsedGregorianDate).format('jYYYY/jM/jD HH:mm');
 
   return <Text fontSize={'14px'}>{jalaliDate}</Text>;
+};
+
+export const checkAuth = async (dispatch) => {
+  await fetchWithAxios.get('/shop/checkauth/', {})
+    .then(function(response) {
+        dispatch(setRegistrationStatus(true));
+        dispatch(setUsername(response.data.username));
+        return true;
+      },
+    ).catch(() => {
+      dispatch(setUsername(''));
+      dispatch(setRegistrationStatus(false));
+      return false;
+    });
+};
+
+export const getCurrentDateTime = () => {
+  const now = new Date();
+
+  const year = now.getUTCFullYear();
+  const month = String(now.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(now.getUTCDate()).padStart(2, '0');
+
+  const hours = String(now.getUTCHours()).padStart(2, '0');
+  const minutes = String(now.getUTCMinutes()).padStart(2, '0');
+  const seconds = String(now.getUTCSeconds()).padStart(2, '0');
+  const milliseconds = String(now.getUTCMilliseconds()).padStart(6, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds}+00`;
+};
+
+export const Pagination = ({
+                             totalProducts,
+                             page,
+                             numberElementShownPerPage,
+                             dispatch,
+                             setPage,
+                           }) => {
+  const pageRange = 5;
+  const totalPages = Math.ceil(totalProducts / numberElementShownPerPage);
+
+  let startPage = Math.max(1, page - Math.floor(pageRange / 2));
+  let endPage = Math.min(totalPages, startPage + pageRange - 1);
+
+  if (totalPages > 1) {
+    if (totalPages <= 5) {
+      endPage = totalPages;
+    }
+
+    if (endPage - startPage + 1 < pageRange) {
+      startPage = Math.max(1, endPage - pageRange + 1);
+    }
+
+    return (
+      <ButtonGroup spacing='2'>
+        <Button backgroundColor={'white'}
+                borderColor={'gray.300'}
+                textColor={'gray.700'}
+                borderRadius={4} size={'sm'} borderWidth={1}
+                onClick={() => {
+                  if (page > 1) {
+                    dispatch(setPage(page - 1));
+                  } else {
+                    dispatch(setPage(1));
+                  }
+                }}>
+          <ChevronRightIcon />
+        </Button>
+
+        {Array.from({ length: endPage - startPage + 1 }, (_, i) => i + startPage).map((ItteratePage, index) => (
+          <Button key={index}
+                  size={'sm'}
+                  borderWidth={1}
+                  disabled={page === ItteratePage}
+                  borderRadius={4}
+                  onClick={() => {
+                    dispatch(setPage(ItteratePage));
+                  }}
+                  backgroundColor={page === ItteratePage ? 'white' : 'gray.200'}
+                  borderColor={'gray.300'}
+                  _hover={{ backgroundColor: page === ItteratePage ? 'gray.200' : 'gray.600' }}>
+            {ItteratePage}
+          </Button>
+        ))}
+
+        <Button backgroundColor={'white'}
+                borderColor={'gray.300'}
+                textColor={'gray.700'}
+                borderRadius={4} size={'sm'} borderWidth={1}
+                onClick={() => {
+                  if (page < endPage) {
+                    dispatch(setPage(page + 1));
+                  } else {
+                    dispatch(setPage(endPage));
+                  }
+                }}>
+          <ChevronLeftIcon />
+        </Button>
+      </ButtonGroup>
+    );
+  } else {
+    return <></>;
+  }
+};
+
+export const getCartStatus = (status) => {
+  switch (status) {
+    case 'CRAT':
+      return 'ثبت شده';
+    case 'PENP':
+      return 'در انتظار پرداخت';
+    case 'PAID':
+      return 'پرداخت شده';
+    case 'PROC':
+      return 'ارسال شده';
+    case 'DELV':
+      return 'تحویل شده';
+    case 'CANC':
+      return 'کنسل شده';
+  }
+};
+
+export const ShowGLB = ({ image, autoRotate }) => {
+  return (
+    <Canvas shadows camera={{ position: [0, 0.2, 0.4] }}>
+      <Environment preset='forest' />
+      <Show3DGLB source={image} />
+      <OrbitControls autoRotate={autoRotate} />
+    </Canvas>
+  );
 };
