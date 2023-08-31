@@ -21,7 +21,7 @@ import {
 } from '@chakra-ui/react';
 import { setAllOrders } from '../../../store/features/allOrdersSlice';
 import Carousel from 'react-multi-carousel';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { setIsInReview } from '../../../store/features/dashboardSlice';
 
 const OrderComponent = ({ order }) => {
@@ -118,7 +118,9 @@ const OrderComponent = ({ order }) => {
 export const AllOrders = () => {
   const dispatch = useDispatch();
   const allOrders = useSelector(state => state.allOrders);
-  // const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const navigate = useNavigate();
 
   const getAllOrdersAxios = () => {
     fetchWithAxios.get(`/delivery/getallorders`, {})
@@ -131,7 +133,12 @@ export const AllOrders = () => {
   };
 
   useEffect(() => {
-    getAllOrdersAxios();
+    if (queryParams.has('order_id')) {
+      dispatch(setIsInReview(true));
+    } else {
+      dispatch(setIsInReview(false));
+      getAllOrdersAxios();
+    }
   }, []);
 
   return (
@@ -173,6 +180,10 @@ export const AllOrders = () => {
               <Button my={'auto'} backgroundColor={'cyan.600'} _hover={{ backgroundColor: 'cyan.700' }} size={'sm'}
                       color={'white'}
                       onClick={() => {
+                        queryParams.set('order_id', value.id);
+                        const updatedSearch = queryParams.toString();
+                        navigate({ search: updatedSearch });
+
                         dispatch(setIsInReview(true));
                       }}>
                 مرور

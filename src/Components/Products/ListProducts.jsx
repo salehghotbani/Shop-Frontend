@@ -310,7 +310,7 @@ export const ListProducts = () => {
 
   const getBrands = () => {
     fetchWithAxios.get(`/shop/getbrandcategory/?id=${Number(product.selectedCategory)}`, {})
-      .then(function(response) {
+      .then((response) => {
           let tempArray = [];
           response.data.brands.map((value) => {
             tempArray.push({ value: value, label: value });

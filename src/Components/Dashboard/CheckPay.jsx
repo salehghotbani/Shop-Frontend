@@ -51,7 +51,7 @@ export const CheckPay = () => {
             رسید خرید: ({queryParams.get('RefNum')})
           </Link>
 
-          <Button onClick={() => navigate('/info', { replace: true })}>بازگشت به صفحه اصلی</Button>
+          <Button onClick={() => navigate('/info')}>بازگشت به صفحه اصلی</Button>
         </VStack>
       </Box>
     </>

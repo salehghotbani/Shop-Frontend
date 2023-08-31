@@ -76,7 +76,7 @@ export const Login = () => {
             dispatch(setRegistrationStatus(true));
 
             setTimeout(() => {
-              navigate('/', { replace: true });
+              navigate('/');
               document.location.reload();
             }, 2000);
           },

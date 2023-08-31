@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react';
 import {
   addToCart,
-  backendURL,
+  backendURL, createOrder,
   fetchWithAxios,
   frontendURL,
   getProductsCart,
@@ -150,46 +150,6 @@ export const Cart = () => {
     getProductsCart(dispatch);
   }, []);
 
-  const createOrderIdPay = (order_id) => {
-    fetchWithAxios.get('/getcustomerinfo', {})
-      .then((userInfoResponse) => {
-        axios.post('https://sandbox.banktest.ir/saman/sep.shaparak.ir/OnlinePG/OnlinePG',
-          {
-            'action': 'token',
-            'TerminalId': '134754750',
-            'Amount': parseInt(cart.totalPrice) * 10,
-            'ResNum': order_id.toString(),
-            'RedirectUrl': frontendURL + '/checkpay',
-            'CellNumber': userInfoResponse.phone_number,
-          },
-          {
-            auth: {
-              username: 'user134754749', // Username
-              password: '38531349', // Password
-            },
-          })
-          .then((response) => {
-            navigate(`https://sep.shaparak.ir/OnlinePG/SendToken?token=${response.data.token}&GetMethod=true`, { replace: true });
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const createOrder = () => {
-    fetchWithAxios.get('/delivery/createorder/', {})
-      .then((response) => {
-        createOrderIdPay(response.data.order_id);
-      })
-      .catch((e) => {
-        showToast('خطا', e.message);
-      });
-  };
-
   return (
     <>
       <Grid h={'89vh'} templateColumns='repeat(7, 1fr)' gap={5} p={'30px'}>
@@ -243,8 +203,9 @@ export const Cart = () => {
                   </GridItem>
                 </Grid>
 
-                <Button size={'sm'} mt={3} w={'100%'} backgroundColor={'green.500'} onClick={createOrder}
-                        _hover={{ backgroundColor: 'green.600' }} color={'white'}>
+                <Button size={'sm'} mt={3} w={'100%'} backgroundColor={'green.500'}
+                        _hover={{ backgroundColor: 'green.600' }} color={'white'}
+                        onClick={() => createOrder(cart.totalPrice, navigate)}>
                   <Text>ثبت و پرداخت</Text>
                 </Button>
               </>

@@ -136,7 +136,7 @@ export const Comment = () => {
                   </FormLabel>
                 </GridItem>
                 <GridItem colStart={4} colEnd={6}>
-                  <StarRating />
+                  <StarRating setRate={setRate} />
                 </GridItem>
               </Grid>
             </FormControl>
@@ -193,7 +193,7 @@ export const Comment = () => {
         <VStack spacing={1} p={5}>
           <Text fontSize={'18px'}>برای ثبت نظر ابتدا وارد سایت شوید</Text>
           <Button size={'sm'} color={'white'} backgroundColor={'green.500'} _hover={{ backgroundColor: 'green.600' }}
-                  onClick={() => navigate('/login', { replace: true })}>
+                  onClick={() => navigate('/login')}>
             ورود
           </Button>
         </VStack>

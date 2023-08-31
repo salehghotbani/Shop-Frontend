@@ -17,9 +17,13 @@ import { Canvas } from '@react-three/fiber';
 export const backendURL = 'https://backend.ghotbani.ir';
 export const frontendURL = 'http://frontend.ghotbani.ir';
 
+export const cookies = new Cookies();
+
+const csrfToken = cookies.get('csrftoken');
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
+axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
 
 export const fetchWithAxios = axios.create({
   baseURL: backendURL,
@@ -47,8 +51,6 @@ export const showToast = (title, description, statusIndex = 1, positionIndex = 3
     isClosable: isClosable,
   });
 };
-
-export const cookies = new Cookies();
 
 export const MultiSelect = ({
                               dispatch,
@@ -111,7 +113,7 @@ export const MultiSelect = ({
 export const logout = (navigate) => {
   fetchWithAxios.get('/logout/', {})
     .then(function() {
-      navigate('/', { replace: true });
+      navigate('/');
       document.location.reload();
     })
     .catch((e) => {
@@ -290,4 +292,44 @@ export const ShowGLB = ({ image, autoRotate }) => {
       <OrbitControls autoRotate={autoRotate} />
     </Canvas>
   );
+};
+
+export const createOrderIdPay = (order_id, totalPrice, navigate) => {
+  fetchWithAxios.get('/getcustomerinfo', {})
+    .then((userInfoResponse) => {
+      axios.post('https://sandbox.banktest.ir/saman/sep.shaparak.ir/OnlinePG/OnlinePG',
+        {
+          'action': 'token',
+          'TerminalId': '134754750',
+          'Amount': parseInt(totalPrice) * 10,
+          'ResNum': order_id.toString(),
+          'RedirectUrl': frontendURL + '/checkpay',
+          'CellNumber': userInfoResponse.phone_number,
+        },
+        {
+          auth: {
+            username: 'user134754749', // Username
+            password: '38531349', // Password
+          },
+        })
+        .then((response) => {
+          navigate(`https://sep.shaparak.ir/OnlinePG/SendToken?token=${response.data.token}&GetMethod=true`, { replace: true });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const createOrder = (totalPrice, navigate) => {
+  fetchWithAxios.get('/delivery/createorder/', {})
+    .then((response) => {
+      createOrderIdPay(response.data.order_id, totalPrice, navigate);
+    })
+    .catch((e) => {
+      showToast('خطا', e.message);
+    });
 };

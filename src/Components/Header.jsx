@@ -122,7 +122,7 @@ export const Header = () => {
                        h={'40px'} cursor={user.isRegistered ? 'pointer' : 'default'}
                        onClick={() => {
                          if (user.isRegistered) {
-                           navigate(`/info?dashboard_section=${CART_DASHBOARD}`, { replace: true });
+                           navigate(`/info?dashboard_section=${CART_DASHBOARD}`);
                            window.location.reload();
                          }
                        }}
@@ -159,7 +159,7 @@ export const Header = () => {
             <Center mt={1}>
               <HStack spacing={2} cursor={'pointer'}
                       onClick={() => {
-                        navigate('/', { replace: true });
+                        navigate('/');
                       }}>
                 <Text mt={1} fontSize={'17px'} as={'b'} color={'white'}>
                   فروشگاه

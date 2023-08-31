@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
-import { setRate } from '../../store/features/commentProductSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
-export const StarRating = () => {
+export const StarRating = ({ setRate }) => {
   const commentProduct = useSelector(state => state.commentProduct);
   const [hoveredRating, setHoveredRating] = useState(0);
   const dispatch = useDispatch();
