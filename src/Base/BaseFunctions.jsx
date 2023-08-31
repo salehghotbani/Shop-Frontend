@@ -13,20 +13,22 @@ import { Show3DGLB } from '../Components/Products/Show3DGLB';
 import { Canvas } from '@react-three/fiber';
 
 // https://backend.ghotbani.ir
-// export const backendURL = 'http://localhost:8000';
-export const backendURL = 'https://backend.ghotbani.ir';
+export const backendURL = 'http://localhost:8000';
+// export const backendURL = 'https://backend.ghotbani.ir';
 export const frontendURL = 'http://frontend.ghotbani.ir';
 
 export const cookies = new Cookies();
 
-const csrfToken = cookies.get('csrftoken');
-axios.defaults.xsrfCookieName = 'csrftoken';
-axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-axios.defaults.withCredentials = true;
-axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
+// const csrfToken = cookies.get('csrftoken');
+// axios.defaults.xsrfCookieName = 'csrftoken';
+// axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+// axios.defaults.withCredentials = true;
+// axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
 
 export const fetchWithAxios = axios.create({
   baseURL: backendURL,
+  xsrfCookieName: 'csrftoken',
+  xsrfHeaderName: 'X-CSRFToken',
   withCredentials: true,
 });
 
