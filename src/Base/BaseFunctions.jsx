@@ -336,7 +336,7 @@ export const ProductSimple = ({ image, name, price, onClickEvent, hasButton = fa
       <Box role={'group'} p={6} maxW={'330px'} w={'full'} bg={'white'} boxShadow={'2xl'} rounded={'lg'} pos={'relative'}
            zIndex={1}>
         {image !== null && (image).toString().split('.')[(image).toString().split('.').length - 1] === 'glb' ?
-          <ShowGLB autoRotate={false} image={backendURL + '/' + image} />
+          <ShowGLB autoRotate={false} image={image} />
           :
           <Box rounded={'lg'} mt={-12} pos={'relative'} height={'230px'} px={5} onClick={onClickEvent}
                _after={{
