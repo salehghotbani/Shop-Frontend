@@ -57,7 +57,7 @@ import {
   backendURL,
   cookies,
   fetchWithAxios,
-  Pagination,
+  Pagination, ProductSimple,
   ShowGLB,
   showToast,
 } from '../../Base/BaseFunctions';
@@ -128,7 +128,7 @@ const GetFilter = ({ getProductsByCategory }) => {
                   <AccordionIcon />
                 </AccordionButton>
               </h2>
-              <AccordionPanel pb={9} h={'100px'}>
+              <AccordionPanel h={'150px'} pb={9}>
                 <Select focusBorderColor='transparent' inputId={'select_brand_search_id'}
                         options={product.brandNames} placeholder={'جستجو کنید'}
                         noOptionsMessage={() => 'موردی یافت نشد'}
@@ -165,13 +165,13 @@ const GetFilter = ({ getProductsByCategory }) => {
                             ...provided,
                             marginTop: '-4.5px',
                             marginBottom: '-4.5px',
-                            maxHeight: '100px',
+                            maxHeight: '80px',
                           }),
                           menuList: (provided) => ({
                             ...provided,
                             paddingTop: '0',
                             paddingBottom: '0',
-                            maxHeight: '100px',
+                            maxHeight: '80px',
                           }),
                           singleValue: (defaultStyles) => ({ ...defaultStyles, color: '#000000' }),
                         }}
@@ -380,53 +380,20 @@ export const ListProducts = () => {
                dir={'ltr'}>
             <SimpleGrid columns={[1, 1, 2, 3, 4, 5]} spacing={4} mb={5} dir={'rtl'}>
               {timeToShowProducts && product.products.map((value, index) => (
-                <Box id={'id' + index} key={index} borderRadius={8} py={3}
-                     cursor={'pointer'} borderWidth={1}
-                     onMouseEnter={() => {
-                       document.getElementById('id' + index).classList.add('box_shadow');
-                     }}
-                     onMouseLeave={() => {
-                       document.getElementById('id' + index).classList.remove('box_shadow');
-                     }}>
-                  <Center mt={'30px'} w={'240px'} h={'240px'}
-                          onClick={() => {
-                            cookies.set('productId', value.id, { path: '/' });
-                            navigate(`/productInfo?id=${value.id}&category=${product.selectedCategory}`);
-                          }}>
-                    {(value.avatar).toString().split('.')[(value.avatar).toString().split('.').length - 1] === 'glb' ?
-                      <ShowGLB autoRotate={true} image={backendURL + '/' + value.avatar} />
-                      :
-                      <Box backgroundImage={backendURL + '/' + value.avatar} w={'240px'} h={'240px'}
-                           backgroundPosition={'center'} backgroundRepeat={'no-repeat'} backgroundSize={'cover'} />
-                    }
-                  </Center>
-                  <Stack mx={5} mt={6}>
-                    <Stack mb={3} onClick={() => {
-                      cookies.set('productId', value.id, { path: '/' });
-                      navigate(`/productInfo?id=${value.id}&category=${product.selectedCategory}`);
-                    }}>
-                      <Text fontSize={'18px'} as={'b'}>{value.name}</Text>
-                      <Text fontSize={'16px'} textAlign={'left'}>
-                        قیمت: {value.price !== undefined && parseInt((value.price.toString()).replace(/,/g, '')).toLocaleString()} تومان
-                      </Text>
-
-                      <Text color={'red'} fontSize={'12px'}>
-                        تعداد
-                        فروش: {value.number_sell !== undefined && parseInt((value.number_sell.toString()).replace(/,/g, '')).toLocaleString()}
-                      </Text>
-                    </Stack>
-
-                    <Button width={'100%'} backgroundColor={'green.500'} _hover={{ backgroundColor: 'green.600' }}
-                            color={'white'} onClick={() => addToCart(dispatch, value.id)}>
-                      افزودن به سبد خرید
-                    </Button>
-                  </Stack>
+                <Box key={index}>
+                  <ProductSimple image={backendURL + '/' + value.avatar} name={value.name}
+                                 onClickEvent={() => {
+                                   cookies.set('productId', value.id, { path: '/' });
+                                   navigate(`/productInfo?id=${value.id}&category=${product.selectedCategory}`);
+                                 }}
+                                 price={parseInt((value.price.toString()).replace(/,/g, '')).toLocaleString()}
+                                 hasButton={true} buttonFunction={() => addToCart(dispatch, value.id)} />
                 </Box>
               ))}
             </SimpleGrid>
           </Box>
         </GridItem>
-      </Grid>s
+      </Grid>
 
       <Box position='fixed' bottom='0' right='0' px={9} py={7}>
         <Menu maxW={'100px'}>

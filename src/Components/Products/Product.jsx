@@ -259,14 +259,14 @@ export const Product = () => {
         <Divider borderColor={'gray.400'} />
 
         <Grid templateColumns='repeat(5, 1fr)' gap={8} mt={'20px'}>
-          <GridItem colSpan={1} w='100%' borderRadius={7}>
+          <GridItem minW={'200px'} maxW={'250px'} colSpan={1} w='100%' borderRadius={7}>
             <Box minW={'200px'} maxW={'250px'} pt={5} borderRadius={8} borderWidth={1} className={'box_shadow'}
                  dir={'rtl'} position={'sticky'} top={'80px'}>
-              <Center>
+              <Center minW={'200px'} maxW={'250px'}>
                 {imageOfProduct !== null && (imageOfProduct).toString().split('.')[(imageOfProduct).toString().split('.').length - 1] === 'glb' ?
                   <ShowGLB autoRotate={false} image={backendURL + '/' + imageOfProduct} />
                   :
-                  <Box backgroundImage={backendURL + '/' + imageOfProduct} w={'200px'} h={'200px'} mx={2}
+                  <Box backgroundImage={backendURL + '/' + imageOfProduct} minW={'200px'} maxW={'250px'} mx={2}
                        backgroundPosition={'center'} backgroundRepeat={'no-repeat'}
                        backgroundSize={'cover'} />
                 }

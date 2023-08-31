@@ -20,12 +20,9 @@ import {
 import {
   addToCart,
   backendURL, createOrder,
-  fetchWithAxios,
-  frontendURL,
   getProductsCart,
   removeFromCart,
   ShowGLB,
-  showToast,
 } from '../../../Base/BaseFunctions';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,7 +31,6 @@ import availabilityLogo from '../../../assets/images/availability.png';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import componentIcon from '../../../assets/icons/Design-Tools/vuesax/bold/component.svg';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 export const GetCart = () => {
   const cart = useSelector(state => state.cart);
@@ -184,7 +180,7 @@ export const Cart = () => {
               ))}
             </Stack>
 
-            {cart.totalPrice &&
+            {cart.totalPrice !== 0 &&
               <>
                 <Divider my={1} borderRadius={8} borderColor={'black'} />
 

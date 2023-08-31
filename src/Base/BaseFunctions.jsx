@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Text, createStandaloneToast, ButtonGroup, Button } from '@chakra-ui/react';
+import { Text, createStandaloneToast, ButtonGroup, Button, Center, Box, Stack, Heading, Image } from '@chakra-ui/react';
 import Cookies from 'universal-cookie';
 import CreatableSelect from 'react-select/creatable';
 import React from 'react';
@@ -18,12 +18,6 @@ export const backendURL = 'https://backend.ghotbani.ir';
 export const frontendURL = 'http://frontend.ghotbani.ir';
 
 export const cookies = new Cookies();
-
-// const csrfToken = cookies.get('csrftoken');
-// axios.defaults.xsrfCookieName = 'csrftoken';
-// axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-// axios.defaults.withCredentials = true;
-// axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
 
 export const fetchWithAxios = axios.create({
   baseURL: backendURL,
@@ -163,7 +157,7 @@ export const GregorianToJalaliConverter = ({ gregorianDate }) => {
   // Convert the Gregorian date to Jalali (Persian) using jalali-moment
   const jalaliDate = jalaliMoment(parsedGregorianDate).format('jYYYY/jM/jD HH:mm');
 
-  return <Text fontSize={'14px'}>{jalaliDate}</Text>;
+  return <span>{jalaliDate}</span>;
 };
 
 export const checkAuth = async (dispatch) => {
@@ -208,7 +202,7 @@ export const Pagination = ({
   let startPage = Math.max(1, page - Math.floor(pageRange / 2));
   let endPage = Math.min(totalPages, startPage + pageRange - 1);
 
-  if (totalPages > 1) {
+  if (totalPages >= 1) {
     if (totalPages <= 5) {
       endPage = totalPages;
     }
@@ -334,4 +328,54 @@ export const createOrder = (totalPrice, navigate) => {
     .catch((e) => {
       showToast('خطا', e.message);
     });
+};
+
+export const ProductSimple = ({ image, name, price, onClickEvent, hasButton = false, buttonFunction }) => {
+  return (
+    <Center py={12} cursor={'pointer'}>
+      <Box role={'group'} p={6} maxW={'330px'} w={'full'} bg={'white'} boxShadow={'2xl'} rounded={'lg'} pos={'relative'}
+           zIndex={1}>
+        {image !== null && (image).toString().split('.')[(image).toString().split('.').length - 1] === 'glb' ?
+          <ShowGLB autoRotate={false} image={backendURL + '/' + image} />
+          :
+          <Box rounded={'lg'} mt={-12} pos={'relative'} height={'230px'} px={5} onClick={onClickEvent}
+               _after={{
+                 transition: 'all .3s ease',
+                 content: '""',
+                 w: 'full',
+                 h: 'full',
+                 pos: 'absolute',
+                 top: 5,
+                 left: 0,
+                 backgroundImage: `url(${image})`,
+                 filter: 'blur(15px)',
+                 zIndex: -1,
+               }}
+               _groupHover={{
+                 _after: {
+                   filter: 'blur(20px)',
+                 },
+               }}>
+            <Image rounded={'lg'} height={230} width={282} objectFit={'cover'} src={image} alt='#' />
+          </Box>
+        }
+        <Stack pt={10} align={'center'}>
+          <Stack mb={3} onClick={onClickEvent}>
+            <Heading fontSize={'20px'} fontFamily={'body'} fontWeight={500}>
+              {name}
+            </Heading>
+            <Text fontWeight={800} fontSize={'18px'}>
+              {price} تومان
+            </Text>
+          </Stack>
+          {hasButton &&
+            <Button width={'100%'} backgroundColor={'green.500'} _hover={{ backgroundColor: 'green.600' }}
+                    color={'white'} onClick={buttonFunction}>
+              افزودن به سبد خرید
+            </Button>
+          }
+        </Stack>
+      </Box>
+    </Center>
+  );
 };
