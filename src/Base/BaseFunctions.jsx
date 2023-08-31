@@ -13,13 +13,17 @@ import { Show3DGLB } from '../Components/Products/Show3DGLB';
 import { Canvas } from '@react-three/fiber';
 
 // https://backend.ghotbani.ir
-// export const backendURL = 'http://localhost:8000';
-export const backendURL = 'https://backend.ghotbani.ir';
+export const backendURL = 'http://localhost:8000';
+// export const backendURL = 'https://backend.ghotbani.ir';
 export const frontendURL = 'http://frontend.ghotbani.ir';
 
+export const cookies = new Cookies();
+
+const csrfToken = cookies.get('csrftoken');
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
+axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
 
 export const fetchWithAxios = axios.create({
   baseURL: backendURL,
@@ -47,8 +51,6 @@ export const showToast = (title, description, statusIndex = 1, positionIndex = 3
     isClosable: isClosable,
   });
 };
-
-export const cookies = new Cookies();
 
 export const MultiSelect = ({
                               dispatch,
