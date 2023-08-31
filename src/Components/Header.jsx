@@ -133,15 +133,16 @@ export const Header = () => {
                            borderRadius={'100%'}
                            bottom={-2} left={-1.5}>
                         <Center>
-                          <Text
-                            color={'white'}>{Number(cart.products.length) > 9 ? <>+9</> : cart.products.length}</Text>
+                          <Text color={'white'}>
+                            {Number(cart.products.length) > 9 ? <>+9</> : cart.products.length}
+                          </Text>
                         </Center>
                       </Box>
                     }
                     <Center><Image src={shoppingCartLinearIcon} w={'28px'} /></Center>
                   </Box>
                 </PopoverTrigger>
-                {user.isRegistered &&
+                {user.isRegistered && cart.products.length !== 0 &&
                   <PopoverContent w={'600px'} maxH={'340px'} dir={'ltr'} overflowY={'auto'}>
                     <PopoverBody dir={'rtl'} onMouseEnter={setIsOpenCardItemsPopover.on}
                                  onMouseLeave={setIsOpenCardItemsPopover.off}>

@@ -1,35 +1,34 @@
 import { Box, Center, Flex, Stack, Tag, Text } from '@chakra-ui/react';
 import Carousel from 'react-multi-carousel';
 import { useSelector } from 'react-redux';
-import { backendURL, cookies } from '../../../Base/BaseFunctions';
+import { backendURL, cookies, ProductSimple } from '../../../Base/BaseFunctions';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const AmazingOffer = () => {
   const product = useSelector(state => state.product);
   const navigate = useNavigate();
-  const listId = 'id_amazing_offers_';
 
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
-      items: 7,
+      items: 6,
     },
     desktop: {
       breakpoint: { max: 3000, min: 1300 },
-      items: 5,
+      items: 4,
     },
     desktop2: {
       breakpoint: { max: 1300, min: 1060 },
-      items: 4,
+      items: 3,
     },
     tablet: {
       breakpoint: { max: 1060, min: 800 },
-      items: 3,
+      items: 2,
     },
     mobile: {
       breakpoint: { max: 800, min: 570 },
-      items: 2,
+      items: 1,
     },
     small_mobile: {
       breakpoint: { max: 570, min: 0 },
@@ -54,31 +53,14 @@ export const AmazingOffer = () => {
 
             <Carousel responsive={responsive}>
               {product.amazingProducts.map((value, index) => (
-                <Center key={index}>
-                  <Box id={listId + index} w={'260px'} h={'400px'} borderRadius={8} backgroundColor={'white'}
-                       cursor={'pointer'} borderWidth={1} my={8}
-                       onClick={() => {
-                         cookies.set('productId', value.id, { path: '/' });
-                         navigate(`/productInfo?id=${value.id}&category=${product.selectedCategory}`);
-                       }}
-                       onMouseEnter={() => {
-                         document.getElementById(listId + index).classList.add('box_shadow');
-                       }}
-                       onMouseLeave={() => {
-                         document.getElementById(listId + index).classList.remove('box_shadow');
-                       }}>
-                    <Center>
-                      <Box backgroundImage={backendURL + '/' + value.avatar} w={'240px'} h={'240px'} mt={'30px'}
-                           backgroundPosition={'center'} backgroundRepeat={'no-repeat'} backgroundSize={'cover'} />
-                    </Center>
-                    <Stack mx={5} mt={6}>
-                      <Text fontSize={'18px'} as={'b'}>{value.name}</Text>
-                      <Text fontSize={'16px'} textAlign={'left'}>
-                        قیمت: {value.price !== undefined && parseInt((value.price.toString()).replace(/,/g, '')).toLocaleString()} تومان
-                      </Text>
-                    </Stack>
-                  </Box>
-                </Center>
+                <Box key={index}>
+                  <ProductSimple image={backendURL + '/' + value.avatar} name={value.name}
+                                 onClickEvent={() => {
+                                   cookies.set('productId', value.id, { path: '/' });
+                                   navigate(`/productInfo?id=${value.id}&category=${product.selectedCategory}`);
+                                 }}
+                                 price={value.price && (value.price).replace(/,/g, '').toLocaleString()} />
+                </Box>
               ))}
             </Carousel>
           </>

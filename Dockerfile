@@ -1,14 +1,16 @@
 FROM node:18-alpine AS builder
 ENV NODE_ENV production
-# Add a work directory
+# Declaring env
+ENV NODE_ENV production
+# Setting up the work directory
 WORKDIR /app
-# Cache and Install dependencies
-# COPY package.json .
-# RUN npm install
-# Copy app files
+# Installing dependencies
+COPY ./package.json ./
+RUN npm install
+# Copying all the files in our project
 COPY . .
-# Build the app
-# RUN npm run build
+# Building our application
+RUN npm run build
 
 # Bundle static assets with nginx
 FROM nginx:1.24.0-alpine as production
