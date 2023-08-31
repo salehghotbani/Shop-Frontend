@@ -99,7 +99,7 @@ export const Register = () => {
       showToast('تبریک!', 'ثبت نام شدید', 0);
 
       setTimeout(() => {
-        navigate('/', { replace: true });
+        navigate('/');
       }, 2000);
     }
   }, [isSentCodeForm]);

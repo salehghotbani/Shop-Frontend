@@ -84,7 +84,7 @@ export const Question = () => {
         <VStack spacing={1} p={5}>
           <Text fontSize={'18px'}>برای ثبت سوال ابتدا وارد سایت شوید</Text>
           <Button size={'sm'} color={'white'} backgroundColor={'green.500'} _hover={{ backgroundColor: 'green.600' }}
-                  onClick={() => navigate('/login', { replace: true })}>
+                  onClick={() => navigate('/login')}>
             ورود
           </Button>
         </VStack>
