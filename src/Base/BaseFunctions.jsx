@@ -1,16 +1,27 @@
 import axios from 'axios';
-import { Text, createStandaloneToast, ButtonGroup, Button, Center, Box, Stack, Heading, Image } from '@chakra-ui/react';
+import {
+  Text,
+  createStandaloneToast,
+  ButtonGroup,
+  Button,
+  Center,
+  Box,
+  Stack,
+  Heading,
+  Image,
+  VStack
+} from '@chakra-ui/react';
 import Cookies from 'universal-cookie';
 import CreatableSelect from 'react-select/creatable';
 import React from 'react';
-import { setProducts, setTotalPrice } from '../store/features/cartSlice';
+import {setProducts, setTotalPrice} from '../store/features/cartSlice';
 import moment from 'jalali-moment';
 import jalaliMoment from 'jalali-moment';
-import { setRegistrationStatus, setUsername } from '../store/features/userSlice';
-import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import { Environment, OrbitControls } from '@react-three/drei';
-import { Show3DGLB } from '../Components/Products/Show3DGLB';
-import { Canvas } from '@react-three/fiber';
+import {setRegistrationStatus, setUsername} from '../store/features/userSlice';
+import {ChevronLeftIcon, ChevronRightIcon} from '@chakra-ui/icons';
+import {Environment, OrbitControls} from '@react-three/drei';
+import {Show3DGLB} from '../Components/Products/Show3DGLB';
+import {Canvas} from '@react-three/fiber';
 
 // https://backend.ghotbani.ir
 // export const backendURL = 'http://localhost:8000';
@@ -27,7 +38,7 @@ export const fetchWithAxios = axios.create({
 });
 
 export const showToast = (title, description, statusIndex = 1, positionIndex = 3, duration = 3000, isClosable = true) => {
-  const { ToastContainer, toast } = createStandaloneToast();
+  const {ToastContainer, toast} = createStandaloneToast();
   const status = ['success', 'error', 'warning', 'info'][statusIndex];
   const position = [
     'top-right',
@@ -108,7 +119,7 @@ export const MultiSelect = ({
 
 export const logout = (navigate) => {
   fetchWithAxios.get('/logout/', {})
-    .then(function() {
+    .then(function () {
       navigate('/');
       document.location.reload();
     })
@@ -153,7 +164,7 @@ export const removeFromCart = (dispatch, product_id) => {
   });
 };
 
-export const GregorianToJalaliConverter = ({ gregorianDate }) => {
+export const GregorianToJalaliConverter = ({gregorianDate}) => {
   // Parse the original Gregorian date
   const parsedGregorianDate = moment(gregorianDate);
 
@@ -165,7 +176,7 @@ export const GregorianToJalaliConverter = ({ gregorianDate }) => {
 
 export const checkAuth = async (dispatch) => {
   await fetchWithAxios.get('/shop/checkauth/', {})
-    .then(function(response) {
+    .then(function (response) {
         dispatch(setRegistrationStatus(true));
         dispatch(setUsername(response.data.username));
         return true;
@@ -198,6 +209,9 @@ export const Pagination = ({
                              numberElementShownPerPage,
                              dispatch,
                              setPage,
+                             saveInQueryParameter = false,
+                             queryParameter,
+                             navigate,
                            }) => {
   const pageRange = 5;
   const totalPages = Math.ceil(totalProducts / numberElementShownPerPage);
@@ -222,26 +236,38 @@ export const Pagination = ({
                 borderRadius={4} size={'sm'} borderWidth={1}
                 onClick={() => {
                   if (page > 1) {
+                    if (saveInQueryParameter) {
+                      queryParameter.set('page', page - 1);
+                      navigate({search: queryParameter.toString()});
+                    }
                     dispatch(setPage(page - 1));
                   } else {
+                    if (saveInQueryParameter) {
+                      queryParameter.set('page', 1);
+                      navigate({search: queryParameter.toString()});
+                    }
                     dispatch(setPage(1));
                   }
                 }}>
-          <ChevronRightIcon />
+          <ChevronRightIcon/>
         </Button>
 
-        {Array.from({ length: endPage - startPage + 1 }, (_, i) => i + startPage).map((ItteratePage, index) => (
-          <Button key={index}
+        {Array.from({length: endPage - startPage + 1}, (_, i) => i + startPage).map((ItteratePage, index) => (
+          <Button key={index} cursor={page === ItteratePage ? 'default' : 'pointer'}
                   size={'sm'}
                   borderWidth={1}
                   disabled={page === ItteratePage}
                   borderRadius={4}
                   onClick={() => {
+                    if (saveInQueryParameter) {
+                      queryParameter.set('page', ItteratePage);
+                      navigate({search: queryParameter.toString()});
+                    }
                     dispatch(setPage(ItteratePage));
                   }}
-                  backgroundColor={page === ItteratePage ? 'white' : 'blue.200'}
+                  backgroundColor={page === ItteratePage ? 'white' : 'blue.100'}
                   borderColor={'gray.300'}
-                  _hover={{ backgroundColor: page === ItteratePage ? 'blue.200' : 'blue.300' }}>
+                  _hover={{backgroundColor: page === ItteratePage ? 'blue.100' : 'blue.200'}}>
             {ItteratePage}
           </Button>
         ))}
@@ -252,12 +278,20 @@ export const Pagination = ({
                 borderRadius={4} size={'sm'} borderWidth={1}
                 onClick={() => {
                   if (page < endPage) {
+                    if (saveInQueryParameter) {
+                      queryParameter.set('page', page + 1);
+                      navigate({search: queryParameter.toString()});
+                    }
                     dispatch(setPage(page + 1));
                   } else {
+                    if (saveInQueryParameter) {
+                      queryParameter.set('page', endPage);
+                      navigate({search: queryParameter.toString()});
+                    }
                     dispatch(setPage(endPage));
                   }
                 }}>
-          <ChevronLeftIcon />
+          <ChevronLeftIcon/>
         </Button>
       </ButtonGroup>
     );
@@ -283,12 +317,12 @@ export const getCartStatus = (status) => {
   }
 };
 
-export const ShowGLB = ({ image, autoRotate }) => {
+export const ShowGLB = ({image, autoRotate}) => {
   return (
-    <Canvas shadows camera={{ position: [0, 0.2, 0.4] }}>
-      <Environment preset='forest' />
-      <Show3DGLB source={image} />
-      <OrbitControls autoRotate={autoRotate} />
+    <Canvas shadows camera={{position: [0, 0.2, 0.4]}}>
+      <Environment preset='forest'/>
+      <Show3DGLB source={image}/>
+      <OrbitControls autoRotate={autoRotate}/>
     </Canvas>
   );
 };
@@ -296,7 +330,7 @@ export const ShowGLB = ({ image, autoRotate }) => {
 export const createOrderIdPay = (order_id, totalPrice, navigate) => {
   fetchWithAxios.get('/getcustomerinfo', {})
     .then((userInfoResponse) => {
-      axios.post('http://express-server:3001/',
+      axios.post('https://sandbox.banktest.ir/saman/sep.shaparak.ir/OnlinePG/OnlinePG/',
         {
           action: 'token',
           TerminalId: '134754750',
@@ -306,7 +340,7 @@ export const createOrderIdPay = (order_id, totalPrice, navigate) => {
           CellNumber: userInfoResponse.phone_number ? userInfoResponse.phone_number.toString() : '',
         })
         .then((response) => {
-          navigate(`https://sep.shaparak.ir/OnlinePG/SendToken?token=${response.data.token}&GetMethod=true`, { replace: true });
+          navigate(`https://sep.shaparak.ir/OnlinePG/SendToken?token=${response.data.token}&GetMethod=true`, {replace: true});
         })
         .catch((error) => {
           console.log(error);
@@ -339,10 +373,10 @@ export const ProductSimple = ({
                               }) => {
   return (
     <Center py={12} cursor={'pointer'}>
-      <Box role={'group'} p={6} maxW={'330px'} w={'full'} bg={'white'} boxShadow={'2xl'} rounded={'lg'} pos={'relative'}
-           zIndex={1}>
+      <Box role={'group'} p={6} minH={hasButton ? '390px' : 'auto'} maxW={'330px'} w={'full'} bg={'white'}
+           boxShadow={'2xl'} rounded={'lg'} pos={'relative'} zIndex={1}>
         {image !== null && (image).toString().split('.')[(image).toString().split('.').length - 1] === 'glb' ?
-          <ShowGLB autoRotate={false} image={image} />
+          <ShowGLB autoRotate={false} image={image}/>
           :
           <Box rounded={'lg'} mt={-12} pos={'relative'} height={'230px'} px={5} onClick={onClickEvent}
                _after={{
@@ -362,20 +396,20 @@ export const ProductSimple = ({
                    filter: 'blur(20px)',
                  },
                }}>
-            <Image rounded={'lg'} height={230} width={282} objectFit={'cover'} src={image} alt='#' />
+            <Image rounded={'lg'} height={230} width={282} objectFit={'cover'} src={image} alt='#'/>
           </Box>
         }
         <Stack pt={10} align={'center'}>
-          <Stack mb={3} onClick={onClickEvent}>
+          <VStack mb={3} onClick={onClickEvent}>
             <Heading fontSize={'20px'} fontFamily={'body'} fontWeight={500}>
               {name}
             </Heading>
             <Text fontWeight={800} fontSize={'18px'}>
               {price} تومان
             </Text>
-          </Stack>
+          </VStack>
           {hasButton &&
-            <Button width={'100%'} backgroundColor={'green.500'} _hover={{ backgroundColor: 'green.600' }}
+            <Button width={'100%'} backgroundColor={'green.500'} _hover={{backgroundColor: 'green.600'}}
                     color={'white'}
                     onClick={() => {
                       if (user.isRegistered) {
