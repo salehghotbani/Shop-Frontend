@@ -1,4 +1,4 @@
-# Stage 1: Build the React app
+﻿# Stage 1: Build the React app
 FROM node:18-alpine AS builder
 ENV NODE_ENV production
 # Declaring env
@@ -13,20 +13,7 @@ COPY . .
 # Building our application
 RUN npm run build
 
-# Stage 2: Build the Express.js server
-FROM node:18-alpine as server
-ENV NODE_ENV production
-WORKDIR /app
-# Copy the server code to the container
-COPY ./server /app
-# Installing server dependencies
-RUN npm install
-# Expose the server port
-EXPOSE 3001
-# Start the server
-CMD ["node", "server.js"]
-
-# Stage 3: Create the final production image with nginx
+# Stage 2: Create the final production image with nginx
 FROM nginx:1.24.0-alpine as production
 ENV NODE_ENV production
 # Copy built assets from the React app builder stage

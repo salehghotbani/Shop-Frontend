@@ -296,7 +296,7 @@ export const ShowGLB = ({ image, autoRotate }) => {
 export const createOrderIdPay = (order_id, totalPrice, navigate) => {
   fetchWithAxios.get('/getcustomerinfo', {})
     .then((userInfoResponse) => {
-      axios.post('/get-payment-token',
+      axios.post('http://express-server:3001/',
         {
           action: 'token',
           TerminalId: '134754750',
