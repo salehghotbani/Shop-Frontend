@@ -257,7 +257,8 @@ const GetFilter = ({ getProductsByCategory }) => {
 
         <Box mt={5}>
           <Center>
-            <Pagination dispatch={dispatch} page={product.page} setPage={setPage}
+            <Pagination dispatch={dispatch} page={product.page} setPage={setPage} saveInQueryParameter={true}
+                        queryParameter={queryParams} navigate={navigate}
                         numberElementShownPerPage={product.numberElementShownPerPage}
                         totalProducts={product.totalProductsByFiltersAndCategory} />
           </Center>
@@ -325,7 +326,7 @@ export const ListProducts = () => {
       getProductsByCategory();
       getBrands();
     }
-  }, [product.selectedCategory, product.numberElementShownPerPage]);
+  }, [product.selectedCategory, product.numberElementShownPerPage, product.page]);
 
   const getQueryParameter = () => {
     let maxPriceTemp = 1;
@@ -351,7 +352,7 @@ export const ListProducts = () => {
 
   return (
     <>
-      <Grid dir={'rtl'} templateColumns={isMobile ? 'repeat(1, 1fr)' : 'repeat(8, 1fr)'} gap={4} pt={4} px={8}>
+      <Grid zIndex={'2 !important'} dir={'rtl'} templateColumns={isMobile ? 'repeat(1, 1fr)' : 'repeat(8, 1fr)'} gap={4} pt={4} px={8}>
         {isMobile ?
           <>
             <Image cursor={'pointer'} onClick={onOpen} src={filterSVG} w={'30px'} h={'30px'} />
@@ -392,7 +393,7 @@ export const ListProducts = () => {
         </GridItem>
       </Grid>
 
-      <Box position='fixed' bottom='0' right='0' px={9} py={7}>
+      <Box zIndex={'5 !important'} position='fixed' bottom='0' right='0' px={9} py={7}>
         <Menu maxW={'100px'}>
           <MenuButton as={Button} rightIcon={<ChevronDownIcon />} className={'box_shadow'} backgroundColor={'white'}
                       _hover={{ backgroundColor: '#f3f7fd' }}
