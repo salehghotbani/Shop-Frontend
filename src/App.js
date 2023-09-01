@@ -23,7 +23,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    checkAuth(dispatch);
+    checkAuth(dispatch).then(null);
     getProductsCart(dispatch);
   }, []);
 

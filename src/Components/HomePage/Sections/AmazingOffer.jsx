@@ -1,4 +1,4 @@
-import { Box, Center, Flex, Stack, Tag, Text } from '@chakra-ui/react';
+import { Box, Center, Flex, Tag, Text } from '@chakra-ui/react';
 import Carousel from 'react-multi-carousel';
 import { useSelector } from 'react-redux';
 import { backendURL, cookies, ProductSimple } from '../../../Base/BaseFunctions';
@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 export const AmazingOffer = () => {
   const product = useSelector(state => state.product);
   const navigate = useNavigate();
+  const user = useSelector(state => state.user);
 
   const responsive = {
     superLargeDesktop: {
@@ -54,7 +55,7 @@ export const AmazingOffer = () => {
             <Carousel responsive={responsive}>
               {product.amazingProducts.map((value, index) => (
                 <Box key={index}>
-                  <ProductSimple image={backendURL + '/' + value.avatar} name={value.name}
+                  <ProductSimple image={backendURL + '/' + value.avatar} name={value.name} user={user} navigate={navigate}
                                  onClickEvent={() => {
                                    cookies.set('productId', value.id, { path: '/' });
                                    navigate(`/productInfo?id=${value.id}&category=${product.selectedCategory}`);

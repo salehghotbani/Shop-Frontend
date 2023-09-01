@@ -8,7 +8,6 @@ import {
   AccordionPanel,
   Box,
   Button,
-  ButtonGroup,
   Center,
   Divider,
   Drawer,
@@ -35,7 +34,6 @@ import {
   RangeSliderThumb,
   RangeSliderTrack,
   SimpleGrid,
-  Stack,
   Text,
   useDisclosure,
   useMediaQuery,
@@ -57,16 +55,13 @@ import {
   backendURL,
   cookies,
   fetchWithAxios,
-  Pagination, ProductSimple,
-  ShowGLB,
+  Pagination,
+  ProductSimple,
   showToast,
 } from '../../Base/BaseFunctions';
-import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { ChevronDownIcon } from '@chakra-ui/icons';
 import { minPrice } from '../../Base/BaseAttributes';
 import filterSVG from '../../assets/icons/filter.svg';
-import { Canvas } from '@react-three/fiber';
-import { Environment, OrbitControls } from '@react-three/drei';
-import { Show3DGLB } from './Show3DGLB';
 
 const GetFilter = ({ getProductsByCategory }) => {
   const dispatch = useDispatch();
@@ -275,6 +270,7 @@ const GetFilter = ({ getProductsByCategory }) => {
 export const ListProducts = () => {
   const dispatch = useDispatch();
   const product = useSelector(state => state.product);
+  const user = useSelector(state => state.user);
   const commentProduct = useSelector(state => state.commentProduct);
   const location = useLocation();
   const navigate = useNavigate();
@@ -381,7 +377,8 @@ export const ListProducts = () => {
             <SimpleGrid columns={[1, 1, 2, 3, 4, 5]} spacing={4} mb={5} dir={'rtl'}>
               {timeToShowProducts && product.products.map((value, index) => (
                 <Box key={index}>
-                  <ProductSimple image={backendURL + '/' + value.avatar} name={value.name}
+                  <ProductSimple image={backendURL + '/' + value.avatar} name={value.name} user={user}
+                                 navigate={navigate}
                                  onClickEvent={() => {
                                    cookies.set('productId', value.id, { path: '/' });
                                    navigate(`/productInfo?id=${value.id}&category=${product.selectedCategory}`);

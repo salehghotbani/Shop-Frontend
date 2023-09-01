@@ -15,7 +15,7 @@ import { Canvas } from '@react-three/fiber';
 // https://backend.ghotbani.ir
 // export const backendURL = 'http://localhost:8000';
 export const backendURL = 'https://backend.ghotbani.ir';
-export const frontendURL = 'http://frontend.ghotbani.ir';
+export const frontendURL = 'https://frontend.ghotbani.ir';
 
 export const cookies = new Cookies();
 
@@ -124,7 +124,10 @@ export const getProductsCart = (dispatch) => {
       dispatch(setProducts(response.data.products));
     })
     .catch((e) => {
-      showToast('خطا', e.message);
+      console.log(e);
+      if (e.response.data.detail !== 'اطلاعات برای اعتبارسنجی ارسال نشده است.') {
+        showToast('خطا', e.message);
+      }
     });
 };
 
@@ -236,9 +239,9 @@ export const Pagination = ({
                   onClick={() => {
                     dispatch(setPage(ItteratePage));
                   }}
-                  backgroundColor={page === ItteratePage ? 'white' : 'gray.200'}
+                  backgroundColor={page === ItteratePage ? 'white' : 'blue.200'}
                   borderColor={'gray.300'}
-                  _hover={{ backgroundColor: page === ItteratePage ? 'gray.200' : 'gray.600' }}>
+                  _hover={{ backgroundColor: page === ItteratePage ? 'blue.200' : 'blue.300' }}>
             {ItteratePage}
           </Button>
         ))}
@@ -295,18 +298,12 @@ export const createOrderIdPay = (order_id, totalPrice, navigate) => {
     .then((userInfoResponse) => {
       axios.post('https://sandbox.banktest.ir/saman/sep.shaparak.ir/OnlinePG/OnlinePG',
         {
-          'action': 'token',
-          'TerminalId': '134754750',
-          'Amount': parseInt(totalPrice) * 10,
-          'ResNum': order_id.toString(),
-          'RedirectUrl': frontendURL + '/checkpay',
-          'CellNumber': userInfoResponse.phone_number,
-        },
-        {
-          auth: {
-            username: 'user134754749', // Username
-            password: '38531349', // Password
-          },
+          action: 'token',
+          TerminalId: '134754750',
+          Amount: parseInt(totalPrice) * 10,
+          ResNum: order_id.toString(),
+          RedirectUrl: frontendURL + '/checkpay',
+          CellNumber: userInfoResponse.phone_number.toString(),
         })
         .then((response) => {
           navigate(`https://sep.shaparak.ir/OnlinePG/SendToken?token=${response.data.token}&GetMethod=true`, { replace: true });
@@ -330,7 +327,16 @@ export const createOrder = (totalPrice, navigate) => {
     });
 };
 
-export const ProductSimple = ({ image, name, price, onClickEvent, hasButton = false, buttonFunction }) => {
+export const ProductSimple = ({
+                                image,
+                                name,
+                                price,
+                                onClickEvent,
+                                hasButton = false,
+                                buttonFunction,
+                                user,
+                                navigate,
+                              }) => {
   return (
     <Center py={12} cursor={'pointer'}>
       <Box role={'group'} p={6} maxW={'330px'} w={'full'} bg={'white'} boxShadow={'2xl'} rounded={'lg'} pos={'relative'}
@@ -370,8 +376,15 @@ export const ProductSimple = ({ image, name, price, onClickEvent, hasButton = fa
           </Stack>
           {hasButton &&
             <Button width={'100%'} backgroundColor={'green.500'} _hover={{ backgroundColor: 'green.600' }}
-                    color={'white'} onClick={buttonFunction}>
-              افزودن به سبد خرید
+                    color={'white'}
+                    onClick={() => {
+                      if (user.isRegistered) {
+                        buttonFunction();
+                      } else {
+                        navigate('/login');
+                      }
+                    }}>
+              {user.isRegistered ? <>افزودن به سبد خرید</> : <>ورود به سایت</>}
             </Button>
           }
         </Stack>

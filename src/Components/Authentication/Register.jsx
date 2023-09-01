@@ -17,12 +17,11 @@ import RegisterBackgroundImage from '../../assets/images/home page/Login.png';
 import RegisterCardBackgroundImage from '../../assets/images/home page/LoginCard.png';
 import RegisterTicketBackgroundImage from '../../assets/images/home page/LoginTicket.png';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Blue7 } from '../../Base/BaseAttributes';
 import { fetchWithAxios, showToast } from '../../Base/BaseFunctions';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setRegistrationStatus } from '../../store/features/userSlice';
 import {
   setCode,
   setConfirmPassword,
@@ -31,6 +30,7 @@ import {
   setPhoneNumber,
   setUsername,
 } from '../../store/features/registerSlice';
+import { setTimer, setTimeStart } from '../../store/features/timerSlice';
 
 export const Register = () => {
   const codeLength = 5;
@@ -43,35 +43,54 @@ export const Register = () => {
   const [isSentRegisteredForm, setIsSentRegisteredForm] = useState(false);
   const [isCheckCodeFormLoading, setIsCheckCodeFormLoading] = useState(false);
   const [isSentCodeForm, setIsSentCodeForm] = useState(false);
-  const [minutes, setMinutes] = useState(2);
-  const [seconds, setSeconds] = useState(0);
   const labelWidth = '160px';
   const labelFontSize = '20px';
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const register = useSelector(state => state.register);
+  const Ref = useRef(null);
+  const timerSlice = useSelector(state => state.timerSlice);
 
-  useEffect(() => {
-    let timer = setInterval(() => {
-      if (seconds > 0) {
-        setSeconds(seconds - 1);
-      } else {
-        if (minutes === 0) {
-          clearInterval(timer);
-          // Timer has reached 0:00
-        } else {
-          setMinutes(minutes - 1);
-          setSeconds(59);
-        }
-      }
+  const getTimeRemaining = (e) => {
+    const total = Date.parse(e) - Date.parse(new Date());
+    const seconds = Math.floor((total / 1000) % 60);
+    const minutes = Math.floor((total / 1000 / 60) % 60);
+    return {total, minutes, seconds};
+  }
+
+  const startTimer = (e) => {
+    let {total, minutes, seconds} = getTimeRemaining(e);
+    if (total >= 0) {
+      dispatch(setTimer((minutes > 9 ? minutes : '0' + minutes) + ':' + (seconds > 9 ? seconds : '0' + seconds)));
+    }
+  }
+
+  const clearTimer = (e) => {
+    console.log(e)
+    dispatch(setTimer('02:00'));
+
+    if (Ref.current) clearInterval(Ref.current);
+    Ref.current = setInterval(() => {
+      startTimer(e);
     }, 1000);
+  }
 
-    return () => clearInterval(timer);
-  }, [minutes, seconds]);
+  const getDeadTime = () => {
+    let deadline = new Date();
+    deadline.setSeconds(deadline.getSeconds() + 120);
+    return deadline;
+  }
+
+  const onClickReset = () => {
+    dispatch(setTimeStart(true));
+    clearTimer(getDeadTime());
+  }
 
   useEffect(() => {
-    dispatch(setCode([Array.from({ length: codeLength }).map(() => ('0'))]));
-  }, []);
+    if (timerSlice.timer === '00:00') {
+      dispatch(setTimeStart(false));
+    }
+  }, [timerSlice.timer]);
 
   useEffect(() => {
     // Trigger the overlay animation after 500ms (you can adjust this timing as needed)
@@ -332,7 +351,7 @@ export const Register = () => {
             </Flex>
           </FormControl>
           <Text>
-            {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
+            {timerSlice.timer}
           </Text>
         </Box>
 
