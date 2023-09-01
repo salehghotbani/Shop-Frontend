@@ -296,7 +296,7 @@ export const ShowGLB = ({ image, autoRotate }) => {
 export const createOrderIdPay = (order_id, totalPrice, navigate) => {
   fetchWithAxios.get('/getcustomerinfo', {})
     .then((userInfoResponse) => {
-      axios.post('https://sandbox.banktest.ir/saman/sep.shaparak.ir/OnlinePG/OnlinePG',
+      axios.post('/get-payment-token',
         {
           action: 'token',
           TerminalId: '134754750',
