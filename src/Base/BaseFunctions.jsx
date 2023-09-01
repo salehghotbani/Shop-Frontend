@@ -303,7 +303,7 @@ export const createOrderIdPay = (order_id, totalPrice, navigate) => {
           Amount: parseInt(totalPrice) * 10,
           ResNum: order_id.toString(),
           RedirectUrl: frontendURL + '/checkpay',
-          CellNumber: userInfoResponse.phone_number.toString(),
+          CellNumber: userInfoResponse.phone_number ? userInfoResponse.phone_number.toString() : '',
         })
         .then((response) => {
           navigate(`https://sep.shaparak.ir/OnlinePG/SendToken?token=${response.data.token}&GetMethod=true`, { replace: true });
