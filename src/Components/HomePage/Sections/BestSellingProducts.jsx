@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 export const BestSellingProducts = () => {
   const product = useSelector(state => state.product);
   const navigate = useNavigate();
+  const user = useSelector(state => state.user);
 
   const responsive = {
     superLargeDesktop: {
@@ -56,7 +57,8 @@ export const BestSellingProducts = () => {
             <Carousel responsive={responsive}>
               {product.bestSellingProducts.map((value, index) => (
                 <Box key={index}>
-                  <ProductSimple image={backendURL + '/' + value.avatar} name={value.name}
+                  <ProductSimple image={backendURL + '/' + value.avatar} name={value.name} user={user}
+                                 navigate={navigate}
                                  onClickEvent={() => {
                                    cookies.set('productId', value.id, { path: '/' });
                                    navigate(`/productInfo?id=${value.id}&category=${product.selectedCategory}`);

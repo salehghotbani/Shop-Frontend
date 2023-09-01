@@ -33,6 +33,7 @@ import availabilityLogo from '../../assets/images/availability.png';
 export const Product = () => {
   const dispatch = useDispatch();
   const product = useSelector(state => state.product);
+  const user = useSelector(state => state.user);
   const [imageOfProduct, setImageOfProduct] = useState(null);
   const navigate = useNavigate();
   const [timeToShowSameProducts, setTimeToShowSameProducts] = useState(false);
@@ -148,8 +149,15 @@ export const Product = () => {
 
               <Center mt={5}>
                 <Button width={'100%'} backgroundColor={'green.500'} _hover={{ backgroundColor: 'green.600' }}
-                        color={'white'} onClick={() => addToCart(dispatch, product.productDetails.id)}>
-                  افزودن به سبد خرید
+                        color={'white'}
+                        onClick={() => {
+                          if (user.isRegistered) {
+                            addToCart(dispatch, product.productDetails.id);
+                          } else {
+                            navigate('/login');
+                          }
+                        }}>
+                  {user.isRegistered ? <>افزودن به سبد خرید</> : <>ورود به سایت</>}
                 </Button>
               </Center>
             </Box>
@@ -286,8 +294,14 @@ export const Product = () => {
               <Center mx={2} my={4}>
                 <Button size={'sm'} width={'100%'} backgroundColor={'green.500'} color={'white'}
                         _hover={{ backgroundColor: 'green.600' }}
-                        onClick={() => addToCart(dispatch, product.productDetails.id)}>
-                  افزودن به سبد خرید
+                        onClick={() => {
+                          if (user.isRegistered) {
+                            addToCart(dispatch, product.productDetails.id);
+                          } else {
+                            navigate('/login');
+                          }
+                        }}>
+                  {user.isRegistered ? <>افزودن به سبد خرید</> : <>ورود به سایت</>}
                 </Button>
               </Center>
             </Box>

@@ -12,6 +12,7 @@ import commentProductSlice from './features/commentProductSlice';
 import cartSlice from './features/cartSlice';
 import allOrdersSlice from './features/allOrdersSlice';
 import orderReviewSlice from './features/orderReviewSlice';
+import timerSlice from './features/timerSlice';
 
 const store = configureStore({
   reducer: {
@@ -28,6 +29,7 @@ const store = configureStore({
     cart: cartSlice,
     allOrders: allOrdersSlice,
     orderReview: orderReviewSlice,
+    timerSlice: timerSlice,
   },
 });
 
