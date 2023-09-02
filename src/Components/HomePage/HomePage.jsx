@@ -69,6 +69,7 @@ export const HomePage = () => {
                 name: valueInJson.name,
                 avatar: valueInJson.avatar,
                 category: valueInJson.category,
+                price: valueInJson.price,
               });
             });
           });
@@ -89,6 +90,7 @@ export const HomePage = () => {
               name: value.name,
               avatar: value.avatar,
               category: value.category,
+              price: value.price,
             });
           });
           dispatch(setBestSellingProducts(tempArray));

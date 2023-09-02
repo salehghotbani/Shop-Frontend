@@ -41,10 +41,11 @@ export const Profile = () => {
       'username': profile.username,
       'address': profile.address,
       'first_name': profile.firstName,
-      'last_name': profile.lastLame,
+      'last_name': profile.lastName,
       'gender': profile.gender ? 'True' : 'False',
     }).then(() => {
       dispatch(setIsSubmitted(false));
+      showToast('تبریک!', 'ثبت نام شدید', 0);
     }).catch((e) => {
       showToast('خطا', e.message);
       dispatch(setIsSubmitted(false));

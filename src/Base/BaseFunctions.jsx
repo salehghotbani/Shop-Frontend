@@ -120,6 +120,7 @@ export const MultiSelect = ({
 export const logout = (navigate) => {
   fetchWithAxios.get('/logout/', {})
     .then(function () {
+      showToast('انجام شد!', 'خارج شدید', 0);
       navigate('/');
       document.location.reload();
     })
@@ -330,7 +331,7 @@ export const ShowGLB = ({image, autoRotate}) => {
 export const createOrderIdPay = (order_id, totalPrice, navigate) => {
   fetchWithAxios.get('/getcustomerinfo', {})
     .then((userInfoResponse) => {
-      axios.post('https://sandbox.banktest.ir/saman/sep.shaparak.ir/OnlinePG/OnlinePG/',
+      axios.post('https://sandbox.banktest.ir/saman/sep.shaparak.ir/OnlinePG/OnlinePG',
         {
           action: 'token',
           TerminalId: '134754750',
@@ -404,7 +405,7 @@ export const ProductSimple = ({
             <Heading fontSize={'20px'} fontFamily={'body'} fontWeight={500}>
               {name}
             </Heading>
-            <Text fontWeight={800} fontSize={'18px'}>
+            <Text fontWeight={800} fontSize={'18px'} dir={'rtl'}>
               {price} تومان
             </Text>
           </VStack>
