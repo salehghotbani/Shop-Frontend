@@ -90,8 +90,10 @@ export const Dashboard = () => {
                         _hover={{ backgroundColor: 'cyan.800' }}
                         onClick={() => {
                           dispatch(setIsInReview(false));
-                          if (queryParams.has('order_id'))
+                          if (queryParams.has('order_id')) {
                             queryParams.delete('order_id');
+                            navigate({ search: queryParams.toString() });
+                          }
 
                           dispatch(setDashboardSection(ALL_ORDERS));
                           if (queryParams.get('dashboard_section') !== ALL_ORDERS)

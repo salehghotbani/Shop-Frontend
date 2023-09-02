@@ -60,7 +60,7 @@ export const AmazingOffer = () => {
                                    cookies.set('productId', value.id, { path: '/' });
                                    navigate(`/productInfo?id=${value.id}&category=${product.selectedCategory}`);
                                  }}
-                                 price={value.price && (value.price).replace(/,/g, '').toLocaleString()} />
+                                 price={value.price && parseInt((value.price.toString()).replace(/,/g, '')).toLocaleString()} />
                 </Box>
               ))}
             </Carousel>
